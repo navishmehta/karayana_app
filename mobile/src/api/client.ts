@@ -27,6 +27,8 @@ export interface AuthBridge {
   getAccessToken: () => string | null;
   refresh: () => Promise<boolean>; // true when new tokens were obtained
   onSessionEnded: () => void;
+  /** The server refused an action: permissions may have changed, so reload them. */
+  onForbidden?: () => void;
 }
 
 let auth: AuthBridge | null = null;
@@ -110,7 +112,14 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
     }
   }
 
-  if (!response.ok) throw await toApiError(response);
+  if (!response.ok) {
+    const error = await toApiError(response);
+    if (response.status === 403 && options.auth !== false && auth) {
+      if (error.code === API_ERROR_CODES.accountInactive) auth.onSessionEnded(); // deactivated by the admin
+      else if (error.code === API_ERROR_CODES.forbidden) auth.onForbidden?.();
+    }
+    throw error;
+  }
   if (response.status === 204) return undefined as T;
   return (await response.json()) as T;
 }

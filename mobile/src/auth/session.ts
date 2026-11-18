@@ -95,8 +95,13 @@ export const useSession = create<SessionState>((set, get) => ({
   },
 
   async reloadUser() {
-    const { data: user } = await authApi.me();
-    set({ user });
+    if (get().status !== 'staff') return;
+    try {
+      const { data: user } = await authApi.me();
+      set({ user });
+    } catch {
+      // Offline or session ended: the client already handles an ended session.
+    }
   },
 
   async endSession() {
@@ -105,8 +110,18 @@ export const useSession = create<SessionState>((set, get) => ({
   },
 }));
 
+/** Reload permissions at most this often when the server refuses actions. */
+const FORBIDDEN_RELOAD_GAP_MS = 5_000;
+let lastForbiddenReload = 0;
+
 configureAuth({
   getAccessToken: () => useSession.getState().accessToken,
   refresh: () => useSession.getState().refresh(),
   onSessionEnded: () => void useSession.getState().endSession(),
+  onForbidden: () => {
+    const now = Date.now();
+    if (now - lastForbiddenReload < FORBIDDEN_RELOAD_GAP_MS) return;
+    lastForbiddenReload = now;
+    void useSession.getState().reloadUser();
+  },
 });

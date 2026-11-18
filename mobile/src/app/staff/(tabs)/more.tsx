@@ -2,13 +2,15 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
 import { can, isAdmin } from '@/auth/permissions';
 import { useSession } from '@/auth/session';
-import { AppText, Badge, Card, ConfirmDialog, ListRow, Screen } from '@/components/ui';
+import { AppText, Badge, Card, ConfirmDialog, EmptyState, ListRow, Screen } from '@/components/ui';
 import { PERMISSIONS } from '@/constants/permissions';
 import { queryClient } from '@/lib/queryClient';
 import { useAppTheme } from '@/theme/ThemeProvider';
+import { spacing } from '@/theme/tokens';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
@@ -44,6 +46,26 @@ export default function MoreScreen() {
         <AppText color="textMuted">{user.email}</AppText>
         <Badge label={admin ? t('staff.roleAdmin') : t('staff.roleSeller')} />
       </Card>
+      {!admin && (
+        <Card>
+          {user.permissions.length === 0 ? (
+            <EmptyState icon="lock-closed-outline" title={t('staff.noAccessTitle')} body={t('staff.noAccessBody')} />
+          ) : (
+            <>
+              <AppText weight="semibold">{t('staff.more.yourAccess')}</AppText>
+              {user.permissions.map((permission) => (
+                <View key={permission} style={styles.permission}>
+                  <Ionicons name="checkmark-circle" size={18} color={colors.success} />
+                  <AppText size="small">{t(`staff.permissionLabels.${permission}`, { defaultValue: permission })}</AppText>
+                </View>
+              ))}
+              <AppText size="small" color="textMuted">
+                {t('staff.more.askAdmin')}
+              </AppText>
+            </>
+          )}
+        </Card>
+      )}
       <Card>
         {links
           .filter((l) => l.show)
@@ -73,3 +95,7 @@ export default function MoreScreen() {
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  permission: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+});

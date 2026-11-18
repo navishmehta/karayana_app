@@ -8,11 +8,11 @@ import { z } from 'zod';
 
 import { categoryApi } from '@/api/staff/endpoints';
 import type { StaffCategory } from '@/api/staff/types';
-import { useCan } from '@/auth/permissions';
+import { categoryFormAccess } from '@/auth/access';
+import { useSession } from '@/auth/session';
 import { ProductImage } from '@/components/catalogue/ProductImage';
 import { FormText } from '@/components/forms/FormText';
 import { AppText, Button, Card, ConfirmDialog, ErrorState, LoadingView, ScreenHeader, SwitchRow, toast } from '@/components/ui';
-import { PERMISSIONS } from '@/constants/permissions';
 import { refreshAfterChange, useStaffCategory } from '@/hooks/useStaff';
 import { pickImageForm } from '@/lib/images';
 import { requiredText } from '@/lib/staffValidation';
@@ -42,7 +42,7 @@ export default function CategoryFormScreen() {
 
 function CategoryForm({ category }: { category?: StaffCategory }) {
   const { t } = useTranslation();
-  const canDelete = useCan(PERMISSIONS.categoriesDelete);
+  const access = categoryFormAccess(useSession((s) => s.user), !!category);
   const [image, setImage] = useState<{ form: FormData | null; preview: string | null }>({ form: null, preview: category?.image_thumb_url ?? null });
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -74,8 +74,8 @@ function CategoryForm({ category }: { category?: StaffCategory }) {
     };
     try {
       const saved = category ? await categoryApi.update(category.id, body) : await categoryApi.create(body);
-      if (image.form) await categoryApi.uploadImage(saved.data.id, image.form);
-      else if (category?.image_url && !image.preview) await categoryApi.removeImage(category.id);
+      if (access.editImage && image.form) await categoryApi.uploadImage(saved.data.id, image.form);
+      else if (access.editImage && category?.image_url && !image.preview) await categoryApi.removeImage(category.id);
       await refreshAfterChange();
       toast.success(t('staff.common.saved'));
       router.back();
@@ -109,6 +109,7 @@ function CategoryForm({ category }: { category?: StaffCategory }) {
         <FormText control={control} name="description" label={`${t('staff.products.description')} (${t('staff.common.optional')})`} multiline />
         <Controller control={control} name="isActive" render={({ field }) => <SwitchRow label={t('staff.categories.active')} hint={t('staff.categories.activeHint')} value={field.value} onChange={field.onChange} />} />
       </Card>
+      {access.editImage && (
       <Card>
         <AppText weight="semibold">{t('staff.categories.image')}</AppText>
         <View style={styles.imageRow}>
@@ -123,9 +124,10 @@ function CategoryForm({ category }: { category?: StaffCategory }) {
           </View>
         </View>
       </Card>
+      )}
       {formError && <AppText color="danger">{formError}</AppText>}
       <Button title={t('staff.common.save')} onPress={() => void save()} loading={formState.isSubmitting} fullWidth />
-      {category && canDelete && <Button title={t('staff.categories.delete')} variant="danger" onPress={() => setConfirmDelete(true)} />}
+      {access.remove && <Button title={t('staff.categories.delete')} variant="danger" onPress={() => setConfirmDelete(true)} />}
       <ConfirmDialog
         visible={confirmDelete}
         title={t('staff.categories.deleteConfirm', { name: category?.name })}

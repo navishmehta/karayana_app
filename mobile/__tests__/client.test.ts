@@ -15,13 +15,15 @@ const refresh = jest.fn(async () => {
   return true;
 });
 const onSessionEnded = jest.fn();
+const onForbidden = jest.fn();
 
 beforeEach(() => {
   fetchMock.mockReset();
   refresh.mockClear();
   onSessionEnded.mockClear();
+  onForbidden.mockClear();
   token = 'old-token';
-  configureAuth({ getAccessToken: () => token, refresh, onSessionEnded });
+  configureAuth({ getAccessToken: () => token, refresh, onSessionEnded, onForbidden });
 });
 
 it('builds URLs with query strings, skipping empty values and repeating lists', () => {
@@ -82,4 +84,17 @@ it('ends the session when the token is no longer valid', async () => {
   await expect(request('/auth/me')).rejects.toBeInstanceOf(ApiError);
   expect(onSessionEnded).toHaveBeenCalledTimes(1);
   expect(refresh).not.toHaveBeenCalled();
+});
+
+it('logs out at once when the admin deactivated the account', async () => {
+  fetchMock.mockResolvedValueOnce(json(403, { message: 'Deactivated', code: 'ACCOUNT_INACTIVE' }));
+  await expect(request('/products')).rejects.toBeInstanceOf(ApiError);
+  expect(onSessionEnded).toHaveBeenCalledTimes(1);
+});
+
+it('reloads permissions when the server refuses an action', async () => {
+  fetchMock.mockResolvedValueOnce(json(403, { message: 'No permission', code: 'FORBIDDEN' }));
+  await expect(request('/inventory/stock-in', { method: 'POST', body: {} })).rejects.toMatchObject({ code: 'FORBIDDEN' });
+  expect(onForbidden).toHaveBeenCalledTimes(1);
+  expect(onSessionEnded).not.toHaveBeenCalled();
 });

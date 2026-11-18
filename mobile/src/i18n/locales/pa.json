@@ -304,7 +304,9 @@
       "sellers": "ਵਿਕਰੇਤਾ",
       "activity": "ਗਤੀਵਿਧੀ ਲੌਗ",
       "storeSettings": "ਦੁਕਾਨ ਦੀਆਂ ਸੈਟਿੰਗਾਂ",
-      "preferences": "ਭਾਸ਼ਾ ਅਤੇ ਥੀਮ"
+      "preferences": "ਭਾਸ਼ਾ ਅਤੇ ਥੀਮ",
+      "yourAccess": "ਤੁਸੀਂ ਕੀ ਕਰ ਸਕਦੇ ਹੋ",
+      "askAdmin": "ਹੋਰ ਚਾਹੀਦਾ ਹੈ? ਦੁਕਾਨ ਦੇ ਐਡਮਿਨ ਨੂੰ ਪੁੱਛੋ।"
     },
     "categories": {
       "add": "ਸ਼੍ਰੇਣੀ ਜੋੜੋ",
@@ -406,6 +408,40 @@
       "notifyExpiry": "ਮਿਆਦ ਸੂਚਨਾ",
       "digestTime": "ਰੋਜ਼ਾਨਾ ਮਿਆਦ ਸੂਚਨਾ ਦਾ ਸਮਾਂ",
       "digestHint": "24-ਘੰਟੇ ਦਾ ਸਮਾਂ, ਜਿਵੇਂ 08:00।"
+    },
+    "permissionLabels": {
+      "dashboard": {
+        "view": "ਡੈਸ਼ਬੋਰਡ ਦੇਖੋ"
+      },
+      "products": {
+        "view": "ਉਤਪਾਦ ਦੇਖੋ",
+        "create": "ਉਤਪਾਦ ਸ਼ਾਮਲ ਕਰੋ",
+        "update": "ਉਤਪਾਦ ਸੋਧੋ",
+        "delete": "ਉਤਪਾਦ ਮਿਟਾਓ"
+      },
+      "categories": {
+        "view": "ਸ਼੍ਰੇਣੀਆਂ ਦੇਖੋ",
+        "create": "ਸ਼੍ਰੇਣੀਆਂ ਸ਼ਾਮਲ ਕਰੋ",
+        "update": "ਸ਼੍ਰੇਣੀਆਂ ਸੋਧੋ",
+        "delete": "ਸ਼੍ਰੇਣੀਆਂ ਮਿਟਾਓ"
+      },
+      "pricing": {
+        "view_purchase": "ਖਰੀਦ ਕੀਮਤ ਦੇਖੋ",
+        "view_selling": "ਵੇਚ ਕੀਮਤ ਦੇਖੋ",
+        "update_selling": "ਵੇਚ ਕੀਮਤ ਸੋਧੋ"
+      },
+      "stock": {
+        "view": "ਸਟਾਕ ਦੇਖੋ",
+        "update": "ਸਟਾਕ ਅੱਪਡੇਟ ਕਰੋ"
+      },
+      "expiry": {
+        "view": "ਮਿਆਦ ਦੇਖੋ",
+        "update": "ਮਿਆਦ ਅੱਪਡੇਟ ਕਰੋ"
+      },
+      "reports": {
+        "view": "ਰਿਪੋਰਟਾਂ ਦੇਖੋ",
+        "export": "ਰਿਪੋਰਟਾਂ ਡਾਊਨਲੋਡ ਕਰੋ"
+      }
     }
   },
   "catalogue": {

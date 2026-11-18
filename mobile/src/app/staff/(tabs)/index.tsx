@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
+import { dashboardLinks } from '@/auth/access';
 import { can, isAdmin } from '@/auth/permissions';
 import { useSession } from '@/auth/session';
 import { firstAllowedTab } from '@/auth/staffTabs';
@@ -34,6 +35,7 @@ export default function DashboardScreen() {
   if (dashboard.isError) return <ErrorState message={errorMessage(dashboard.error, t)} onRetry={() => void dashboard.refetch()} />;
 
   const d = dashboard.data;
+  const links = dashboardLinks(user);
   const openProducts = (params: Record<string, string> = {}) => router.push({ pathname: '/staff/products', params });
 
   return (
@@ -46,8 +48,13 @@ export default function DashboardScreen() {
       </View>
 
       <View style={styles.tiles}>
-        <KpiTile label={t('staff.dashboard.products')} value={String(d.products_total)} icon="cube-outline" onPress={() => openProducts()} />
-        <KpiTile label={t('staff.dashboard.categories')} value={String(d.categories_total)} icon="grid-outline" onPress={() => router.push('/staff/categories')} />
+        <KpiTile label={t('staff.dashboard.products')} value={String(d.products_total)} icon="cube-outline" onPress={links.products ? () => openProducts() : undefined} />
+        <KpiTile
+          label={t('staff.dashboard.categories')}
+          value={String(d.categories_total)}
+          icon="grid-outline"
+          onPress={links.categories ? () => router.push('/staff/categories') : undefined}
+        />
         {d.sellers_total !== undefined && (
           <KpiTile label={t('staff.dashboard.sellers')} value={String(d.sellers_total)} icon="people-outline" onPress={() => router.push('/staff/sellers')} />
         )}

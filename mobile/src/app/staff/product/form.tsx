@@ -9,10 +9,10 @@ import { z } from 'zod';
 
 import { lookupApi, productApi } from '@/api/staff/endpoints';
 import type { StaffProduct, Unit } from '@/api/staff/types';
-import { useCan } from '@/auth/permissions';
+import { productFormAccess } from '@/auth/access';
+import { useSession } from '@/auth/session';
 import { FormText } from '@/components/forms/FormText';
 import { AppText, Button, Card, ErrorState, LoadingView, PickerField, PickerSheet, ScreenHeader, SwitchRow, toast } from '@/components/ui';
-import { PERMISSIONS } from '@/constants/permissions';
 import { SEARCH_DEBOUNCE_MS } from '@/constants/app';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { refreshAfterChange, staffKeys, useBrands, useStaffCategories, useStaffProduct, useUnits } from '@/hooks/useStaff';
@@ -23,7 +23,7 @@ import { apiToDisplayDate, displayToApiDate } from '@/utils/dates';
 import { errorMessage } from '@/utils/errors';
 import { applyServerErrors, orNull } from '@/utils/forms';
 
-const schema = (t: Parameters<typeof requiredText>[0]) =>
+const schema = (t: Parameters<typeof requiredText>[0], requireSelling: boolean) =>
   z.object({
     name: requiredText(t),
     categoryId: requiredId(t),
@@ -32,13 +32,13 @@ const schema = (t: Parameters<typeof requiredText>[0]) =>
     sku: z.string(),
     barcode: z.string(),
     description: z.string(),
-    sellingPrice: money(t),
+    sellingPrice: requireSelling ? money(t) : z.string(), // hidden from users who can't see prices
     mrp: optionalMoney(t),
     offerPrice: optionalMoney(t),
     offerStartsAt: optionalDate(t),
     offerEndsAt: optionalDate(t),
     purchasePrice: optionalMoney(t),
-    minStockLevel: quantity(t),
+    minStockLevel: z.union([quantity(t), z.literal('')]),
     maxStockLevel: optionalQuantity(t),
     internalNotes: z.string(),
     isActive: z.boolean(),
@@ -65,7 +65,7 @@ const toForm = (p?: StaffProduct, defaultUnit?: Unit): FormValues => ({
   offerStartsAt: apiToDisplayDate(p?.offer_starts_at),
   offerEndsAt: apiToDisplayDate(p?.offer_ends_at),
   purchasePrice: p?.purchase_price ?? '',
-  minStockLevel: p?.min_stock_level ?? '0',
+  minStockLevel: p ? (p.min_stock_level ?? '') : '0', // '' = hidden from this user, left unchanged
   maxStockLevel: p?.max_stock_level ?? '',
   internalNotes: p?.internal_notes ?? '',
   isActive: p?.is_active ?? true,
@@ -90,7 +90,7 @@ const toApi = (v: FormValues) => ({
   offer_starts_at: displayToApiDate(v.offerStartsAt),
   offer_ends_at: displayToApiDate(v.offerEndsAt),
   purchase_price: orNull(v.purchasePrice),
-  min_stock_level: v.minStockLevel.trim(),
+  min_stock_level: v.minStockLevel.trim() || undefined,
   max_stock_level: orNull(v.maxStockLevel),
   internal_notes: orNull(v.internalNotes),
   is_active: v.isActive,
@@ -138,9 +138,8 @@ function ProductForm({ product, defaultUnit }: { product?: StaffProduct; default
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const editing = !!product;
-  const seeSelling = useCan(PERMISSIONS.pricingViewSelling);
-  const seePurchase = useCan(PERMISSIONS.pricingViewPurchase);
-  const editPrices = useCan(PERMISSIONS.pricingUpdateSelling) || !editing;
+  const access = productFormAccess(useSession((s) => s.user), editing);
+  const { seeSelling, seePurchase, editPrices } = access;
   const [picker, setPicker] = useState<PickerKind>(null);
   const [brandSearch, setBrandSearch] = useState('');
   const [labels, setLabels] = useState({
@@ -154,12 +153,12 @@ function ProductForm({ product, defaultUnit }: { product?: StaffProduct; default
   });
   const [formError, setFormError] = useState<string | null>(null);
 
-  const categories = useStaffCategories({ is_active: true });
+  const categories = useStaffCategories({ is_active: true }, access.pickCategory);
   const units = useUnits();
   const brands = useBrands(useDebouncedValue(brandSearch, SEARCH_DEBOUNCE_MS), picker === 'brand');
   const initial = useMemo(() => toForm(product, defaultUnit), [product, defaultUnit]);
   const { control, handleSubmit, setError, setValue, formState } = useForm<FormValues>({
-    resolver: zodResolver(schema(t)),
+    resolver: zodResolver(schema(t, seeSelling && editPrices)),
     defaultValues: initial,
   });
   const [categoryId, brandId, unitId] = useWatch({ control, name: ['categoryId', 'brandId', 'unitId'] });
@@ -188,6 +187,11 @@ function ProductForm({ product, defaultUnit }: { product?: StaffProduct; default
       delete body.purchase_price;
       delete body.internal_notes;
     }
+    if (!access.seeStockLevels && editing) {
+      delete body.min_stock_level;
+      delete body.max_stock_level;
+    }
+    for (const key of Object.keys(body)) if (body[key] === undefined) delete body[key];
     if (editing) {
       if (!editPrices) for (const key of ['selling_price', 'mrp', 'offer_price', 'offer_starts_at', 'offer_ends_at']) delete body[key];
       const before = toApi(initial) as Record<string, unknown>;
@@ -228,6 +232,7 @@ function ProductForm({ product, defaultUnit }: { product?: StaffProduct; default
                 placeholder={t('staff.products.form.choose')}
                 error={fieldState.error?.message}
                 onPress={() => setPicker('category')}
+                disabled={!access.pickCategory}
               />
             )}
           />
@@ -278,6 +283,7 @@ function ProductForm({ product, defaultUnit }: { product?: StaffProduct; default
           </Card>
         )}
 
+        {(access.seeStockLevels || !editing) && (
         <Card>
           <AppText size="subtitle" weight="semibold">
             {t('staff.products.form.stockLevels')}
@@ -292,6 +298,7 @@ function ProductForm({ product, defaultUnit }: { product?: StaffProduct; default
           </View>
           {!editing && <AppText size="small" color="textMuted">{t('staff.products.form.stockAfterCreate')}</AppText>}
         </Card>
+        )}
 
         <Card>
           <AppText size="subtitle" weight="semibold">
