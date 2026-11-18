@@ -31,8 +31,7 @@
     "welcome": "Welcome to",
     "contact": "Contact the store",
     "hours": "Opening hours",
-    "address": "Address",
-    "comingSoonNote": "Browse products and categories here soon."
+    "address": "Address"
   },
   "settings": {
     "title": "Settings",
@@ -76,5 +75,59 @@
     "noAccessBody": "Ask the store admin to give you permissions.",
     "viewAsCustomer": "View store as customer",
     "panelNote": "Your tools will appear here."
+  },
+  "catalogue": {
+    "categories": "Categories",
+    "search": "Search",
+    "searchPlaceholder": "Search products, brands…",
+    "clearSearch": "Clear search",
+    "specialOffers": "Special offers",
+    "featured": "Featured",
+    "newArrivals": "Recently added",
+    "seeAll": "See all",
+    "browseAll": "Browse all products",
+    "emptyStore": "Products will appear here soon.",
+    "noCategories": "No categories yet.",
+    "productsCount_one": "{{count}} product",
+    "productsCount_other": "{{count}} products",
+    "resultsCount_one": "{{count}} product found",
+    "resultsCount_other": "{{count}} products found",
+    "noResults": "No products found",
+    "noResultsHint": "Try another word or clear the filters.",
+    "filters": "Sort & filter",
+    "sortBy": "Sort by",
+    "sort": {
+      "name_asc": "Name A–Z",
+      "name_desc": "Name Z–A",
+      "price_asc": "Price: low to high",
+      "price_desc": "Price: high to low",
+      "newest": "Newest first"
+    },
+    "priceRange": "Price (₹)",
+    "minPrice": "Min",
+    "maxPrice": "Max",
+    "inStockOnly": "In stock only",
+    "onOfferOnly": "On offer only",
+    "featuredOnly": "Featured only",
+    "reset": "Reset",
+    "showResults": "Show results",
+    "availability": {
+      "in_stock": "In stock",
+      "low_stock": "Only a few left",
+      "out_of_stock": "Out of stock"
+    },
+    "offer": "Offer",
+    "perUnit": "per {{unit}}",
+    "percentOff": "{{percent}} off",
+    "priceLabel": "Price {{price}}",
+    "mrpLabel": "MRP {{price}}",
+    "inclusiveOfTaxes": "Inclusive of all taxes",
+    "offerEnds": "Offer ends {{date}}",
+    "category": "Category",
+    "brand": "Brand",
+    "unit": "Unit",
+    "bestBefore": "Best before",
+    "description": "Description",
+    "askStore": "Ask the store"
   }
 }

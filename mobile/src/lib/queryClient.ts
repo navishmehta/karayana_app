@@ -18,5 +18,10 @@ export const queryClient = new QueryClient({
 
 export const queryKeys = {
   publicStore: ['public', 'store'] as const,
+  publicCategories: ['public', 'categories'] as const,
+  publicCategory: (slug: string) => ['public', 'category', slug] as const,
+  publicProducts: (query: object) => ['public', 'products', query] as const,
+  publicHighlights: (kind: 'featured' | 'new' | 'offers') => ['public', 'highlights', kind] as const,
+  publicProduct: (slug: string) => ['public', 'product', slug] as const,
   me: ['auth', 'me'] as const,
 };

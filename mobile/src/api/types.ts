@@ -63,3 +63,39 @@ export interface PublicStore {
   offers_enabled: boolean;
   currency: string;
 }
+
+export type Availability = 'in_stock' | 'low_stock' | 'out_of_stock';
+
+export interface PublicCategory {
+  slug: string;
+  name: string;
+  name_translations: Record<string, string>;
+  description: string | null;
+  image_url: string | null;
+  image_thumb_url: string | null;
+  products_count: number;
+}
+
+export interface PublicImage {
+  url: string;
+  thumb_url: string;
+}
+
+export interface PublicProduct {
+  slug: string;
+  name: string;
+  description: string | null;
+  brand: string | null;
+  category: Pick<PublicCategory, 'slug' | 'name' | 'name_translations'>;
+  unit: string;
+  price: string;
+  selling_price: string;
+  mrp: string | null;
+  discount_percent: string | null;
+  on_offer: boolean;
+  offer_ends_at: string | null;
+  availability: Availability;
+  expiry_date: string | null;
+  is_featured: boolean;
+  images: PublicImage[];
+}

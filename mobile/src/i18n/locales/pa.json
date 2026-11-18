@@ -31,8 +31,7 @@
     "welcome": "ਜੀ ਆਇਆਂ ਨੂੰ",
     "contact": "ਦੁਕਾਨ ਨਾਲ ਸੰਪਰਕ ਕਰੋ",
     "hours": "ਖੁੱਲ੍ਹਣ ਦਾ ਸਮਾਂ",
-    "address": "ਪਤਾ",
-    "comingSoonNote": "ਜਲਦੀ ਹੀ ਇੱਥੇ ਉਤਪਾਦ ਅਤੇ ਸ਼੍ਰੇਣੀਆਂ ਦੇਖੋ।"
+    "address": "ਪਤਾ"
   },
   "settings": {
     "title": "ਸੈਟਿੰਗਾਂ",
@@ -76,5 +75,59 @@
     "noAccessBody": "ਦੁਕਾਨ ਦੇ ਐਡਮਿਨ ਨੂੰ ਇਜਾਜ਼ਤਾਂ ਦੇਣ ਲਈ ਕਹੋ।",
     "viewAsCustomer": "ਗਾਹਕ ਵਜੋਂ ਦੁਕਾਨ ਦੇਖੋ",
     "panelNote": "ਤੁਹਾਡੇ ਟੂਲ ਇੱਥੇ ਦਿਖਾਈ ਦੇਣਗੇ।"
+  },
+  "catalogue": {
+    "categories": "ਸ਼੍ਰੇਣੀਆਂ",
+    "search": "ਖੋਜ",
+    "searchPlaceholder": "ਉਤਪਾਦ, ਬ੍ਰਾਂਡ ਖੋਜੋ…",
+    "clearSearch": "ਖੋਜ ਸਾਫ਼ ਕਰੋ",
+    "specialOffers": "ਖਾਸ ਆਫ਼ਰ",
+    "featured": "ਚੁਣੇ ਹੋਏ ਉਤਪਾਦ",
+    "newArrivals": "ਨਵੇਂ ਆਏ",
+    "seeAll": "ਸਾਰੇ ਦੇਖੋ",
+    "browseAll": "ਸਾਰੇ ਉਤਪਾਦ ਦੇਖੋ",
+    "emptyStore": "ਉਤਪਾਦ ਜਲਦੀ ਹੀ ਇੱਥੇ ਦਿਖਾਈ ਦੇਣਗੇ।",
+    "noCategories": "ਅਜੇ ਕੋਈ ਸ਼੍ਰੇਣੀ ਨਹੀਂ।",
+    "productsCount_one": "{{count}} ਉਤਪਾਦ",
+    "productsCount_other": "{{count}} ਉਤਪਾਦ",
+    "resultsCount_one": "{{count}} ਉਤਪਾਦ ਮਿਲਿਆ",
+    "resultsCount_other": "{{count}} ਉਤਪਾਦ ਮਿਲੇ",
+    "noResults": "ਕੋਈ ਉਤਪਾਦ ਨਹੀਂ ਮਿਲਿਆ",
+    "noResultsHint": "ਕੋਈ ਹੋਰ ਸ਼ਬਦ ਵਰਤੋ ਜਾਂ ਫਿਲਟਰ ਹਟਾਓ।",
+    "filters": "ਕ੍ਰਮ ਅਤੇ ਫਿਲਟਰ",
+    "sortBy": "ਕ੍ਰਮ",
+    "sort": {
+      "name_asc": "ਨਾਮ A–Z",
+      "name_desc": "ਨਾਮ Z–A",
+      "price_asc": "ਕੀਮਤ: ਘੱਟ ਤੋਂ ਵੱਧ",
+      "price_desc": "ਕੀਮਤ: ਵੱਧ ਤੋਂ ਘੱਟ",
+      "newest": "ਨਵੇਂ ਪਹਿਲਾਂ"
+    },
+    "priceRange": "ਕੀਮਤ (₹)",
+    "minPrice": "ਘੱਟੋ-ਘੱਟ",
+    "maxPrice": "ਵੱਧ ਤੋਂ ਵੱਧ",
+    "inStockOnly": "ਸਿਰਫ਼ ਸਟਾਕ ਵਿੱਚ",
+    "onOfferOnly": "ਸਿਰਫ਼ ਆਫ਼ਰ ਵਾਲੇ",
+    "featuredOnly": "ਸਿਰਫ਼ ਚੁਣੇ ਹੋਏ",
+    "reset": "ਰੀਸੈੱਟ",
+    "showResults": "ਨਤੀਜੇ ਦਿਖਾਓ",
+    "availability": {
+      "in_stock": "ਸਟਾਕ ਵਿੱਚ",
+      "low_stock": "ਥੋੜ੍ਹੇ ਹੀ ਬਚੇ ਹਨ",
+      "out_of_stock": "ਸਟਾਕ ਖਤਮ"
+    },
+    "offer": "ਆਫ਼ਰ",
+    "perUnit": "ਪ੍ਰਤੀ {{unit}}",
+    "percentOff": "{{percent}} ਛੋਟ",
+    "priceLabel": "ਕੀਮਤ {{price}}",
+    "mrpLabel": "MRP {{price}}",
+    "inclusiveOfTaxes": "ਸਾਰੇ ਟੈਕਸ ਸਮੇਤ",
+    "offerEnds": "ਆਫ਼ਰ {{date}} ਨੂੰ ਖਤਮ",
+    "category": "ਸ਼੍ਰੇਣੀ",
+    "brand": "ਬ੍ਰਾਂਡ",
+    "unit": "ਇਕਾਈ",
+    "bestBefore": "ਇਸ ਤੋਂ ਪਹਿਲਾਂ ਵਰਤੋ",
+    "description": "ਵੇਰਵਾ",
+    "askStore": "ਦੁਕਾਨ ਨੂੰ ਪੁੱਛੋ"
   }
 }

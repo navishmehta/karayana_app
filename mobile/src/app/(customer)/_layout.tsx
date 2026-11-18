@@ -5,7 +5,15 @@ import { useTranslation } from 'react-i18next';
 import { useTypography } from '@/hooks/useTypography';
 import { useAppTheme } from '@/theme/ThemeProvider';
 
-/** Customer tabs. Phase 7 adds Categories and Search. */
+type IconName = keyof typeof Ionicons.glyphMap;
+
+const TABS: { name: string; titleKey: string; icon: IconName }[] = [
+  { name: 'index', titleKey: 'common.home', icon: 'storefront-outline' },
+  { name: 'categories', titleKey: 'catalogue.categories', icon: 'grid-outline' },
+  { name: 'search', titleKey: 'catalogue.search', icon: 'search-outline' },
+  { name: 'settings', titleKey: 'common.settings', icon: 'settings-outline' },
+];
+
 export default function CustomerTabs() {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
@@ -21,20 +29,16 @@ export default function CustomerTabs() {
         tabBarLabelStyle: typography('caption', 'medium'),
       }}
     >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: t('common.home'),
-          tabBarIcon: ({ color, size }) => <Ionicons name="storefront-outline" size={size} color={String(color)} />,
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: t('common.settings'),
-          tabBarIcon: ({ color, size }) => <Ionicons name="settings-outline" size={size} color={String(color)} />,
-        }}
-      />
+      {TABS.map((tab) => (
+        <Tabs.Screen
+          key={tab.name}
+          name={tab.name}
+          options={{
+            title: t(tab.titleKey),
+            tabBarIcon: ({ color, size }) => <Ionicons name={tab.icon} size={size} color={String(color)} />,
+          }}
+        />
+      ))}
     </Tabs>
   );
 }

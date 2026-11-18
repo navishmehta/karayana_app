@@ -69,6 +69,8 @@ function RootStack() {
       <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}>
         <Stack.Screen name="(customer)" />
+        <Stack.Screen name="category/[slug]" />
+        <Stack.Screen name="product/[slug]" />
         <Stack.Protected guard={!isStaff} redirectTo="/staff">
           <Stack.Screen name="login" />
           <Stack.Screen name="forgot-password" />

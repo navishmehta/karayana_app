@@ -26,6 +26,12 @@ export type Role = (typeof ROLES)[keyof typeof ROLES];
 export const QUERY_STALE_MS = 60_000;
 export const QUERY_RETRY_COUNT = 1;
 
+/** Catalogue */
+export const CATALOGUE_PAGE_SIZE = 20; // API maximum is 50
+export const SEARCH_DEBOUNCE_MS = 350;
+export const PRODUCT_CARD_MIN_WIDTH = 160; // grid columns adapt to screen width
+export const MAX_GRID_COLUMNS = 5;
+
 /** Validation limits shared with the API */
 export const PASSWORD_MIN_LENGTH = 8;
 export const RESET_CODE_LENGTH = 6;

@@ -1,8 +1,19 @@
 /** One function per API call used by the app. Paths match backend/app/api/v1/endpoints. */
-import { DEVICE_NAME } from '@/constants/app';
+import { CATALOGUE_PAGE_SIZE, DEVICE_NAME } from '@/constants/app';
 
 import { api } from './client';
-import type { AuthUser, DataResponse, LoginResponse, MessageResponse, PublicStore, TokenPair } from './types';
+import type {
+  AuthUser,
+  DataResponse,
+  LoginResponse,
+  MessageResponse,
+  Page,
+  PublicCategory,
+  PublicProduct,
+  PublicStore,
+  TokenPair,
+} from './types';
+import type { CatalogueQuery } from '@/utils/catalogue';
 
 export const authApi = {
   login: (email: string, password: string) =>
@@ -22,6 +33,17 @@ export const authApi = {
     ),
 };
 
+const publicGet = <T>(path: string, query?: Record<string, string | number | boolean | undefined>) =>
+  api.get<T>(`/public${path}`, { auth: false, query });
+
 export const publicApi = {
-  store: () => api.get<DataResponse<PublicStore>>('/public/store', { auth: false }),
+  store: () => publicGet<DataResponse<PublicStore>>('/store'),
+  categories: () => publicGet<DataResponse<PublicCategory[]>>('/categories'),
+  category: (slug: string) => publicGet<DataResponse<PublicCategory>>(`/categories/${encodeURIComponent(slug)}`),
+  products: (query: CatalogueQuery, page: number) =>
+    publicGet<Page<PublicProduct>>('/products', { ...query, page, per_page: CATALOGUE_PAGE_SIZE }),
+  featured: () => publicGet<DataResponse<PublicProduct[]>>('/products/featured'),
+  newArrivals: () => publicGet<DataResponse<PublicProduct[]>>('/products/new'),
+  offers: () => publicGet<DataResponse<PublicProduct[]>>('/products/offers'),
+  product: (slug: string) => publicGet<DataResponse<PublicProduct>>(`/products/${encodeURIComponent(slug)}`),
 };
