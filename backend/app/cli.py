@@ -34,31 +34,32 @@ def send_expiry_alerts_command(
     force: bool = typer.Option(False, "--force", help="Send now instead of waiting for the store's alert time"),
 ) -> None:
     """Cron: run every 15 minutes. Sends the daily expiry summary once, at the time set in store settings."""
-    from datetime import datetime, time, timedelta
+    with SessionLocal() as db:
+        sent = send_expiry_alerts(db, force=force)
+    typer.echo(f"Expiry alerts done ({sent} push messages).")
 
+
+def send_expiry_alerts(db, *, force: bool) -> int:  # noqa: ANN001
     from sqlalchemy import select
 
     from app.core.clock import store_now
     from app.core.constants import EXPIRY_DIGEST_WINDOW_MINUTES
     from app.enums.setting_key import SettingKey
     from app.models import Store
-    from app.services.notifications.alerts import AlertService
+    from app.services.notifications.alerts import AlertService, is_digest_due
     from app.services.notifications.push import deliver
     from app.services.settings_service import get_setting
 
     sent = 0
-    with SessionLocal() as db:
-        for store in db.scalars(select(Store).where(Store.is_active.is_(True))):
-            hour, minute = map(int, str(get_setting(db, store.id, SettingKey.EXPIRY_DIGEST_TIME)).split(":"))
-            now = store_now()
-            due = datetime.combine(now.date(), time(hour, minute), tzinfo=now.tzinfo)
-            if not force and not (due <= now < due + timedelta(minutes=EXPIRY_DIGEST_WINDOW_MINUTES)):
-                continue
-            messages = AlertService(db).expiry_digest(store.id)
-            db.commit()
-            deliver(db, messages)
-            sent += len(messages)
-    typer.echo(f"Expiry alerts done ({sent} push messages).")
+    for store in db.scalars(select(Store).where(Store.is_active.is_(True))).all():
+        digest_time = str(get_setting(db, store.id, SettingKey.EXPIRY_DIGEST_TIME))
+        if not force and not is_digest_due(store_now(), digest_time, EXPIRY_DIGEST_WINDOW_MINUTES):
+            continue
+        messages = AlertService(db).expiry_digest(store.id)
+        db.commit()
+        deliver(db, messages)
+        sent += len(messages)
+    return sent
 
 
 @cli.command("version")

@@ -7,6 +7,8 @@ Kirana store management app with Admin, Seller and Customer panels.
 | Backend API (`backend/`) | Python 3.12, FastAPI, SQLAlchemy 2, Alembic, MySQL 8 |
 | App (`mobile/`) | React Native (Expo SDK 58, TypeScript, Expo Router): Android, iOS and web |
 
+Testing status, how to run every check, the security review and the device checklist: [docs/TESTING.md](docs/TESTING.md).
+
 ## Backend – local setup
 
 Requirements: [uv](https://docs.astral.sh/uv/) (installs Python 3.12 itself) and MySQL 8.0.16+.

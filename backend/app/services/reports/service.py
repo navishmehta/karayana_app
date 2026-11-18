@@ -90,6 +90,14 @@ def display_value(value: Any, kind: ColumnKind) -> str:
             return str(value)
 
 
+FORMULA_TRIGGERS = ("=", "+", "-", "@", "\t", "\r")
+
+
+def safe_text(value: str) -> str:
+    """Stop spreadsheet formula injection: a product named '=HYPERLINK(...)' must stay plain text in Excel."""
+    return f"'{value}" if value.startswith(FORMULA_TRIGGERS) else value
+
+
 def _trim(value: Decimal) -> str:
     text = f"{value:f}"
     return text.rstrip("0").rstrip(".") if "." in text else text
@@ -100,15 +108,22 @@ def _to_csv(result: ReportResult) -> bytes:
     writer = csv.writer(buffer)
     writer.writerow([c.label for c in result.columns])
     for row in result.rows:
-        writer.writerow([display_value(row[c.key], c.kind) for c in result.columns])
+        writer.writerow([_csv_cell(row[c.key], c.kind) for c in result.columns])
     if result.totals:
         writer.writerow(_totals_line(result.columns, result.totals, display_value))
     return buffer.getvalue().encode(CSV_ENCODING)
 
 
+def _csv_cell(value: Any, kind: ColumnKind) -> str:
+    text = display_value(value, kind)
+    return safe_text(text) if kind == ColumnKind.TEXT else text
+
+
 def _xlsx_value(value: Any, kind: ColumnKind) -> Any:
     if value is None:
         return None
+    if kind == ColumnKind.TEXT:
+        return safe_text(str(value))  # openpyxl would otherwise store "=..." as a live formula
     if kind in (ColumnKind.MONEY, ColumnKind.PERCENT, ColumnKind.QUANTITY):
         return float(value)  # Excel cells are binary floats; display format keeps 2/3 decimals
     if kind == ColumnKind.DATETIME and isinstance(value, datetime):

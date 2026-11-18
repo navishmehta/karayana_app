@@ -4,7 +4,7 @@ One open alert per problem: an alert fires when a product becomes low / out of s
 automatically when it recovers, so people get one message per problem — not one per stock movement.
 """
 
-from datetime import timedelta
+from datetime import datetime, time, timedelta
 from typing import Any
 
 from sqlalchemy import func, select
@@ -36,6 +36,13 @@ STOCK_ALERT_TYPES = (AlertType.LOW_STOCK.value, AlertType.OUT_OF_STOCK.value)
 def render(kind: NotificationType, data: dict[str, Any], locale: str | None = None) -> tuple[str, str]:
     """Title and body in the reader's language (stored data, rendered on demand)."""
     return t(f"notifications.{kind.value}.title", locale, **data), t(f"notifications.{kind.value}.body", locale, **data)
+
+
+def is_digest_due(now: datetime, digest_time: str, window_minutes: int) -> bool:
+    """True during the cron window that starts at the store's alert time (e.g. 08:00–08:14 for a 15-minute cron)."""
+    hour, minute = map(int, digest_time.split(":"))
+    due = datetime.combine(now.date(), time(hour, minute), tzinfo=now.tzinfo)
+    return due <= now < due + timedelta(minutes=window_minutes)
 
 
 def _trim(value: Any) -> str:

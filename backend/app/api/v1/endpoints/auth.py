@@ -33,6 +33,7 @@ def _limit(rule: RateLimitRule, email: str, context: ClientContext) -> None:
 
 @router.post("/login", response_model=DataResponse[LoginResponse], summary="Staff login (email + password)")
 def login(body: LoginRequest, context: ClientContext, auth: Auth) -> DataResponse[LoginResponse]:
+    rate_limiter.hit(RateLimitRule.LOGIN_IP, context.ip_address or "unknown")
     _limit(RateLimitRule.LOGIN, body.email, context)
     tokens, user = auth.login(body.email, body.password, body.device_name)
     return DataResponse(data=LoginResponse(**tokens.model_dump(), user=AuthUserOut.from_user(user)))

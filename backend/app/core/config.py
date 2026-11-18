@@ -48,6 +48,7 @@ class Settings(BaseSettings):
 
     # Attempts per minute (per email + IP).
     rate_limit_login_per_minute: int = 5
+    rate_limit_login_ip_per_minute: int = 20  # all emails from one IP, against trying many accounts
     rate_limit_password_reset_per_minute: int = 3
     rate_limit_public_per_minute: int = 120  # per IP, customer catalogue
 

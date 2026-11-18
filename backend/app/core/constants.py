@@ -16,6 +16,10 @@ DISPLAY_DATE_FORMAT: Final = "%d-%m-%Y"
 
 DEFAULT_STORE_SLUG: Final = "main"
 
+# Security
+HSTS_MAX_AGE_SECONDS: Final = 31_536_000  # one year
+MIN_JWT_SECRET_LENGTH: Final = 32
+
 # Authentication
 JWT_ALGORITHM: Final = "HS256"
 TOKEN_TYPE: Final = "Bearer"

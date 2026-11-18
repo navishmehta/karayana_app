@@ -19,9 +19,10 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 const isPreference = (value: string | null): value is ThemePreference =>
   THEME_PREFERENCES.includes(value as ThemePreference);
 
-export function ThemeProvider({ children }: PropsWithChildren) {
+/** `initialPreference` is used until the saved choice loads (and by tests to force a theme). */
+export function ThemeProvider({ children, initialPreference = 'system' }: PropsWithChildren<{ initialPreference?: ThemePreference }>) {
   const system = useColorScheme();
-  const [preference, setPreferenceState] = useState<ThemePreference>('system');
+  const [preference, setPreferenceState] = useState<ThemePreference>(initialPreference);
 
   useEffect(() => {
     void preferences.get(STORAGE_KEYS.theme).then((saved) => {
