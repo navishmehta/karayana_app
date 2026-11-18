@@ -1,0 +1,13 @@
+# Smart Kirana scheduled jobs. Install on the server with:  crontab /opt/smart-kirana/deploy/crontab
+# Server clock is UTC; the jobs themselves work in India time (IST = UTC+5:30).
+SHELL=/bin/bash
+APP=/opt/smart-kirana/deploy
+
+# Every 15 minutes: daily expiry summary (sent once, at the time set in Store settings)
+*/15 * * * * cd $APP && docker compose exec -T api python -m app.cli send-expiry-alerts >> $APP/cron.log 2>&1
+
+# 00:05 IST (18:35 UTC): batches that expired at midnight stop counting as sellable
+35 18 * * * cd $APP && docker compose exec -T api python -m app.cli refresh-stock >> $APP/cron.log 2>&1
+
+# 02:30 IST (21:00 UTC): backups
+0 21 * * * cd $APP && ./backup.sh >> $APP/cron.log 2>&1

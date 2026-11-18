@@ -532,5 +532,37 @@
     "bestBefore": "Best before",
     "description": "Description",
     "askStore": "Ask the store"
+  },
+  "privacy": {
+    "title": "Privacy policy",
+    "intro": "This explains what the {{store}} app collects and why. Customers can browse without an account.",
+    "sections": {
+      "customers": {
+        "title": "Customers",
+        "body": "Browsing the catalogue needs no account. We do not collect your name, phone number, location or contacts. Your language and theme choices are saved only on your device."
+      },
+      "staff": {
+        "title": "Store staff",
+        "body": "Staff accounts store a name, email address, phone number (optional) and a password kept only as a secure hash. To keep the store's records accurate, we log who made each stock change, with the time and the device's IP address."
+      },
+      "photos": {
+        "title": "Photos and camera",
+        "body": "The camera and photo library are used only when staff add product or category photos. Photos are re-saved without location or other hidden data before they are stored."
+      },
+      "notifications": {
+        "title": "Notifications",
+        "body": "If staff allow notifications, the device's push token is stored to send stock and expiry alerts. It is removed on logout."
+      },
+      "sharing": {
+        "title": "Sharing",
+        "body": "We do not sell or share data, and the app has no advertising or tracking. Data is stored on the store's own server and sent over an encrypted (HTTPS) connection. Push alerts pass through Expo, Google (Android) and Apple (iPhone) to reach the device."
+      },
+      "deleting": {
+        "title": "Deleting data",
+        "body": "Staff can ask the store owner to remove their account. The owner can deactivate it at once; stock records keep the name for the store's accounts."
+      }
+    },
+    "contact": "Questions? Contact {{store}}: {{contact}}",
+    "updated": "Last updated: {{date}}"
   }
 }

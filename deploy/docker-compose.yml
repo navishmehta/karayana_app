@@ -1,0 +1,68 @@
+# Smart Kirana production stack. Run from this folder:  docker compose up -d
+# Settings come from deploy/.env (copy .env.example and fill it in).
+name: smart-kirana
+
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: kirana
+      MYSQL_USER: kirana
+      MYSQL_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?set DB_ROOT_PASSWORD in .env}
+      TZ: UTC
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --log-bin-trust-function-creators=1 # lets migrations create the stock-ledger protection triggers
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    # No "ports:" — the database is never reachable from the internet.
+
+  api:
+    build: ../backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      ENVIRONMENT: production
+      DATABASE_URL: mysql+pymysql://kirana:${DB_PASSWORD}@db:3306/kirana
+      MEDIA_DRIVER: local
+      MEDIA_ROOT: /data/media
+      MEDIA_BASE_URL: https://${DOMAIN}/media
+    volumes:
+      - media:/data/media
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ..
+      dockerfile: deploy/web.Dockerfile
+      args:
+        EXPO_PUBLIC_API_URL: https://${DOMAIN:?set DOMAIN in .env}
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - media:/srv/media:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - api
+
+volumes:
+  db-data:
+  media:
+  caddy-data:
+  caddy-config:

@@ -1,15 +1,17 @@
 # Smart Kirana – Testing
 
-Status at the end of Phase 11 (19-11-2026).
+Status at the end of Phase 12 (19-11-2026).
 
 | | Result |
 |---|---|
-| Backend tests | **223 passed**, code coverage **97%** |
-| App tests | **98 passed** (logic, screens in light/dark × English/Punjabi, contrast, translations) |
+| Backend tests | **224 passed**, code coverage **97%** |
+| App tests | **102 passed** (logic, screens in light/dark × English/Punjabi, contrast, translations) |
 | Lint / type checks | Clean (ruff, ESLint, TypeScript) |
 | Backend dependency audit (`pip-audit`) | No known vulnerabilities |
 | App dependency audit (`npm audit --omit=dev`) | 20 moderate, all in development tools (Jest, Expo build tooling) — none ship in the app |
 | Web build (`expo export --platform web`) | Builds |
+| Production stack (Caddy + API in production mode) | Checked locally: HTTPS-style routing, deep links, security headers, real client IPs, API docs hidden |
+| CI (GitHub Actions) | Runs all of the above on every push, plus both Docker image builds |
 | Real Android / iOS devices | **Not yet tested** — see the device checklist below |
 
 ## How to run the checks
@@ -79,10 +81,11 @@ scoping, `extra="forbid"` request bodies (no mass assignment), ORM queries with 
 re-encoding (EXIF/GPS and hidden payloads removed, decompression-bomb guard), errors without internal details,
 API docs disabled in production.
 
-Remaining notes for deployment (Phase 12):
+Deployment (Phase 12):
 
-- Run the API behind HTTPS and start it with proxy headers enabled so activity logs record real client IPs.
-- The rate limiter keeps counts in memory — fine for one server process; use Redis if running several.
+- Caddy terminates HTTPS and forwards the real client IP; the API trusts forwarded headers from Caddy only (its port is
+  not published), so a spoofed `X-Forwarded-For` from outside cannot fake an IP in the activity log.
+- The rate limiter keeps counts in memory — fine for one server process (`WEB_CONCURRENCY=1`); use Redis if running several.
 - On the **web**, the login is stored in the browser's local storage (secure storage isn't available on the web).
   The phone apps keep it in the Keychain / Keystore.
 
@@ -121,7 +124,7 @@ browser. Tick each item in **both light and dark mode** and **both English and P
 ## Known limitations
 
 - Dates are typed as DD-MM-YYYY (no calendar picker yet).
-- Push notifications need the store builds and EAS project from Phase 12; in-app notifications work everywhere now.
+- Push notifications need an EAS project and Firebase credentials (see DEPLOYMENT.md); in-app notifications work everywhere.
 - App code coverage is about 62%: logic and key screens are tested; the larger staff screens are covered by type
   checks, the web build and the manual checklist above.
 - Punjabi translations were written by the developer and should be reviewed by a native speaker.

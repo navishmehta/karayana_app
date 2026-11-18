@@ -6,6 +6,7 @@ import type { PublicProduct, PublicStore } from '@/api/types';
 import CustomerHome from '@/app/(customer)/index';
 import ProductScreen from '@/app/product/[slug]';
 import LoginScreen from '@/app/login';
+import PrivacyScreen from '@/app/privacy';
 import DashboardScreen from '@/app/staff/(tabs)/index';
 import { useSession } from '@/auth/session';
 import i18n from '@/i18n';
@@ -97,6 +98,13 @@ describe.each(COMBOS)('%s theme, %s', (theme, language) => {
   it('login', async () => {
     await renderIn(<LoginScreen />, theme, language);
     expect(screen.getAllByText(pa ? 'ਸਟਾਫ਼ ਲੌਗਇਨ' : 'Staff login').length).toBeGreaterThan(0);
+  });
+
+  it('privacy policy', async () => {
+    await renderIn(<PrivacyScreen />, theme, language);
+    expect(screen.getByText(pa ? 'ਪਰਾਈਵੇਸੀ ਨੀਤੀ' : 'Privacy policy')).toBeTruthy();
+    expect(screen.getAllByText(/Ramesh Karayana Store/).length).toBe(2); // intro + contact line use the store name
+    expect(screen.getByText(pa ? 'ਫ਼ੋਟੋਆਂ ਅਤੇ ਕੈਮਰਾ' : 'Photos and camera')).toBeTruthy();
   });
 
   it('staff dashboard', async () => {

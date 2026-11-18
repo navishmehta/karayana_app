@@ -1,11 +1,16 @@
 """Management commands.  Usage:  uv run python -m app.cli seed"""
 
+import json
 import logging
+from pathlib import Path
+from typing import Annotated
 
 import typer
 
 from app.core.database import SessionLocal
 from app.db import seed
+
+OPENAPI_OUT = Path(__file__).resolve().parents[2] / "docs" / "api" / "openapi.json"
 
 cli = typer.Typer(help="Smart Kirana management commands", no_args_is_help=True)
 
@@ -60,6 +65,19 @@ def send_expiry_alerts(db, *, force: bool) -> int:  # noqa: ANN001
         deliver(db, messages)
         sent += len(messages)
     return sent
+
+
+@cli.command("export-openapi")
+def export_openapi_command(
+    out: Annotated[Path, typer.Option("--out", help="Where to write the API description")] = OPENAPI_OUT,
+) -> None:
+    """Write the OpenAPI (Swagger) description of every endpoint, for docs/API.md and API tools like Postman."""
+    from app.main import create_app
+
+    schema = create_app().openapi()
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(schema, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    typer.echo(f"Wrote {len(schema['paths'])} paths to {out}")
 
 
 @cli.command("version")

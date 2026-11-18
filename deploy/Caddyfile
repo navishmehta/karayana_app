@@ -1,0 +1,33 @@
+# One domain for everything. (API_UPSTREAM / MEDIA_DIR / WEB_DIR defaults are the Docker values;
+# they can be overridden to test this file locally.)
+# Caddy gets and renews the HTTPS certificate automatically.
+{$DOMAIN} {
+	encode zstd gzip
+
+	# API → FastAPI container
+	handle /api/* {
+		reverse_proxy {$API_UPSTREAM:api:8000}
+	}
+
+	# Uploaded product / category images (read-only volume shared with the API)
+	handle_path /media/* {
+		root * "{$MEDIA_DIR:/srv/media}"
+		header Cache-Control "public, max-age=604800"
+		file_server
+	}
+
+	# Customer website (single-page app: unknown paths load index.html)
+	handle {
+		root * "{$WEB_DIR:/srv/web}"
+		@hashed path /_expo/* /assets/*
+		header @hashed Cache-Control "public, max-age=31536000, immutable"
+		try_files {path} /index.html
+		file_server
+	}
+
+	header {
+		-Server
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+	}
+}

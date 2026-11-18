@@ -47,3 +47,7 @@ example
 
 # test coverage reports
 coverage/
+
+# Firebase / Apple push config (downloaded from the consoles, never committed)
+google-services.json
+GoogleService-Info.plist

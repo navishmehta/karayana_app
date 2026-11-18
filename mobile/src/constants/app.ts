@@ -35,6 +35,10 @@ export const MAX_GRID_COLUMNS = 5;
 /** Validation limits shared with the API */
 export const PASSWORD_MIN_LENGTH = 8;
 export const RESET_CODE_LENGTH = 6;
+/** Shown on the privacy policy page; change it whenever the policy text changes (DD-MM-YYYY). */
+export const PRIVACY_UPDATED = '19-11-2026';
+/** Order of the privacy policy sections (text in the locale files under privacy.sections.<key>). */
+export const PRIVACY_SECTIONS = ['customers', 'staff', 'photos', 'notifications', 'sharing', 'deleting'] as const;
 export const DEVICE_NAME = 'Smart Kirana app';
 
 /** Currency and dates */

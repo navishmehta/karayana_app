@@ -1,15 +1,17 @@
 /** Language and theme choices, shared by the customer and staff settings screens. */
+import Ionicons from '@expo/vector-icons/Ionicons';
 import Constants from 'expo-constants';
+import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
-import { AppText, Card, SegmentedControl } from '@/components/ui';
+import { AppText, Card, ListRow, SegmentedControl } from '@/components/ui';
 import { LANGUAGES, type LanguageCode, type ThemePreference } from '@/constants/app';
 import { currentLanguage, setLanguage } from '@/i18n';
 import { useAppTheme } from '@/theme/ThemeProvider';
 
 export function SettingsContent({ children }: { children?: React.ReactNode }) {
   const { t } = useTranslation();
-  const { preference, setPreference } = useAppTheme();
+  const { colors, preference, setPreference } = useAppTheme();
 
   const themeOptions: { value: ThemePreference; label: string }[] = [
     { value: 'system', label: t('settings.themeSystem') },
@@ -42,6 +44,13 @@ export function SettingsContent({ children }: { children?: React.ReactNode }) {
         />
       </Card>
       {children}
+      <Card>
+        <ListRow
+          title={t('privacy.title')}
+          left={<Ionicons name="shield-checkmark-outline" size={20} color={colors.primary} />}
+          onPress={() => router.push('/privacy')}
+        />
+      </Card>
       <AppText size="small" color="textMuted" align="center">
         {t('common.appName')} · {t('settings.version', { version: Constants.expoConfig?.version ?? '1.0.0' })}
       </AppText>

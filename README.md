@@ -7,7 +7,14 @@ Kirana store management app with Admin, Seller and Customer panels.
 | Backend API (`backend/`) | Python 3.12, FastAPI, SQLAlchemy 2, Alembic, MySQL 8 |
 | App (`mobile/`) | React Native (Expo SDK 58, TypeScript, Expo Router): Android, iOS and web |
 
-Testing status, how to run every check, the security review and the device checklist: [docs/TESTING.md](docs/TESTING.md).
+| Guide | Contents |
+|---|---|
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Server, HTTPS, backups, monitoring, phone app builds, store submission |
+| [docs/API.md](docs/API.md) | API conventions, login, errors, permissions (full reference: `docs/api/openapi.json`) |
+| [docs/TESTING.md](docs/TESTING.md) | Test status, how to run every check, security review, device checklist |
+| [docs/FUTURE.md](docs/FUTURE.md) | V2–V4 ideas (billing, purchases, customer orders, more shops) and where to start |
+
+Every push to `main` runs the tests and builds the server images in GitHub Actions (`.github/workflows/ci.yml`).
 
 ## Backend – local setup
 
@@ -29,12 +36,13 @@ uv run pytest
 uv run ruff check . && uv run ruff format --check .
 ```
 
-### Scheduled jobs (set up with cron on the server)
+### Scheduled jobs (installed on the server from `deploy/crontab`)
 
 | When (store time, IST) | Command | Why |
 |---|---|---|
 | Every 15 minutes | `uv run python -m app.cli send-expiry-alerts` | Sends the daily expiry summary once, at the time set in Store settings |
 | 00:05 daily | `uv run python -m app.cli refresh-stock` | Batches that expired at midnight stop counting as sellable; may trigger stock alerts |
+| 02:30 daily | `deploy/backup.sh` | Database backup (photos on Sundays) — production only |
 
 Push notifications: `PUSH_DRIVER=log` writes them to the log locally; `PUSH_DRIVER=expo` sends through Expo's push service
 (Android via Firebase Cloud Messaging, iOS via APNs — credentials are uploaded to EAS, not stored on this server).

@@ -8,18 +8,24 @@
     "scheme": "smartkirana",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon",
-      "bundleIdentifier": "com.smartkirana.app"
+      "bundleIdentifier": "com.smartkirana.app",
+      "supportsTablet": true,
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E8F5EE",
+        "backgroundColor": "#0F7A4A",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.smartkirana.app"
+      "package": "com.smartkirana.app",
+      "permissions": [
+        "android.permission.CAMERA"
+      ]
     },
     "web": {
       "output": "single",
@@ -32,7 +38,7 @@
         {
           "backgroundColor": "#0F7A4A",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 160
         }
       ],
       "expo-secure-store",

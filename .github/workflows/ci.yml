@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend tests
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: kirana_test
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      TEST_DATABASE_URL: mysql+pymysql://root:root@127.0.0.1:3306/kirana_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.13.9"
+      - run: uv sync --frozen
+      - run: uv run ruff check . && uv run ruff format --check .
+      - run: uv run pytest --cov=app --cov-report=term
+
+  app:
+    name: App checks
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - run: npm ci
+      - run: npm run check
+      - run: npx expo export --platform web --output-dir dist-web
+        env:
+          EXPO_PUBLIC_API_URL: https://example.invalid
+
+  images:
+    name: Docker images build
+    runs-on: ubuntu-latest
+    needs: [backend, app]
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t smart-kirana-api backend
+      - run: docker build -f deploy/web.Dockerfile --build-arg EXPO_PUBLIC_API_URL=https://example.invalid -t smart-kirana-web .
+      - name: API image imports cleanly
+        run: docker run --rm --entrypoint python -e JWT_SECRET=ci-only-secret-ci-only-secret-0000 smart-kirana-api -c "import app.main; print('imports ok')"

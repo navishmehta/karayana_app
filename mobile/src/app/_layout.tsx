@@ -72,6 +72,7 @@ function RootStack() {
         <Stack.Screen name="(customer)" />
         <Stack.Screen name="category/[slug]" />
         <Stack.Screen name="product/[slug]" />
+        <Stack.Screen name="privacy" />
         <Stack.Protected guard={!isStaff} redirectTo="/staff">
           <Stack.Screen name="login" />
           <Stack.Screen name="forgot-password" />
