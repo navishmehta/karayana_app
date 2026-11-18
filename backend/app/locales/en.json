@@ -12,7 +12,12 @@
     "token_expired": "Your session has expired. Please refresh your login.",
     "invalid_credentials": "Incorrect email or password.",
     "account_inactive": "Your account has been deactivated. Please contact the store admin.",
-    "invalid_reset_code": "The reset code is invalid or has expired."
+    "invalid_reset_code": "The reset code is invalid or has expired.",
+    "category_not_empty": "This category still has products. Move or delete them first, or deactivate the category.",
+    "in_use": "This item is in use and cannot be deleted. You can deactivate it instead.",
+    "invalid_image": "This image could not be read. Please upload a JPG, PNG or WebP photo.",
+    "image_too_large": "This image is too large. The maximum size is 5 MB.",
+    "image_limit_reached": "This product already has the maximum number of images."
   },
   "validation": {
     "invalid": "{attribute} is not valid.",
@@ -53,7 +58,17 @@
     "locale_unsupported": "This language is not supported.",
     "phone_invalid": "Enter a 10-digit mobile number.",
     "permission_not_grantable": "\"{permission}\" can only be done by the admin.",
-    "permission_dependency": "\"{permission}\" also requires: {required}."
+    "permission_dependency": "\"{permission}\" also requires: {required}.",
+    "name_taken": "This name is already in use.",
+    "code_taken": "This {attribute} is already used by another product.",
+    "not_found_in_store": "The selected item does not exist.",
+    "field_not_permitted": "You do not have permission to set {attribute}.",
+    "selling_above_mrp": "Selling price cannot be more than the MRP.",
+    "offer_not_below_selling": "Offer price must be lower than the selling price.",
+    "offer_end_before_start": "Offer end date cannot be before the start date.",
+    "max_below_min_stock": "Maximum stock cannot be less than the minimum stock level.",
+    "whole_number_for_unit": "Use a whole number for items sold in {unit}.",
+    "barcode_or_sku": "Enter a barcode or a product code."
   },
   "attributes": {
     "name": "Name",
@@ -69,7 +84,29 @@
     "is_active": "Status",
     "platform": "Platform",
     "token": "Token",
-    "refresh_token": "Refresh token"
+    "refresh_token": "Refresh token",
+    "description": "Description",
+    "category_id": "Category",
+    "brand_id": "Brand",
+    "unit_id": "Unit",
+    "sku": "Product code (SKU)",
+    "barcode": "Barcode",
+    "selling_price": "Selling price",
+    "purchase_price": "Purchase price",
+    "mrp": "MRP",
+    "offer_price": "Offer price",
+    "offer_starts_at": "Offer start date",
+    "offer_ends_at": "Offer end date",
+    "min_stock_level": "Minimum stock level",
+    "max_stock_level": "Maximum stock level",
+    "internal_notes": "Internal notes",
+    "hsn_code": "HSN code",
+    "tax_rate": "Tax rate",
+    "name_translations": "Translated name",
+    "short_name": "Short name",
+    "ids": "Order",
+    "image": "Image",
+    "sort_order": "Position"
   },
   "permissions": {
     "dashboard": {
@@ -142,6 +179,33 @@
       "deactivated": "Deactivated seller",
       "password_reset": "Reset seller password",
       "deleted": "Deleted seller"
+    },
+    "categories": {
+      "created": "Created category",
+      "updated": "Updated category",
+      "image_updated": "Changed category image",
+      "image_removed": "Removed category image",
+      "reordered": "Reordered categories",
+      "deleted": "Deleted category"
+    },
+    "products": {
+      "created": "Created product",
+      "updated": "Updated product details",
+      "price_changed": "Changed product prices",
+      "image_added": "Added product image",
+      "image_removed": "Removed product image",
+      "deleted": "Deleted product",
+      "restored": "Restored product"
+    },
+    "brands": {
+      "created": "Created brand",
+      "updated": "Updated brand",
+      "deleted": "Deleted brand"
+    },
+    "units": {
+      "created": "Created unit",
+      "updated": "Updated unit",
+      "deleted": "Deleted unit"
     }
   },
   "emails": {

@@ -23,6 +23,29 @@ class ActivityAction(StrEnum):
     SELLER_PASSWORD_RESET = "sellers.password_reset"
     SELLER_DELETED = "sellers.deleted"
 
+    CATEGORY_CREATED = "categories.created"
+    CATEGORY_UPDATED = "categories.updated"
+    CATEGORY_IMAGE_UPDATED = "categories.image_updated"
+    CATEGORY_IMAGE_REMOVED = "categories.image_removed"
+    CATEGORIES_REORDERED = "categories.reordered"
+    CATEGORY_DELETED = "categories.deleted"
+
+    PRODUCT_CREATED = "products.created"
+    PRODUCT_UPDATED = "products.updated"
+    PRODUCT_PRICE_CHANGED = "products.price_changed"
+    PRODUCT_IMAGE_ADDED = "products.image_added"
+    PRODUCT_IMAGE_REMOVED = "products.image_removed"
+    PRODUCT_DELETED = "products.deleted"
+    PRODUCT_RESTORED = "products.restored"
+
+    BRAND_CREATED = "brands.created"
+    BRAND_UPDATED = "brands.updated"
+    BRAND_DELETED = "brands.deleted"
+
+    UNIT_CREATED = "units.created"
+    UNIT_UPDATED = "units.updated"
+    UNIT_DELETED = "units.deleted"
+
     @property
     def group(self) -> str:
         return self.value.split(".")[0]

@@ -36,3 +36,18 @@ def paginate[T](db: Session, stmt: Select, params: PageParams, to_item: Callable
             last_page=max(1, math.ceil(total / params.per_page)),
         ),
     )
+
+
+def paginate_rows[T](db: Session, stmt: Select, params: PageParams, to_item: Callable[[Any], T]) -> Page[T]:
+    """Like paginate(), for queries that select several columns (e.g. a model plus a count)."""
+    total = db.scalar(select(func.count()).select_from(stmt.order_by(None).subquery())) or 0
+    rows = db.execute(stmt.limit(params.per_page).offset((params.page - 1) * params.per_page)).all()
+    return Page[T](
+        data=[to_item(row) for row in rows],
+        meta=PageMeta(
+            page=params.page,
+            per_page=params.per_page,
+            total=total,
+            last_page=max(1, math.ceil(total / params.per_page)),
+        ),
+    )

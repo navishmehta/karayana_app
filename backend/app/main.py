@@ -1,11 +1,14 @@
 """FastAPI application factory. Run locally with:  uv run fastapi dev app/main.py"""
 
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.api.v1.router import api_router
 from app.core.config import get_settings
-from app.core.constants import API_V1_PREFIX
+from app.core.constants import API_V1_PREFIX, MEDIA_URL_PATH
 from app.core.errors import register_exception_handlers
 from app.core.logging import configure_logging
 from app.core.middleware import LocaleMiddleware
@@ -37,6 +40,11 @@ def create_app() -> FastAPI:
 
     register_exception_handlers(app)
     app.include_router(api_router, prefix=API_V1_PREFIX)
+
+    if settings.media_driver == "local":  # production serves media from object storage / CDN instead
+        media_root = Path(settings.media_root)
+        media_root.mkdir(parents=True, exist_ok=True)
+        app.mount(MEDIA_URL_PATH, StaticFiles(directory=media_root), name="media")
     return app
 
 

@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Annotated, Any
 
 from fastapi import Depends, Request
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from app.api.deps import DbSession
@@ -52,7 +53,7 @@ class AuditLogger:
                 action=action.value,
                 subject_type=subject[0].value if subject else None,
                 subject_id=subject[1] if subject else None,
-                properties=properties or None,
+                properties=jsonable_encoder(properties) if properties else None,  # Decimal/date -> JSON
                 ip_address=self.context.ip_address,
                 user_agent=self.context.user_agent,
             )

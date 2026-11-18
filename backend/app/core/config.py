@@ -60,6 +60,11 @@ class Settings(BaseSettings):
     smtp_password: SecretStr | None = None
     smtp_use_tls: bool = True
 
+    # Uploaded images. "local" saves under MEDIA_ROOT and serves them at /media (production: S3-compatible later).
+    media_driver: str = "local"
+    media_root: str = "storage/media"
+    media_base_url: str = "http://127.0.0.1:8000/media"
+
     # Web catalogue / web admin origins allowed to call the API from a browser.
     cors_origins: list[str] = []
 

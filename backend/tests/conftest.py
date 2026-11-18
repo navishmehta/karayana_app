@@ -4,6 +4,7 @@ Schema is rebuilt once per run with Alembic; each test runs inside a transaction
 """
 
 import os
+import tempfile
 
 os.environ["DATABASE_URL"] = os.environ.get(
     "TEST_DATABASE_URL", "mysql+pymysql://kirana:kirana_local_pw@127.0.0.1:3306/kirana_test"
@@ -14,6 +15,7 @@ os.environ["ADMIN_EMAIL"] = "admin@kirana.test"
 os.environ["ADMIN_PASSWORD"] = "Admin12345"
 os.environ["JWT_SECRET"] = "test-secret-not-for-production-0123456789abcdef"
 os.environ["MAIL_DRIVER"] = "log"
+os.environ["MEDIA_ROOT"] = tempfile.mkdtemp(prefix="kirana-media-")  # uploads never touch the real folder
 
 from collections.abc import Iterator  # noqa: E402
 

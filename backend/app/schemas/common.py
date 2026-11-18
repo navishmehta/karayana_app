@@ -2,6 +2,7 @@
 
 import re
 from datetime import datetime
+from decimal import Decimal
 from typing import Annotated, TypeVar
 
 from email_validator import EmailNotValidError, validate_email
@@ -10,6 +11,7 @@ from pydantic import AfterValidator, BaseModel, ConfigDict, Field, PlainSerializ
 from app.core.clock import to_store_time
 from app.core.config import get_settings
 from app.core.constants import DEFAULT_PER_PAGE, EMAIL_MAX_LENGTH, MAX_PER_PAGE, NAME_MAX_LENGTH, PHONE_PATTERN
+from app.core.money import money, quantity
 from app.core.text import normalize_email
 
 T = TypeVar("T")
@@ -56,6 +58,10 @@ Email = Annotated[str, StringConstraints(max_length=EMAIL_MAX_LENGTH), AfterVali
 Phone = Annotated[str | None, AfterValidator(_check_phone)]
 Locale = Annotated[str, AfterValidator(_check_locale)]
 NewPassword = Annotated[str, StringConstraints(max_length=128), AfterValidator(_check_new_password)]
+
+# Money always leaves the API as a string with 2 decimals ("285.00"), quantities with 3 ("1.250").
+MoneyOut = Annotated[Decimal, PlainSerializer(lambda v: str(money(v)), return_type=str, when_used="json")]
+QuantityOut = Annotated[Decimal, PlainSerializer(lambda v: str(quantity(v)), return_type=str, when_used="json")]
 
 # Datetimes are stored in UTC and sent to clients in store time (+05:30).
 StoreDateTime = Annotated[
