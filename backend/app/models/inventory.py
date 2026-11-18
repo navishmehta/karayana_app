@@ -48,7 +48,11 @@ class InventoryAdjustment(IdMixin, CreatedAtMixin, Base):
     """Header for one stock event entered by a person; its lines are stock_transactions."""
 
     __tablename__ = "inventory_adjustments"
-    __table_args__ = (Index("ix_adjustments_type", "store_id", "type", "created_at"),)
+    __table_args__ = (
+        Index("ix_adjustments_type", "store_id", "type", "created_at"),
+        # A retried request (same Idempotency-Key) returns the first result instead of moving stock twice.
+        UniqueConstraint("store_id", "idempotency_key", name="uq_adjustments_idempotency"),
+    )
 
     store_id: Mapped[int] = mapped_column(BigId, ForeignKey("stores.id", ondelete="RESTRICT"))
     type: Mapped[str] = mapped_column(String(20))  # app.enums.stock.AdjustmentType
@@ -56,7 +60,16 @@ class InventoryAdjustment(IdMixin, CreatedAtMixin, Base):
     notes: Mapped[str | None] = mapped_column(Text)
     attachment_path: Mapped[str | None] = mapped_column(String(255))
     cost_impact: Mapped[Decimal | None] = mapped_column(Money)  # PRIVATE
+    idempotency_key: Mapped[str | None] = mapped_column(String(64))
     created_by: Mapped[int] = mapped_column(BigId, ForeignKey("users.id", ondelete="RESTRICT"))
+
+    lines: Mapped[list["StockTransaction"]] = relationship(
+        primaryjoin="and_(StockTransaction.reference_type == 'inventory_adjustment', "
+        "foreign(StockTransaction.reference_id) == InventoryAdjustment.id)",
+        order_by="StockTransaction.id",
+        viewonly=True,
+    )
+    creator: Mapped["User"] = relationship(viewonly=True)  # noqa: F821
 
 
 class StockTransaction(IdMixin, CreatedAtMixin, Base):
@@ -89,6 +102,10 @@ class StockTransaction(IdMixin, CreatedAtMixin, Base):
     reference_id: Mapped[int | None] = mapped_column(BigId)
     idempotency_key: Mapped[str | None] = mapped_column(String(64))
     user_id: Mapped[int] = mapped_column(BigId, ForeignKey("users.id", ondelete="RESTRICT"))
+
+    batch: Mapped[ProductBatch] = relationship(viewonly=True)
+    product: Mapped[Product] = relationship(viewonly=True)
+    user: Mapped["User"] = relationship(viewonly=True)  # noqa: F821
 
 
 class LedgerImmutableError(RuntimeError):

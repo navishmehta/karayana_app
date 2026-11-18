@@ -4,11 +4,11 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, File, Query, Response, UploadFile, status
 
 from app.api.deps import DbSession, require
-from app.core.constants import CODE_MAX_LENGTH, MAX_SEARCH_LENGTH
+from app.core.constants import CODE_MAX_LENGTH, EXPIRY_LOOKAHEAD_MAX_DAYS, MAX_SEARCH_LENGTH
 from app.core.pagination import Pagination, paginate
 from app.enums.catalogue import ProductSort
 from app.enums.permission import Permission
-from app.enums.stock import StockStatus
+from app.enums.stock import ExpiryStatus, StockStatus
 from app.models import User
 from app.schemas.common import DataResponse, Page
 from app.schemas.products import ImageUpdate, ProductCreate, ProductOut, ProductUpdate
@@ -40,6 +40,8 @@ def list_products(
     is_active: bool | None = None,
     is_visible_to_customers: bool | None = None,
     is_featured: bool | None = None,
+    expiry: ExpiryStatus | None = None,
+    within_days: Annotated[int | None, Query(ge=0, le=EXPIRY_LOOKAHEAD_MAX_DAYS)] = None,
     sort: ProductSort = ProductSort.NAME_ASC,
 ) -> Page[ProductOut]:
     filters = ProductFilters(
@@ -52,6 +54,8 @@ def list_products(
         is_active=is_active,
         is_visible_to_customers=is_visible_to_customers,
         is_featured=is_featured,
+        expiry=expiry,
+        within_days=within_days,
         sort=sort,
     )
     filters.check_allowed(user)

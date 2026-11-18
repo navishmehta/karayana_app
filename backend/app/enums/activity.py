@@ -42,6 +42,13 @@ class ActivityAction(StrEnum):
     BRAND_UPDATED = "brands.updated"
     BRAND_DELETED = "brands.deleted"
 
+    STOCK_IN = "stock.in"
+    STOCK_OUT = "stock.out"
+    STOCK_ADJUSTED = "stock.adjusted"
+    STOCK_DAMAGED = "stock.damaged"
+    STOCK_EXPIRED_WRITTEN_OFF = "stock.expired_written_off"
+    BATCH_UPDATED = "stock.batch_updated"
+
     UNIT_CREATED = "units.created"
     UNIT_UPDATED = "units.updated"
     UNIT_DELETED = "units.deleted"
@@ -63,4 +70,6 @@ class AuditSubject(StrEnum):
     PRODUCT = "product"
     BRAND = "brand"
     UNIT = "unit"
+    BATCH = "batch"
+    ADJUSTMENT = "adjustment"
     SETTING = "setting"

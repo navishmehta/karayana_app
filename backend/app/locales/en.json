@@ -17,7 +17,10 @@
     "in_use": "This item is in use and cannot be deleted. You can deactivate it instead.",
     "invalid_image": "This image could not be read. Please upload a JPG, PNG or WebP photo.",
     "image_too_large": "This image is too large. The maximum size is 5 MB.",
-    "image_limit_reached": "This product already has the maximum number of images."
+    "image_limit_reached": "This product already has the maximum number of images.",
+    "stock_insufficient": "Not enough stock.",
+    "batch_expired": "This batch has expired. Write it off instead of taking stock out.",
+    "batch_not_expired": "Only expired batches can be written off."
   },
   "validation": {
     "invalid": "{attribute} is not valid.",
@@ -68,7 +71,14 @@
     "offer_end_before_start": "Offer end date cannot be before the start date.",
     "max_below_min_stock": "Maximum stock cannot be less than the minimum stock level.",
     "whole_number_for_unit": "Use a whole number for items sold in {unit}.",
-    "barcode_or_sku": "Enter a barcode or a product code."
+    "barcode_or_sku": "Enter a barcode or a product code.",
+    "only_available": "Only {available} available.",
+    "no_change": "The counted quantity is the same as the current stock.",
+    "reason_not_allowed": "This reason cannot be used here.",
+    "expiry_in_past": "Expiry date has already passed. Record expired goods as a write-off.",
+    "manufacturing_in_future": "Manufacturing date cannot be in the future.",
+    "expiry_before_manufacturing": "Expiry date cannot be before the manufacturing date.",
+    "nothing_to_write_off": "These batches have nothing left to write off."
   },
   "attributes": {
     "name": "Name",
@@ -106,7 +116,17 @@
     "short_name": "Short name",
     "ids": "Order",
     "image": "Image",
-    "sort_order": "Position"
+    "sort_order": "Position",
+    "product_id": "Product",
+    "batch_id": "Batch",
+    "batch_ids": "Batches",
+    "quantity": "Quantity",
+    "counted_quantity": "Counted quantity",
+    "batch_number": "Batch number",
+    "manufacturing_date": "Manufacturing date",
+    "expiry_date": "Expiry date",
+    "reason": "Reason",
+    "notes": "Notes"
   },
   "permissions": {
     "dashboard": {
@@ -206,6 +226,14 @@
       "created": "Created unit",
       "updated": "Updated unit",
       "deleted": "Deleted unit"
+    },
+    "stock": {
+      "in": "Received stock",
+      "out": "Took stock out",
+      "adjusted": "Adjusted stock count",
+      "damaged": "Recorded damaged goods",
+      "expired_written_off": "Wrote off expired stock",
+      "batch_updated": "Updated batch details"
     }
   },
   "emails": {
@@ -216,5 +244,22 @@
       "expiry": "The code expires in {minutes} minutes.",
       "ignore": "If you did not ask for this, you can ignore this email."
     }
+  },
+  "stock_reasons": {
+    "purchase": "Purchase",
+    "customer_return": "Customer return",
+    "found": "Found extra",
+    "sold_manually": "Sold (manual)",
+    "returned_to_supplier": "Returned to supplier",
+    "personal_use": "Personal use",
+    "sample": "Sample / free",
+    "theft": "Theft / missing",
+    "count_correction": "Count correction",
+    "broken": "Broken",
+    "rodent": "Rodent damage",
+    "spoiled": "Spoiled",
+    "leaked": "Leaked",
+    "expired": "Expired",
+    "other": "Other"
   }
 }

@@ -15,6 +15,7 @@ class ProductSort(StrEnum):
     PRICE_DESC = "price_desc"
     NEWEST = "newest"
     STOCK_ASC = "stock_asc"
+    EXPIRY_ASC = "expiry_asc"
 
     @property
     def required_permission(self) -> Permission | None:
@@ -24,6 +25,8 @@ class ProductSort(StrEnum):
                 return Permission.PRICING_VIEW_SELLING
             case ProductSort.STOCK_ASC:
                 return Permission.STOCK_VIEW
+            case ProductSort.EXPIRY_ASC:
+                return Permission.EXPIRY_VIEW
             case _:
                 return None
 
@@ -36,6 +39,8 @@ class ProductSort(StrEnum):
             ProductSort.PRICE_DESC: (Product.selling_price.desc(), Product.name.asc()),
             ProductSort.NEWEST: (Product.created_at.desc(), Product.id.desc()),
             ProductSort.STOCK_ASC: (Product.sellable_stock.asc(), Product.name.asc()),
+            # Products without a dated batch go last (MySQL sorts NULL first otherwise).
+            ProductSort.EXPIRY_ASC: (Product.next_expiry_date.is_(None), Product.next_expiry_date.asc(), Product.name),
         }[self]
 
 

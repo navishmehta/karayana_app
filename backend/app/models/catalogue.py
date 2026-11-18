@@ -117,6 +117,8 @@ class Product(IdMixin, TimestampMixin, SoftDeleteMixin, Base):
     min_stock_level: Mapped[Decimal] = mapped_column(Quantity, default=Decimal(0), server_default="0")
     max_stock_level: Mapped[Decimal | None] = mapped_column(Quantity)
     stock_status: Mapped[str] = mapped_column(String(12), Computed(STOCK_STATUS_SQL, persisted=True))
+    # Cache: earliest expiry among batches that still have stock and haven't expired (for sorting / customers).
+    next_expiry_date: Mapped[date | None] = mapped_column(Date, index=True)
 
     track_expiry: Mapped[bool] = mapped_column(Boolean, default=True, server_default="1")
     show_expiry_to_customers: Mapped[bool] = mapped_column(Boolean, default=False, server_default="0")

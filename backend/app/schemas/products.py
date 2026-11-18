@@ -154,6 +154,9 @@ class ProductOut(BaseModel):
     max_stock_level: QuantityOut | None = None
     stock_status: str | None = None
 
+    # expiry.view
+    next_expiry_date: date | None = None
+
     @classmethod
     def for_user(cls, product: Product, user: User) -> "ProductOut":
         storage = get_storage()
@@ -216,4 +219,6 @@ class ProductOut(BaseModel):
                 "max_stock_level": product.max_stock_level,
                 "stock_status": product.stock_status,
             }
+        if user.has_permission(Permission.EXPIRY_VIEW):
+            fields["next_expiry_date"] = product.next_expiry_date
         return cls(**fields)

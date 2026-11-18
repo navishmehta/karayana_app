@@ -19,6 +19,16 @@ def seed_command() -> None:
     typer.echo("Seed complete.")
 
 
+@cli.command("refresh-stock")
+def refresh_stock_command() -> None:
+    """Nightly (00:05 IST): batches that expired at midnight stop counting as sellable."""
+    from app.services.inventory.stock_cache import refresh_all_stock
+
+    with SessionLocal() as db:
+        count = refresh_all_stock(db)
+    typer.echo(f"Refreshed stock for {count} products.")
+
+
 @cli.command("version")
 def version() -> None:
     typer.echo("Smart Kirana API 1.0.0")

@@ -6,7 +6,7 @@ so every change has a ledger entry.
 
 import uuid
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, timedelta
 from decimal import Decimal
 from typing import Any
 
@@ -15,7 +15,7 @@ from sqlalchemy import Select, func, or_, select, update
 from sqlalchemy.orm import joinedload, selectinload
 
 from app.api.deps import DbSession
-from app.core.clock import utc_now
+from app.core.clock import store_today, utc_now
 from app.core.constants import MAX_IMAGES_PER_PRODUCT, SKU_PAD_LENGTH, SKU_PREFIX
 from app.core.errors import AppError
 from app.core.i18n import t
@@ -25,8 +25,8 @@ from app.enums.activity import ActivityAction, AuditSubject
 from app.enums.catalogue import MediaFolder, ProductSort
 from app.enums.error_code import ErrorCode
 from app.enums.permission import Permission
-from app.enums.stock import StockStatus
-from app.models import Brand, Category, Product, ProductImage, Unit, User
+from app.enums.stock import ExpiryStatus, StockStatus
+from app.models import Brand, Category, Product, ProductBatch, ProductImage, Unit, User
 from app.schemas.products import PRIVATE_FIELDS, SELLING_PRICE_FIELDS
 from app.services.audit import Audit, changed_fields
 from app.services.catalogue.common import ensure_exists_in_store, get_in_store, unique_slug
@@ -47,6 +47,8 @@ class ProductFilters:
     is_active: bool | None = None
     is_visible_to_customers: bool | None = None
     is_featured: bool | None = None
+    expiry: ExpiryStatus | None = None
+    within_days: int | None = None
     sort: ProductSort = ProductSort.NAME_ASC
 
     def check_allowed(self, user: User) -> None:
@@ -56,6 +58,8 @@ class ProductFilters:
             needed.add(Permission.PRICING_VIEW_SELLING)
         if self.stock_status is not None:
             needed.add(Permission.STOCK_VIEW)
+        if self.expiry is not None:
+            needed.add(Permission.EXPIRY_VIEW)
         if self.sort.required_permission:
             needed.add(self.sort.required_permission)
         if not all(user.has_permission(p) for p in needed):
@@ -99,6 +103,24 @@ def product_query(store_id: int, filters: ProductFilters) -> Select:
         stmt = stmt.where(Product.selling_price <= filters.max_price)
     if filters.stock_status is not None:
         stmt = stmt.where(Product.stock_status == filters.stock_status.value)
+    if filters.expiry in (ExpiryStatus.EXPIRED, ExpiryStatus.EXPIRING):
+        today = store_today()
+        batch = (
+            select(ProductBatch.id)
+            .where(
+                ProductBatch.product_id == Product.id,
+                ProductBatch.quantity_remaining > 0,
+                ProductBatch.expiry_date.is_not(None),
+            )
+            .correlate(Product)
+        )
+        if filters.expiry == ExpiryStatus.EXPIRED:
+            batch = batch.where(ProductBatch.expiry_date < today)
+        else:
+            batch = batch.where(ProductBatch.expiry_date >= today)
+            if filters.within_days is not None:
+                batch = batch.where(ProductBatch.expiry_date <= today + timedelta(days=filters.within_days))
+        stmt = stmt.where(batch.exists())
     for column, value in (
         (Product.is_active, filters.is_active),
         (Product.is_visible_to_customers, filters.is_visible_to_customers),

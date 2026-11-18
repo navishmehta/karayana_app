@@ -93,3 +93,14 @@ def require(*permissions: Permission) -> Callable[[User], User]:
         return user
 
     return _check
+
+
+def require_any(*permissions: Permission) -> Callable[[User], User]:
+    """Dependency factory: the user must have AT LEAST ONE of the given permissions."""
+
+    def _check(user: CurrentUser) -> User:
+        if not any(user.has_permission(p) for p in permissions):
+            raise AppError(ErrorCode.FORBIDDEN)
+        return user
+
+    return _check

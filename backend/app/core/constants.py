@@ -35,6 +35,12 @@ CODE_MAX_LENGTH: Final = 64  # SKU / barcode
 DESCRIPTION_MAX_LENGTH: Final = 5000
 NOTES_MAX_LENGTH: Final = 2000
 
+# Inventory
+IDEMPOTENCY_KEY_MAX_LENGTH: Final = 64
+MAX_BATCHES_PER_WRITE_OFF: Final = 100
+BATCH_NUMBER_MAX_LENGTH: Final = 64
+EXPIRY_LOOKAHEAD_MAX_DAYS: Final = 365
+
 # Images: uploads are re-encoded to WebP (also removes EXIF/GPS and anything hidden in the file).
 MEDIA_URL_PATH: Final = "/media"
 IMAGE_MAX_UPLOAD_BYTES: Final = 5 * 1024 * 1024
