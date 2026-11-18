@@ -78,7 +78,8 @@
     "expiry_in_past": "Expiry date has already passed. Record expired goods as a write-off.",
     "manufacturing_in_future": "Manufacturing date cannot be in the future.",
     "expiry_before_manufacturing": "Expiry date cannot be before the manufacturing date.",
-    "nothing_to_write_off": "These batches have nothing left to write off."
+    "nothing_to_write_off": "These batches have nothing left to write off.",
+    "expiry_buckets": "Enter three increasing day limits between 1 and 365, e.g. 7, 15, 30."
   },
   "attributes": {
     "name": "Name",
@@ -126,7 +127,15 @@
     "manufacturing_date": "Manufacturing date",
     "expiry_date": "Expiry date",
     "reason": "Reason",
-    "notes": "Notes"
+    "notes": "Notes",
+    "store_name": "Store name",
+    "tagline": "Tagline",
+    "whatsapp": "WhatsApp number",
+    "address": "Address",
+    "hours": "Opening hours",
+    "expiry_buckets": "Expiry warning days",
+    "expiry_digest_time": "Daily alert time",
+    "default_min_stock": "Default minimum stock"
   },
   "permissions": {
     "dashboard": {
@@ -234,6 +243,10 @@
       "damaged": "Recorded damaged goods",
       "expired_written_off": "Wrote off expired stock",
       "batch_updated": "Updated batch details"
+    },
+    "settings": {
+      "updated": "Changed store settings",
+      "logo_updated": "Changed store logo"
     }
   },
   "emails": {

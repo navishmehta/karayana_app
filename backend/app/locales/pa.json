@@ -78,7 +78,8 @@
     "expiry_in_past": "ਮਿਆਦ ਦੀ ਮਿਤੀ ਲੰਘ ਚੁੱਕੀ ਹੈ। ਮਿਆਦ ਪੁੱਗਿਆ ਸਾਮਾਨ ਰਾਈਟ-ਆਫ਼ ਵਜੋਂ ਦਰਜ ਕਰੋ।",
     "manufacturing_in_future": "ਬਣਾਉਣ ਦੀ ਮਿਤੀ ਭਵਿੱਖ ਦੀ ਨਹੀਂ ਹੋ ਸਕਦੀ।",
     "expiry_before_manufacturing": "ਮਿਆਦ ਦੀ ਮਿਤੀ ਬਣਾਉਣ ਦੀ ਮਿਤੀ ਤੋਂ ਪਹਿਲਾਂ ਨਹੀਂ ਹੋ ਸਕਦੀ।",
-    "nothing_to_write_off": "ਇਹਨਾਂ ਬੈਚਾਂ ਵਿੱਚ ਰੱਦ ਕਰਨ ਲਈ ਕੁਝ ਨਹੀਂ ਬਚਿਆ।"
+    "nothing_to_write_off": "ਇਹਨਾਂ ਬੈਚਾਂ ਵਿੱਚ ਰੱਦ ਕਰਨ ਲਈ ਕੁਝ ਨਹੀਂ ਬਚਿਆ।",
+    "expiry_buckets": "1 ਤੋਂ 365 ਵਿਚਕਾਰ ਤਿੰਨ ਵਧਦੀਆਂ ਦਿਨ-ਹੱਦਾਂ ਦਰਜ ਕਰੋ, ਜਿਵੇਂ 7, 15, 30।"
   },
   "attributes": {
     "name": "ਨਾਮ",
@@ -126,7 +127,15 @@
     "manufacturing_date": "ਬਣਾਉਣ ਦੀ ਮਿਤੀ",
     "expiry_date": "ਮਿਆਦ ਦੀ ਮਿਤੀ",
     "reason": "ਕਾਰਨ",
-    "notes": "ਨੋਟਸ"
+    "notes": "ਨੋਟਸ",
+    "store_name": "ਦੁਕਾਨ ਦਾ ਨਾਮ",
+    "tagline": "ਟੈਗਲਾਈਨ",
+    "whatsapp": "ਵਟਸਐਪ ਨੰਬਰ",
+    "address": "ਪਤਾ",
+    "hours": "ਖੁੱਲ੍ਹਣ ਦਾ ਸਮਾਂ",
+    "expiry_buckets": "ਮਿਆਦ ਚੇਤਾਵਨੀ ਦਿਨ",
+    "expiry_digest_time": "ਰੋਜ਼ਾਨਾ ਸੂਚਨਾ ਦਾ ਸਮਾਂ",
+    "default_min_stock": "ਮੂਲ ਘੱਟੋ-ਘੱਟ ਸਟਾਕ"
   },
   "permissions": {
     "dashboard": {
@@ -234,6 +243,10 @@
       "damaged": "ਖਰਾਬ ਸਾਮਾਨ ਦਰਜ ਕੀਤਾ",
       "expired_written_off": "ਮਿਆਦ ਪੁੱਗਿਆ ਸਟਾਕ ਰੱਦ ਕੀਤਾ",
       "batch_updated": "ਬੈਚ ਦੇ ਵੇਰਵੇ ਅੱਪਡੇਟ ਕੀਤੇ"
+    },
+    "settings": {
+      "updated": "ਦੁਕਾਨ ਦੀਆਂ ਸੈਟਿੰਗਾਂ ਬਦਲੀਆਂ",
+      "logo_updated": "ਦੁਕਾਨ ਦਾ ਲੋਗੋ ਬਦਲਿਆ"
     }
   },
   "emails": {

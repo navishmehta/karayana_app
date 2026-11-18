@@ -18,6 +18,7 @@ from app.enums.error_code import ErrorCode
 class RateLimitRule(StrEnum):
     LOGIN = "login"
     PASSWORD_RESET = "password_reset"
+    PUBLIC = "public"
 
     @property
     def per_minute(self) -> int:
@@ -25,6 +26,7 @@ class RateLimitRule(StrEnum):
         return {
             RateLimitRule.LOGIN: settings.rate_limit_login_per_minute,
             RateLimitRule.PASSWORD_RESET: settings.rate_limit_password_reset_per_minute,
+            RateLimitRule.PUBLIC: settings.rate_limit_public_per_minute,
         }[self]
 
 

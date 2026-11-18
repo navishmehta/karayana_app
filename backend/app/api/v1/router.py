@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from app.api.v1.endpoints import (
     admin_catalogue,
     admin_sellers,
+    admin_settings,
     auth,
     categories,
     devices,
@@ -10,6 +11,7 @@ from app.api.v1.endpoints import (
     inventory,
     lookups,
     products,
+    public,
 )
 
 api_router = APIRouter()
@@ -22,4 +24,6 @@ api_router.include_router(products.router)
 api_router.include_router(inventory.router)
 api_router.include_router(admin_sellers.router)
 api_router.include_router(admin_catalogue.router)
-# Later phases: public catalogue, reports
+api_router.include_router(admin_settings.router)
+api_router.include_router(public.router)
+# Later phases: reports, notifications

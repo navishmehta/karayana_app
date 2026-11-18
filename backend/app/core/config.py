@@ -49,6 +49,7 @@ class Settings(BaseSettings):
     # Attempts per minute (per email + IP).
     rate_limit_login_per_minute: int = 5
     rate_limit_password_reset_per_minute: int = 3
+    rate_limit_public_per_minute: int = 120  # per IP, customer catalogue
 
     # Email. "log" writes emails to the log (local/testing); "smtp" sends them.
     mail_driver: str = "log"
