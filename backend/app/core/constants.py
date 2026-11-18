@@ -46,6 +46,10 @@ PUBLIC_MAX_PER_PAGE: Final = 50
 PUBLIC_HIGHLIGHT_LIMIT: Final = 20  # featured / new arrivals / offers strips on the home screen
 PUBLIC_CACHE_SECONDS: Final = 60
 
+# Dashboard
+DASHBOARD_RECENT_LIMIT: Final = 8
+DASHBOARD_CHART_DAYS: Final = (7, 30)
+
 # Images: uploads are re-encoded to WebP (also removes EXIF/GPS and anything hidden in the file).
 MEDIA_URL_PATH: Final = "/media"
 IMAGE_MAX_UPLOAD_BYTES: Final = 5 * 1024 * 1024

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { AppText } from '@/components/ui';
+import { AppText } from './AppText';
 import { useAppTheme } from '@/theme/ThemeProvider';
 import { spacing, TOUCH_TARGET } from '@/theme/tokens';
 

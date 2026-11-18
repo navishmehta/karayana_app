@@ -2,8 +2,8 @@ import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
-import { CatalogueBrowser, ScreenHeader } from '@/components/catalogue';
-import { ErrorState, LoadingView } from '@/components/ui';
+import { CatalogueBrowser } from '@/components/catalogue';
+import { ErrorState, LoadingView, ScreenHeader } from '@/components/ui';
 import { useCategory } from '@/hooks/useCatalogue';
 import { useAppTheme } from '@/theme/ThemeProvider';
 import { DEFAULT_FILTERS, localizedName } from '@/utils/catalogue';

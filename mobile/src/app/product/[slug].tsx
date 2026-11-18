@@ -4,8 +4,8 @@ import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { AvailabilityBadge, ImageCarousel, openCategory, PriceTag, ScreenHeader } from '@/components/catalogue';
-import { AppText, Badge, Button, Card, ErrorState, LoadingView } from '@/components/ui';
+import { AvailabilityBadge, ImageCarousel, openCategory, PriceTag } from '@/components/catalogue';
+import { AppText, Badge, Button, Card, ErrorState, LoadingView, ScreenHeader } from '@/components/ui';
 import { useProduct, useStoreInfo } from '@/hooks/useCatalogue';
 import { useAppTheme } from '@/theme/ThemeProvider';
 import { spacing } from '@/theme/tokens';

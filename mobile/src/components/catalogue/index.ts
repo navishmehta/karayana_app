@@ -7,6 +7,5 @@ export { ProductCard } from './ProductCard';
 export { ProductGrid } from './ProductGrid';
 export { ProductImage } from './ProductImage';
 export { ProductRail } from './ProductRail';
-export { ScreenHeader } from './ScreenHeader';
 export { SearchBar } from './SearchBar';
 export { CatalogueBrowser } from './CatalogueBrowser';

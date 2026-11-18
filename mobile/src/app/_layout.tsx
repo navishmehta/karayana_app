@@ -21,6 +21,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useSession } from '@/auth/session';
 import { restoreLanguage } from '@/i18n';
 import { queryClient } from '@/lib/queryClient';
+import { ToastHost } from '@/components/ui';
 import { ThemeProvider, useAppTheme } from '@/theme/ThemeProvider';
 
 void SplashScreen.preventAutoHideAsync();
@@ -79,6 +80,7 @@ function RootStack() {
           <Stack.Screen name="staff" />
         </Stack.Protected>
       </Stack>
+      <ToastHost />
     </>
   );
 }

@@ -2,7 +2,7 @@ import { Stack } from 'expo-router';
 
 import { useAppTheme } from '@/theme/ThemeProvider';
 
-/** Staff area. Phase 8 (admin) and Phase 9 (seller) add their screens here. */
+/** Staff area: tabs, plus detail and form screens opened on top of them. */
 export default function StaffLayout() {
   const { colors } = useAppTheme();
   return <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }} />;

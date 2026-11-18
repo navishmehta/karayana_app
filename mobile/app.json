@@ -36,7 +36,14 @@
         }
       ],
       "expo-secure-store",
-      "expo-localization"
+      "expo-localization",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Smart Kirana uses your photos to add product and category images.",
+          "cameraPermission": "Smart Kirana uses the camera to take product photos."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
