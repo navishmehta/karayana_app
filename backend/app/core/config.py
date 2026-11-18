@@ -61,6 +61,11 @@ class Settings(BaseSettings):
     smtp_password: SecretStr | None = None
     smtp_use_tls: bool = True
 
+    # Push notifications. "log" writes them to the log (local/testing); "expo" sends through Expo's push
+    # service (Android delivery goes via Firebase Cloud Messaging, iOS via APNs; credentials live in EAS).
+    push_driver: str = "log"
+    expo_push_access_token: SecretStr | None = None  # only if "enhanced push security" is enabled at expo.dev
+
     # Uploaded images. "local" saves under MEDIA_ROOT and serves them at /media (production: S3-compatible later).
     media_driver: str = "local"
     media_root: str = "storage/media"

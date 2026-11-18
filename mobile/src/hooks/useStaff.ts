@@ -8,6 +8,8 @@ import {
   inventoryApi,
   lookupApi,
   productApi,
+  notificationApi,
+  reportApi,
   sellerApi,
   settingsApi,
   activityApi,
@@ -35,6 +37,11 @@ export const staffKeys = {
   seller: (id: number) => ['staff', 'seller', id] as const,
   activity: (q: Query) => ['staff', 'activity', q] as const,
   settings: ['staff', 'settings'] as const,
+  reports: ['staff', 'reports'] as const,
+  report: (key: string, q: Query) => ['staff', 'report', key, q] as const,
+  notifications: (q: Query) => ['staff', 'notifications', q] as const,
+  unreadCount: ['staff', 'unread-count'] as const,
+  notificationPreferences: ['staff', 'notification-preferences'] as const,
 };
 
 /** After any change, refresh staff data and the public catalogue (prices, stock and names may have changed). */
@@ -114,3 +121,32 @@ export const useSellerActivity = (id: number) =>
 export const useActivity = (q: Query) => usePaged(staffKeys.activity(q), (page) => activityApi.list({ ...q, page, per_page: PAGE_SIZE }));
 
 export const useStoreSettings = () => useQuery({ queryKey: staffKeys.settings, queryFn: settingsApi.get, select: (r) => r.data });
+
+const UNREAD_POLL_MS = 60_000;
+
+export const useReports = () => useQuery({ queryKey: staffKeys.reports, queryFn: reportApi.list, select: (r) => r.data });
+
+export function useReport(key: string, q: Query) {
+  const result = useInfiniteQuery({
+    queryKey: staffKeys.report(key, q),
+    queryFn: ({ pageParam }) => reportApi.view(key, { ...q, page: pageParam, per_page: 50 }),
+    initialPageParam: 1,
+    getNextPageParam: (last) => (last.data.meta.page < last.data.meta.last_page ? last.data.meta.page + 1 : undefined),
+  });
+  const first = result.data?.pages[0]?.data;
+  return { ...result, report: first, rows: result.data?.pages.flatMap((p) => p.data.rows) ?? [] };
+}
+
+export const useNotifications = (q: Query) =>
+  usePaged(staffKeys.notifications(q), (page) => notificationApi.list({ ...q, page, per_page: PAGE_SIZE }));
+
+export const useUnreadCount = () =>
+  useQuery({
+    queryKey: staffKeys.unreadCount,
+    queryFn: notificationApi.unreadCount,
+    select: (r) => r.data.count,
+    refetchInterval: UNREAD_POLL_MS,
+  });
+
+export const useNotificationPreferences = () =>
+  useQuery({ queryKey: staffKeys.notificationPreferences, queryFn: notificationApi.preferences, select: (r) => r.data });

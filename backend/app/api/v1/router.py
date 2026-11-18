@@ -11,8 +11,10 @@ from app.api.v1.endpoints import (
     health,
     inventory,
     lookups,
+    notifications,
     products,
     public,
+    reports,
 )
 
 api_router = APIRouter()
@@ -24,8 +26,9 @@ api_router.include_router(categories.router)
 api_router.include_router(lookups.router)
 api_router.include_router(products.router)
 api_router.include_router(inventory.router)
+api_router.include_router(reports.router)
+api_router.include_router(notifications.router)
 api_router.include_router(admin_sellers.router)
 api_router.include_router(admin_catalogue.router)
 api_router.include_router(admin_settings.router)
 api_router.include_router(public.router)
-# Later phases: reports, notifications

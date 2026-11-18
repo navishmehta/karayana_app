@@ -178,7 +178,8 @@
     "reset_code_sent": "If this email is registered, a reset code has been sent to it.",
     "password_reset": "Your password has been reset. Please log in.",
     "device_registered": "Device registered for notifications.",
-    "seller_password_reset": "The seller's password has been reset and they have been logged out."
+    "seller_password_reset": "The seller's password has been reset and they have been logged out.",
+    "notifications_read": "All notifications marked as read."
   },
   "permission_groups": {
     "dashboard": "Dashboard",
@@ -247,6 +248,9 @@
     "settings": {
       "updated": "Changed store settings",
       "logo_updated": "Changed store logo"
+    },
+    "reports": {
+      "exported": "Downloaded a report"
     }
   },
   "emails": {
@@ -274,5 +278,125 @@
     "leaked": "Leaked",
     "expired": "Expired",
     "other": "Other"
+  },
+  "notifications": {
+    "low_stock": {
+      "title": "Low stock: {product}",
+      "body": "Only {quantity} {unit} left (minimum {minimum})."
+    },
+    "out_of_stock": {
+      "title": "Out of stock: {product}",
+      "body": "{product} has run out. Customers now see it as out of stock."
+    },
+    "expiry_digest": {
+      "title": "Expiry check",
+      "body": "{expired} expired batch(es) still in stock, {expiring} expiring within {days} days."
+    }
+  },
+  "reports": {
+    "total": "Total",
+    "types": {
+      "products": {
+        "label": "Products",
+        "description": "All products with codes, category, brand and prices."
+      },
+      "categories": {
+        "label": "Categories",
+        "description": "Products and stock per category."
+      },
+      "stock": {
+        "label": "Stock",
+        "description": "Current and sellable stock for every active product."
+      },
+      "low_stock": {
+        "label": "Low stock",
+        "description": "Products that are low or out of stock."
+      },
+      "expiry": {
+        "label": "Expiry",
+        "description": "Batches expired or expiring soon."
+      },
+      "purchase_cost": {
+        "label": "Purchase cost",
+        "description": "Cost price and stock value at cost."
+      },
+      "selling_price": {
+        "label": "Selling prices",
+        "description": "Selling price, MRP, offers and discounts."
+      },
+      "valuation": {
+        "label": "Stock valuation",
+        "description": "Stock value at cost and at selling price, and potential profit."
+      },
+      "profit_margin": {
+        "label": "Profit margin",
+        "description": "Profit per unit, markup and margin."
+      },
+      "stock_movements": {
+        "label": "Stock movements",
+        "description": "Every stock change in a date range."
+      }
+    },
+    "columns": {
+      "product": "Product",
+      "sku": "SKU",
+      "barcode": "Barcode",
+      "category": "Category",
+      "brand": "Brand",
+      "unit": "Unit",
+      "selling_price": "Selling price",
+      "mrp": "MRP",
+      "purchase_price": "Purchase price",
+      "status": "Status",
+      "visible": "Visible to customers",
+      "products": "Products",
+      "active_products": "Active products",
+      "quantity": "Quantity",
+      "cost_value": "Value at cost",
+      "current_stock": "Current stock",
+      "sellable_stock": "Sellable stock",
+      "min_stock_level": "Minimum stock",
+      "stock_status": "Stock status",
+      "batch": "Batch",
+      "expiry_date": "Expiry date",
+      "days_left": "Days left",
+      "offer_price": "Offer price",
+      "effective_price": "Customer price",
+      "discount_percent": "Discount %",
+      "selling_value": "Value at selling price",
+      "potential_profit": "Potential profit",
+      "profit": "Profit per unit",
+      "markup_percent": "Markup %",
+      "margin_percent": "Margin %",
+      "date": "Date",
+      "movement": "Movement",
+      "reason": "Reason",
+      "change": "Change",
+      "after": "Stock after",
+      "user": "By"
+    },
+    "values": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "yes": "Yes",
+      "no": "No",
+      "stock_status": {
+        "in_stock": "In stock",
+        "low_stock": "Low stock",
+        "out_of_stock": "Out of stock"
+      },
+      "movement": {
+        "opening": "Opening stock",
+        "stock_in": "Stock in",
+        "stock_out": "Stock out",
+        "adjustment_in": "Count increased",
+        "adjustment_out": "Count reduced",
+        "damaged": "Damaged",
+        "expired": "Expired write-off",
+        "sale": "Sale",
+        "sale_return": "Sale return",
+        "purchase_return": "Purchase return"
+      }
+    }
   }
 }

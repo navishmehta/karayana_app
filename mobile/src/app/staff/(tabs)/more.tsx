@@ -26,6 +26,8 @@ export default function MoreScreen() {
   const admin = isAdmin(user);
   const icon = (name: IconName) => <Ionicons name={name} size={22} color={colors.primary} />;
   const links: { show: boolean; title: string; icon: IconName; href: Parameters<typeof router.push>[0] }[] = [
+    { show: true, title: t('staff.notifications.title'), icon: 'notifications-outline', href: '/staff/notifications' },
+    { show: can(user, PERMISSIONS.reportsView), title: t('staff.more.reports'), icon: 'document-text-outline', href: '/staff/reports' },
     { show: can(user, PERMISSIONS.categoriesView), title: t('staff.more.categories'), icon: 'grid-outline', href: '/staff/categories' },
     { show: admin, title: t('staff.more.sellers'), icon: 'people-outline', href: '/staff/sellers' },
     { show: admin, title: t('staff.more.activity'), icon: 'time-outline', href: '/staff/activity' },

@@ -306,7 +306,8 @@
       "storeSettings": "Store settings",
       "preferences": "Language & theme",
       "yourAccess": "What you can do",
-      "askAdmin": "Need more? Ask the store admin."
+      "askAdmin": "Need more? Ask the store admin.",
+      "reports": "Reports"
     },
     "categories": {
       "add": "Add category",
@@ -441,6 +442,40 @@
       "reports": {
         "view": "View reports",
         "export": "Export reports"
+      }
+    },
+    "reports": {
+      "none": "No reports available for your permissions.",
+      "allCategories": "All categories",
+      "from": "From",
+      "to": "To",
+      "exportExcel": "Download Excel",
+      "exportCsv": "Download CSV",
+      "empty": "No rows for these filters.",
+      "total": "Total",
+      "rows_one": "{{count}} row",
+      "rows_other": "{{count}} rows",
+      "truncated": "Showing the first 20,000 rows — narrow the filters for the rest."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "settings": "Alert settings",
+      "empty": "No notifications yet",
+      "emptyHint": "Low stock, out-of-stock and expiry alerts will appear here.",
+      "markAllRead": "Mark all as read",
+      "unread": "Unread",
+      "bell_one": "Notifications, {{count}} unread",
+      "bell_other": "Notifications, {{count}} unread",
+      "channelName": "Stock & expiry alerts",
+      "push": "Phone notification",
+      "pushHint": "On this and your other logged-in phones.",
+      "inApp": "Show in the app",
+      "noTypes": "No alerts apply to your permissions.",
+      "adminNote": "The admin can switch alert types on or off for the whole store in Store settings.",
+      "types": {
+        "low_stock": "Low stock",
+        "out_of_stock": "Out of stock",
+        "expiry_digest": "Daily expiry check"
       }
     }
   },

@@ -49,6 +49,8 @@ class ActivityAction(StrEnum):
     STOCK_EXPIRED_WRITTEN_OFF = "stock.expired_written_off"
     BATCH_UPDATED = "stock.batch_updated"
 
+    REPORT_EXPORTED = "reports.exported"
+
     SETTINGS_UPDATED = "settings.updated"
     STORE_LOGO_UPDATED = "settings.logo_updated"
 

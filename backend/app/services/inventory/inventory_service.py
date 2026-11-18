@@ -36,6 +36,8 @@ from app.models import InventoryAdjustment, Product, ProductBatch, StockTransact
 from app.services.audit import Audit, changed_fields
 from app.services.inventory.fefo import InsufficientStockError, allocate, is_expired
 from app.services.inventory.stock_cache import refresh_product_stock
+from app.services.notifications.alerts import AlertService
+from app.services.notifications.push import deliver
 
 ADJUSTMENT_REFERENCE = "inventory_adjustment"
 
@@ -203,8 +205,10 @@ class InventoryService:
         self._check_batch_dates(product, manufacturing, expiry, receiving=False)
 
         old, new = changed_fields(batch, values)
+        pushes = []
         if new:
             refresh_product_stock(self.db, product)
+            pushes = AlertService(self.db).evaluate_stock(product)
             self.audit.record(
                 ActivityAction.BATCH_UPDATED,
                 actor=user,
@@ -212,6 +216,7 @@ class InventoryService:
                 properties={"product_id": product.id, "old": old, "new": new},
             )
         self.db.commit()
+        deliver(self.db, pushes)
         return batch
 
     # --- Reusable building block (also for the future POS) ---------------------------------------
@@ -369,6 +374,8 @@ class InventoryService:
 
         for product in products:
             refresh_product_stock(self.db, product)
+        alerts = AlertService(self.db)
+        pushes = [message for product in products for message in alerts.evaluate_stock(product)]
         self.audit.record(
             _AUDIT_ACTION[AdjustmentType(adjustment.type)],
             actor=user,
@@ -382,6 +389,7 @@ class InventoryService:
             },
         )
         self.db.commit()
+        deliver(self.db, pushes)
         for product in products:
             self.db.refresh(product)
         adjustment = self.db.scalar(

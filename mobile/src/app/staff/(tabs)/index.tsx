@@ -9,6 +9,7 @@ import { useSession } from '@/auth/session';
 import { firstAllowedTab } from '@/auth/staffTabs';
 import { BarList, DailyColumns } from '@/components/staff/Charts';
 import { KpiTile } from '@/components/staff/KpiTile';
+import { NotificationBell } from '@/components/staff/NotificationBell';
 import { AppText, Card, EmptyState, ErrorState, ListRow, LoadingView, Screen, SegmentedControl } from '@/components/ui';
 import { PERMISSIONS } from '@/constants/permissions';
 import { useDashboard } from '@/hooks/useStaff';
@@ -40,11 +41,14 @@ export default function DashboardScreen() {
 
   return (
     <Screen refreshing={dashboard.isRefetching} onRefresh={() => void dashboard.refetch()}>
-      <View style={styles.header}>
-        <AppText size="title" weight="bold">
-          {t('staff.greeting', { name: user.name })}
-        </AppText>
-        <AppText color="textMuted">{isAdmin(user) ? t('staff.roleAdmin') : t('staff.roleSeller')}</AppText>
+      <View style={styles.headerRow}>
+        <View style={styles.header}>
+          <AppText size="title" weight="bold">
+            {t('staff.greeting', { name: user.name })}
+          </AppText>
+          <AppText color="textMuted">{isAdmin(user) ? t('staff.roleAdmin') : t('staff.roleSeller')}</AppText>
+        </View>
+        <NotificationBell />
       </View>
 
       <View style={styles.tiles}>
@@ -167,7 +171,8 @@ export default function DashboardScreen() {
 }
 
 const styles = StyleSheet.create({
-  header: { gap: spacing.xxs },
+  header: { gap: spacing.xxs, flex: 1 },
+  headerRow: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.md },
   tiles: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },
   cardHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, flexWrap: 'wrap' },
   daysToggle: { width: 200 },

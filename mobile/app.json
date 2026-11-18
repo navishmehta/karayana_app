@@ -43,6 +43,14 @@
           "photosPermission": "Smart Kirana uses your photos to add product and category images.",
           "cameraPermission": "Smart Kirana uses the camera to take product photos."
         }
+      ],
+      "expo-sharing",
+      [
+        "expo-notifications",
+        {
+          "color": "#0F7A4A",
+          "defaultChannel": "alerts"
+        }
       ]
     ],
     "experiments": {

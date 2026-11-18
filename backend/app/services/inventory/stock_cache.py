@@ -36,10 +36,17 @@ def refresh_all_stock(db: Session, store_id: int | None = None) -> int:
     stmt = select(Product).where(Product.deleted_at.is_(None))
     if store_id is not None:
         stmt = stmt.where(Product.store_id == store_id)
+    from app.services.notifications.alerts import AlertService
+    from app.services.notifications.push import deliver
+
     today = store_today()
+    alerts = AlertService(db)
+    pushes = []
     count = 0
-    for product in db.scalars(stmt):
+    for product in db.scalars(stmt).all():
         refresh_product_stock(db, product, today)
+        pushes += alerts.evaluate_stock(product)  # batches that expired overnight can make a product run out
         count += 1
     db.commit()
+    deliver(db, pushes)
     return count

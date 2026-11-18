@@ -228,3 +228,41 @@ export interface Dashboard {
   recent_products?: StaffProduct[];
   recent_movements?: Transaction[];
 }
+
+export type ColumnKind = 'text' | 'int' | 'money' | 'quantity' | 'percent' | 'date' | 'datetime';
+
+export interface ReportInfo {
+  key: string;
+  label: string;
+  description: string;
+  filters: string[];
+  can_export: boolean;
+}
+
+export interface ReportData {
+  key: string;
+  label: string;
+  columns: { key: string; label: string; kind: ColumnKind }[];
+  rows: Record<string, string>[];
+  totals: Record<string, string> | null;
+  truncated: boolean;
+  meta: { page: number; per_page: number; total: number; last_page: number };
+}
+
+export type NotificationType = 'low_stock' | 'out_of_stock' | 'expiry_digest';
+
+export interface AppNotification {
+  id: number;
+  type: NotificationType;
+  title: string;
+  body: string;
+  data: Record<string, unknown>;
+  read: boolean;
+  created_at: string;
+}
+
+export interface NotificationPreference {
+  type: NotificationType;
+  push_enabled: boolean;
+  in_app_enabled: boolean;
+}

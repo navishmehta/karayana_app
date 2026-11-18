@@ -27,6 +27,16 @@ uv run pytest
 uv run ruff check . && uv run ruff format --check .
 ```
 
+### Scheduled jobs (set up with cron on the server)
+
+| When (store time, IST) | Command | Why |
+|---|---|---|
+| Every 15 minutes | `uv run python -m app.cli send-expiry-alerts` | Sends the daily expiry summary once, at the time set in Store settings |
+| 00:05 daily | `uv run python -m app.cli refresh-stock` | Batches that expired at midnight stop counting as sellable; may trigger stock alerts |
+
+Push notifications: `PUSH_DRIVER=log` writes them to the log locally; `PUSH_DRIVER=expo` sends through Expo's push service
+(Android via Firebase Cloud Messaging, iOS via APNs — credentials are uploaded to EAS, not stored on this server).
+
 ### Where to change things
 
 | To change… | Edit… |

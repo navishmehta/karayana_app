@@ -5,6 +5,10 @@ import type { Permission } from '@/constants/permissions';
 
 import type {
   Activity,
+  AppNotification,
+  NotificationPreference,
+  ReportData,
+  ReportInfo,
   Adjustment,
   Batch,
   Brand,
@@ -102,4 +106,24 @@ export const settingsApi = {
   get: () => api.get<DataResponse<StoreSettings>>('/admin/settings'),
   update: (body: Body) => api.patch<DataResponse<StoreSettings>>('/admin/settings', body),
   uploadLogo: (form: FormData) => api.post<DataResponse<StoreSettings>>('/admin/settings/logo', form),
+};
+
+export const reportApi = {
+  list: () => api.get<DataResponse<ReportInfo[]>>('/reports'),
+  view: (key: string, query: Query) => api.get<DataResponse<ReportData>>(`/reports/${key}`, { query }),
+};
+
+export const notificationApi = {
+  list: (query: Query) => api.get<Page<AppNotification>>('/notifications', { query }),
+  unreadCount: () => api.get<DataResponse<{ count: number }>>('/notifications/unread-count'),
+  markRead: (id: number) => api.post<DataResponse<AppNotification>>(`/notifications/${id}/read`),
+  markAllRead: () => api.post<MessageResponse>('/notifications/read-all'),
+  preferences: () => api.get<DataResponse<NotificationPreference[]>>('/notifications/preferences'),
+  savePreferences: (preferences: NotificationPreference[]) =>
+    api.put<DataResponse<NotificationPreference[]>>('/notifications/preferences', { preferences }),
+};
+
+export const deviceApi = {
+  register: (token: string, platform: 'android' | 'ios' | 'web') => api.post<MessageResponse>('/devices', { token, platform }),
+  remove: (token: string) => api.delete<void>(`/devices/${encodeURIComponent(token)}`),
 };

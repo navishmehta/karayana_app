@@ -70,6 +70,8 @@ export const useSession = create<SessionState>((set, get) => ({
 
   async logout() {
     try {
+      const { unregisterPush } = await import('@/lib/push'); // loaded lazily: notifications are native-only
+      await unregisterPush();
       await authApi.logout();
     } catch {
       // Even if the server can't be reached, the device forgets the session.

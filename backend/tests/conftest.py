@@ -32,6 +32,7 @@ from app.db import seed  # noqa: E402
 from app.main import create_app  # noqa: E402
 from app.models import Base  # noqa: E402
 from app.services.mail import LogMailer  # noqa: E402
+from app.services.notifications.push import LogPushSender  # noqa: E402
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -70,6 +71,7 @@ def seeded_db(db: Session) -> Session:
 def _reset_shared_state() -> Iterator[None]:
     rate_limiter.reset()
     LogMailer.outbox.clear()
+    LogPushSender.sent.clear()
     yield
 
 

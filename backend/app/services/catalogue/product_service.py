@@ -31,6 +31,8 @@ from app.schemas.products import PRIVATE_FIELDS, SELLING_PRICE_FIELDS
 from app.services.audit import Audit, changed_fields
 from app.services.catalogue.common import ensure_exists_in_store, get_in_store, unique_slug
 from app.services.images import store_image
+from app.services.notifications.alerts import AlertService
+from app.services.notifications.push import deliver
 from app.services.storage import get_storage
 
 PRICE_FIELDS = SELLING_PRICE_FIELDS | {"purchase_price"}
@@ -183,6 +185,7 @@ class ProductService:
         Price changes are logged separately so price history is easy to find."""
         self._validate(user, values, existing=product)
         old, new = changed_fields(product, values)
+        pushes = AlertService(self.db).evaluate_stock(product) if {"min_stock_level", "is_active"} & new.keys() else []
         if new:
             product.updated_by = user.id
             price_new = {k: v for k, v in new.items() if k in PRICE_FIELDS}
@@ -199,6 +202,7 @@ class ProductService:
                         properties={"old": {k: old[k] for k in changes}, "new": changes},
                     )
         self.db.commit()
+        deliver(self.db, pushes)
         self.db.refresh(product)
         return product
 

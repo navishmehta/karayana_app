@@ -178,7 +178,8 @@
     "reset_code_sent": "ਜੇ ਇਹ ਈਮੇਲ ਰਜਿਸਟਰਡ ਹੈ, ਤਾਂ ਇਸ ਉੱਤੇ ਰੀਸੈੱਟ ਕੋਡ ਭੇਜ ਦਿੱਤਾ ਗਿਆ ਹੈ।",
     "password_reset": "ਤੁਹਾਡਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਹੋ ਗਿਆ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਲੌਗਇਨ ਕਰੋ।",
     "device_registered": "ਡਿਵਾਈਸ ਸੂਚਨਾਵਾਂ ਲਈ ਰਜਿਸਟਰ ਹੋ ਗਿਆ ਹੈ।",
-    "seller_password_reset": "ਵਿਕਰੇਤਾ ਦਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਹੋ ਗਿਆ ਹੈ ਅਤੇ ਉਹ ਲੌਗਆਊਟ ਹੋ ਗਏ ਹਨ।"
+    "seller_password_reset": "ਵਿਕਰੇਤਾ ਦਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਹੋ ਗਿਆ ਹੈ ਅਤੇ ਉਹ ਲੌਗਆਊਟ ਹੋ ਗਏ ਹਨ।",
+    "notifications_read": "ਸਾਰੀਆਂ ਸੂਚਨਾਵਾਂ ਪੜ੍ਹੀਆਂ ਗਈਆਂ ਵਜੋਂ ਨਿਸ਼ਾਨਬੱਧ ਹੋ ਗਈਆਂ।"
   },
   "permission_groups": {
     "dashboard": "ਡੈਸ਼ਬੋਰਡ",
@@ -247,6 +248,9 @@
     "settings": {
       "updated": "ਦੁਕਾਨ ਦੀਆਂ ਸੈਟਿੰਗਾਂ ਬਦਲੀਆਂ",
       "logo_updated": "ਦੁਕਾਨ ਦਾ ਲੋਗੋ ਬਦਲਿਆ"
+    },
+    "reports": {
+      "exported": "ਰਿਪੋਰਟ ਡਾਊਨਲੋਡ ਕੀਤੀ"
     }
   },
   "emails": {
@@ -274,5 +278,125 @@
     "leaked": "ਲੀਕ ਹੋਇਆ",
     "expired": "ਮਿਆਦ ਪੁੱਗੀ",
     "other": "ਹੋਰ"
+  },
+  "notifications": {
+    "low_stock": {
+      "title": "ਘੱਟ ਸਟਾਕ: {product}",
+      "body": "ਸਿਰਫ਼ {quantity} {unit} ਬਚੇ ਹਨ (ਘੱਟੋ-ਘੱਟ {minimum})।"
+    },
+    "out_of_stock": {
+      "title": "ਸਟਾਕ ਖਤਮ: {product}",
+      "body": "{product} ਖਤਮ ਹੋ ਗਿਆ ਹੈ। ਗਾਹਕਾਂ ਨੂੰ ਹੁਣ ਇਹ ਸਟਾਕ ਖਤਮ ਦਿਖਦਾ ਹੈ।"
+    },
+    "expiry_digest": {
+      "title": "ਮਿਆਦ ਜਾਂਚ",
+      "body": "{expired} ਮਿਆਦ ਪੁੱਗੇ ਬੈਚ ਅਜੇ ਸਟਾਕ ਵਿੱਚ ਹਨ, {expiring} ਦੀ ਮਿਆਦ {days} ਦਿਨਾਂ ਵਿੱਚ ਖਤਮ ਹੋ ਰਹੀ ਹੈ।"
+    }
+  },
+  "reports": {
+    "total": "ਕੁੱਲ",
+    "types": {
+      "products": {
+        "label": "ਉਤਪਾਦ",
+        "description": "ਕੋਡ, ਸ਼੍ਰੇਣੀ, ਬ੍ਰਾਂਡ ਅਤੇ ਕੀਮਤਾਂ ਸਮੇਤ ਸਾਰੇ ਉਤਪਾਦ।"
+      },
+      "categories": {
+        "label": "ਸ਼੍ਰੇਣੀਆਂ",
+        "description": "ਹਰ ਸ਼੍ਰੇਣੀ ਵਿੱਚ ਉਤਪਾਦ ਅਤੇ ਸਟਾਕ।"
+      },
+      "stock": {
+        "label": "ਸਟਾਕ",
+        "description": "ਹਰ ਚਾਲੂ ਉਤਪਾਦ ਦਾ ਮੌਜੂਦਾ ਅਤੇ ਵੇਚਣਯੋਗ ਸਟਾਕ।"
+      },
+      "low_stock": {
+        "label": "ਘੱਟ ਸਟਾਕ",
+        "description": "ਘੱਟ ਜਾਂ ਖਤਮ ਸਟਾਕ ਵਾਲੇ ਉਤਪਾਦ।"
+      },
+      "expiry": {
+        "label": "ਮਿਆਦ",
+        "description": "ਮਿਆਦ ਪੁੱਗੇ ਜਾਂ ਜਲਦੀ ਪੁੱਗਣ ਵਾਲੇ ਬੈਚ।"
+      },
+      "purchase_cost": {
+        "label": "ਖਰੀਦ ਲਾਗਤ",
+        "description": "ਲਾਗਤ ਕੀਮਤ ਅਤੇ ਲਾਗਤ ਅਨੁਸਾਰ ਸਟਾਕ ਦੀ ਕੀਮਤ।"
+      },
+      "selling_price": {
+        "label": "ਵੇਚ ਕੀਮਤਾਂ",
+        "description": "ਵੇਚ ਕੀਮਤ, MRP, ਆਫ਼ਰ ਅਤੇ ਛੋਟ।"
+      },
+      "valuation": {
+        "label": "ਸਟਾਕ ਮੁੱਲਾਂਕਣ",
+        "description": "ਲਾਗਤ ਅਤੇ ਵੇਚ ਕੀਮਤ ਅਨੁਸਾਰ ਸਟਾਕ ਦੀ ਕੀਮਤ, ਅਤੇ ਸੰਭਾਵੀ ਮੁਨਾਫ਼ਾ।"
+      },
+      "profit_margin": {
+        "label": "ਮੁਨਾਫ਼ਾ ਮਾਰਜਿਨ",
+        "description": "ਪ੍ਰਤੀ ਇਕਾਈ ਮੁਨਾਫ਼ਾ, ਮਾਰਕਅੱਪ ਅਤੇ ਮਾਰਜਿਨ।"
+      },
+      "stock_movements": {
+        "label": "ਸਟਾਕ ਆਵਾਜਾਈ",
+        "description": "ਚੁਣੀਆਂ ਮਿਤੀਆਂ ਵਿੱਚ ਹਰ ਸਟਾਕ ਬਦਲਾਅ।"
+      }
+    },
+    "columns": {
+      "product": "ਉਤਪਾਦ",
+      "sku": "SKU",
+      "barcode": "ਬਾਰਕੋਡ",
+      "category": "ਸ਼੍ਰੇਣੀ",
+      "brand": "ਬ੍ਰਾਂਡ",
+      "unit": "ਇਕਾਈ",
+      "selling_price": "ਵੇਚ ਕੀਮਤ",
+      "mrp": "MRP",
+      "purchase_price": "ਖਰੀਦ ਕੀਮਤ",
+      "status": "ਸਥਿਤੀ",
+      "visible": "ਗਾਹਕਾਂ ਨੂੰ ਦਿਖਦਾ",
+      "products": "ਉਤਪਾਦ",
+      "active_products": "ਚਾਲੂ ਉਤਪਾਦ",
+      "quantity": "ਮਾਤਰਾ",
+      "cost_value": "ਲਾਗਤ ਅਨੁਸਾਰ ਕੀਮਤ",
+      "current_stock": "ਮੌਜੂਦਾ ਸਟਾਕ",
+      "sellable_stock": "ਵੇਚਣਯੋਗ ਸਟਾਕ",
+      "min_stock_level": "ਘੱਟੋ-ਘੱਟ ਸਟਾਕ",
+      "stock_status": "ਸਟਾਕ ਸਥਿਤੀ",
+      "batch": "ਬੈਚ",
+      "expiry_date": "ਮਿਆਦ ਦੀ ਮਿਤੀ",
+      "days_left": "ਬਾਕੀ ਦਿਨ",
+      "offer_price": "ਆਫ਼ਰ ਕੀਮਤ",
+      "effective_price": "ਗਾਹਕ ਕੀਮਤ",
+      "discount_percent": "ਛੋਟ %",
+      "selling_value": "ਵੇਚ ਕੀਮਤ ਅਨੁਸਾਰ ਕੀਮਤ",
+      "potential_profit": "ਸੰਭਾਵੀ ਮੁਨਾਫ਼ਾ",
+      "profit": "ਪ੍ਰਤੀ ਇਕਾਈ ਮੁਨਾਫ਼ਾ",
+      "markup_percent": "ਮਾਰਕਅੱਪ %",
+      "margin_percent": "ਮਾਰਜਿਨ %",
+      "date": "ਮਿਤੀ",
+      "movement": "ਆਵਾਜਾਈ",
+      "reason": "ਕਾਰਨ",
+      "change": "ਬਦਲਾਅ",
+      "after": "ਬਾਅਦ ਵਿੱਚ ਸਟਾਕ",
+      "user": "ਦੁਆਰਾ"
+    },
+    "values": {
+      "active": "ਚਾਲੂ",
+      "inactive": "ਬੰਦ",
+      "yes": "ਹਾਂ",
+      "no": "ਨਹੀਂ",
+      "stock_status": {
+        "in_stock": "ਸਟਾਕ ਵਿੱਚ",
+        "low_stock": "ਘੱਟ ਸਟਾਕ",
+        "out_of_stock": "ਸਟਾਕ ਖਤਮ"
+      },
+      "movement": {
+        "opening": "ਸ਼ੁਰੂਆਤੀ ਸਟਾਕ",
+        "stock_in": "ਸਟਾਕ ਆਇਆ",
+        "stock_out": "ਸਟਾਕ ਗਿਆ",
+        "adjustment_in": "ਗਿਣਤੀ ਵਧੀ",
+        "adjustment_out": "ਗਿਣਤੀ ਘਟੀ",
+        "damaged": "ਖਰਾਬ",
+        "expired": "ਮਿਆਦ ਪੁੱਗਿਆ ਰੱਦ",
+        "sale": "ਵਿਕਰੀ",
+        "sale_return": "ਵਿਕਰੀ ਵਾਪਸੀ",
+        "purchase_return": "ਖਰੀਦ ਵਾਪਸੀ"
+      }
+    }
   }
 }

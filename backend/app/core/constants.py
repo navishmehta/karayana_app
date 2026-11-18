@@ -50,6 +50,20 @@ PUBLIC_CACHE_SECONDS: Final = 60
 DASHBOARD_RECENT_LIMIT: Final = 8
 DASHBOARD_CHART_DAYS: Final = (7, 30)
 
+# Reports
+REPORT_MAX_ROWS: Final = 20_000  # exports are capped to keep the server responsive
+REPORT_DEFAULT_EXPIRY_DAYS: Final = 30
+REPORT_DEFAULT_MOVEMENT_DAYS: Final = 30
+CSV_ENCODING: Final = "utf-8-sig"  # BOM so Excel shows Punjabi (Gurmukhi) text correctly
+XLSX_MAX_COLUMN_WIDTH: Final = 40
+
+# Push notifications (Expo push service)
+EXPO_PUSH_URL: Final = "https://exp.host/--/api/v2/push/send"
+EXPO_PUSH_BATCH_SIZE: Final = 100
+PUSH_TIMEOUT_SECONDS: Final = 10
+PUSH_CHANNEL_ID: Final = "alerts"  # Android notification channel created by the app
+EXPIRY_DIGEST_WINDOW_MINUTES: Final = 15  # the cron job runs every 15 minutes
+
 # Images: uploads are re-encoded to WebP (also removes EXIF/GPS and anything hidden in the file).
 MEDIA_URL_PATH: Final = "/media"
 IMAGE_MAX_UPLOAD_BYTES: Final = 5 * 1024 * 1024
