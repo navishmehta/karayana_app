@@ -1,0 +1,61 @@
+{
+  "errors": {
+    "validation_failed": "Please check the highlighted fields.",
+    "unauthenticated": "Please log in to continue.",
+    "forbidden": "You do not have permission to do this.",
+    "not_found": "The requested item was not found.",
+    "method_not_allowed": "This action is not supported here.",
+    "conflict": "This action conflicts with existing data.",
+    "too_many_requests": "Too many attempts. Please wait and try again.",
+    "http_error": "The request could not be completed.",
+    "server_error": "Something went wrong. Please try again."
+  },
+  "validation": {
+    "invalid": "{attribute} is not valid.",
+    "missing": "{attribute} is required.",
+    "string_type": "{attribute} must be text.",
+    "string_too_short": "{attribute} must be at least {min_length} characters.",
+    "string_too_long": "{attribute} must not be more than {max_length} characters.",
+    "string_pattern_mismatch": "{attribute} format is not valid.",
+    "int_parsing": "{attribute} must be a whole number.",
+    "int_type": "{attribute} must be a whole number.",
+    "decimal_parsing": "{attribute} must be a number.",
+    "decimal_type": "{attribute} must be a number.",
+    "decimal_max_places": "{attribute} can have at most {decimal_places} decimal places.",
+    "float_parsing": "{attribute} must be a number.",
+    "bool_parsing": "{attribute} must be true or false.",
+    "bool_type": "{attribute} must be true or false.",
+    "greater_than": "{attribute} must be greater than {gt}.",
+    "greater_than_equal": "{attribute} must be at least {ge}.",
+    "less_than": "{attribute} must be less than {lt}.",
+    "less_than_equal": "{attribute} must not be more than {le}.",
+    "enum": "Selected {attribute} is not valid.",
+    "literal_error": "Selected {attribute} is not valid.",
+    "date_from_datetime_parsing": "{attribute} must be a date (YYYY-MM-DD).",
+    "date_parsing": "{attribute} must be a date (YYYY-MM-DD).",
+    "date_type": "{attribute} must be a date (YYYY-MM-DD).",
+    "list_type": "{attribute} must be a list.",
+    "too_short": "{attribute} needs at least {min_length} items.",
+    "too_long": "{attribute} can have at most {max_length} items.",
+    "value_error": "{attribute} is not valid.",
+    "extra_forbidden": "{attribute} is not allowed.",
+    "json_invalid": "The request body is not valid JSON.",
+    "email": "{attribute} must be a valid email address."
+  },
+  "attributes": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone number",
+    "password": "Password",
+    "locale": "Language"
+  },
+  "permissions": {
+    "dashboard": { "view": "View dashboard" },
+    "products": { "view": "View products", "create": "Add products", "update": "Edit products", "delete": "Delete products" },
+    "categories": { "view": "View categories", "create": "Add categories", "update": "Edit categories", "delete": "Delete categories" },
+    "pricing": { "view_purchase": "View purchase price", "view_selling": "View selling price", "update_selling": "Edit selling price" },
+    "stock": { "view": "View stock", "update": "Update stock" },
+    "expiry": { "view": "View expiry", "update": "Update expiry" },
+    "reports": { "view": "View reports", "export": "Export reports" }
+  }
+}

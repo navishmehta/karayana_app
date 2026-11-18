@@ -1,0 +1,61 @@
+{
+  "errors": {
+    "validation_failed": "ਕਿਰਪਾ ਕਰਕੇ ਦਰਸਾਏ ਗਏ ਖੇਤਰਾਂ ਦੀ ਜਾਂਚ ਕਰੋ।",
+    "unauthenticated": "ਜਾਰੀ ਰੱਖਣ ਲਈ ਕਿਰਪਾ ਕਰਕੇ ਲੌਗਇਨ ਕਰੋ।",
+    "forbidden": "ਤੁਹਾਨੂੰ ਇਹ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ ਨਹੀਂ ਹੈ।",
+    "not_found": "ਮੰਗੀ ਗਈ ਚੀਜ਼ ਨਹੀਂ ਮਿਲੀ।",
+    "method_not_allowed": "ਇਹ ਕਾਰਵਾਈ ਇੱਥੇ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕਦੀ।",
+    "conflict": "ਇਹ ਕਾਰਵਾਈ ਮੌਜੂਦਾ ਡਾਟਾ ਨਾਲ ਟਕਰਾਉਂਦੀ ਹੈ।",
+    "too_many_requests": "ਬਹੁਤ ਜ਼ਿਆਦਾ ਕੋਸ਼ਿਸ਼ਾਂ। ਕਿਰਪਾ ਕਰਕੇ ਥੋੜ੍ਹੀ ਦੇਰ ਬਾਅਦ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+    "http_error": "ਬੇਨਤੀ ਪੂਰੀ ਨਹੀਂ ਹੋ ਸਕੀ।",
+    "server_error": "ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"
+  },
+  "validation": {
+    "invalid": "{attribute} ਸਹੀ ਨਹੀਂ ਹੈ।",
+    "missing": "{attribute} ਭਰਨਾ ਲਾਜ਼ਮੀ ਹੈ।",
+    "string_type": "{attribute} ਲਿਖਤ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
+    "string_too_short": "{attribute} ਘੱਟੋ-ਘੱਟ {min_length} ਅੱਖਰਾਂ ਦਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
+    "string_too_long": "{attribute} {max_length} ਅੱਖਰਾਂ ਤੋਂ ਲੰਬਾ ਨਹੀਂ ਹੋ ਸਕਦਾ।",
+    "string_pattern_mismatch": "{attribute} ਦਾ ਫਾਰਮੈਟ ਸਹੀ ਨਹੀਂ ਹੈ।",
+    "int_parsing": "{attribute} ਇੱਕ ਪੂਰਾ ਨੰਬਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
+    "int_type": "{attribute} ਇੱਕ ਪੂਰਾ ਨੰਬਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
+    "decimal_parsing": "{attribute} ਇੱਕ ਨੰਬਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
+    "decimal_type": "{attribute} ਇੱਕ ਨੰਬਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
+    "decimal_max_places": "{attribute} ਵਿੱਚ ਵੱਧ ਤੋਂ ਵੱਧ {decimal_places} ਦਸ਼ਮਲਵ ਅੰਕ ਹੋ ਸਕਦੇ ਹਨ।",
+    "float_parsing": "{attribute} ਇੱਕ ਨੰਬਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
+    "bool_parsing": "{attribute} ਹਾਂ ਜਾਂ ਨਾਂਹ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
+    "bool_type": "{attribute} ਹਾਂ ਜਾਂ ਨਾਂਹ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
+    "greater_than": "{attribute}, {gt} ਤੋਂ ਵੱਧ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
+    "greater_than_equal": "{attribute} ਘੱਟੋ-ਘੱਟ {ge} ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
+    "less_than": "{attribute}, {lt} ਤੋਂ ਘੱਟ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
+    "less_than_equal": "{attribute}, {le} ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦਾ।",
+    "enum": "ਚੁਣਿਆ ਗਿਆ {attribute} ਸਹੀ ਨਹੀਂ ਹੈ।",
+    "literal_error": "ਚੁਣਿਆ ਗਿਆ {attribute} ਸਹੀ ਨਹੀਂ ਹੈ।",
+    "date_from_datetime_parsing": "{attribute} ਇੱਕ ਮਿਤੀ (YYYY-MM-DD) ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ।",
+    "date_parsing": "{attribute} ਇੱਕ ਮਿਤੀ (YYYY-MM-DD) ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ।",
+    "date_type": "{attribute} ਇੱਕ ਮਿਤੀ (YYYY-MM-DD) ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ।",
+    "list_type": "{attribute} ਇੱਕ ਸੂਚੀ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ।",
+    "too_short": "{attribute} ਵਿੱਚ ਘੱਟੋ-ਘੱਟ {min_length} ਚੀਜ਼ਾਂ ਹੋਣੀਆਂ ਚਾਹੀਦੀਆਂ ਹਨ।",
+    "too_long": "{attribute} ਵਿੱਚ ਵੱਧ ਤੋਂ ਵੱਧ {max_length} ਚੀਜ਼ਾਂ ਹੋ ਸਕਦੀਆਂ ਹਨ।",
+    "value_error": "{attribute} ਸਹੀ ਨਹੀਂ ਹੈ।",
+    "extra_forbidden": "{attribute} ਦੀ ਇਜਾਜ਼ਤ ਨਹੀਂ ਹੈ।",
+    "json_invalid": "ਬੇਨਤੀ ਦਾ ਡਾਟਾ ਸਹੀ JSON ਨਹੀਂ ਹੈ।",
+    "email": "{attribute} ਇੱਕ ਸਹੀ ਈਮੇਲ ਪਤਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।"
+  },
+  "attributes": {
+    "name": "ਨਾਮ",
+    "email": "ਈਮੇਲ",
+    "phone": "ਫ਼ੋਨ ਨੰਬਰ",
+    "password": "ਪਾਸਵਰਡ",
+    "locale": "ਭਾਸ਼ਾ"
+  },
+  "permissions": {
+    "dashboard": { "view": "ਡੈਸ਼ਬੋਰਡ ਦੇਖੋ" },
+    "products": { "view": "ਉਤਪਾਦ ਦੇਖੋ", "create": "ਉਤਪਾਦ ਸ਼ਾਮਲ ਕਰੋ", "update": "ਉਤਪਾਦ ਸੋਧੋ", "delete": "ਉਤਪਾਦ ਮਿਟਾਓ" },
+    "categories": { "view": "ਸ਼੍ਰੇਣੀਆਂ ਦੇਖੋ", "create": "ਸ਼੍ਰੇਣੀਆਂ ਸ਼ਾਮਲ ਕਰੋ", "update": "ਸ਼੍ਰੇਣੀਆਂ ਸੋਧੋ", "delete": "ਸ਼੍ਰੇਣੀਆਂ ਮਿਟਾਓ" },
+    "pricing": { "view_purchase": "ਖਰੀਦ ਕੀਮਤ ਦੇਖੋ", "view_selling": "ਵੇਚ ਕੀਮਤ ਦੇਖੋ", "update_selling": "ਵੇਚ ਕੀਮਤ ਸੋਧੋ" },
+    "stock": { "view": "ਸਟਾਕ ਦੇਖੋ", "update": "ਸਟਾਕ ਅੱਪਡੇਟ ਕਰੋ" },
+    "expiry": { "view": "ਮਿਆਦ ਦੇਖੋ", "update": "ਮਿਆਦ ਅੱਪਡੇਟ ਕਰੋ" },
+    "reports": { "view": "ਰਿਪੋਰਟਾਂ ਦੇਖੋ", "export": "ਰਿਪੋਰਟਾਂ ਡਾਊਨਲੋਡ ਕਰੋ" }
+  }
+}
