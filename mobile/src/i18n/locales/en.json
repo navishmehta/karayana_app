@@ -1,0 +1,80 @@
+{
+  "common": {
+    "appName": "Smart Kirana",
+    "retry": "Try again",
+    "loading": "Loading…",
+    "cancel": "Cancel",
+    "save": "Save",
+    "continue": "Continue",
+    "back": "Back",
+    "settings": "Settings",
+    "home": "Home",
+    "call": "Call",
+    "whatsapp": "WhatsApp",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
+  },
+  "errors": {
+    "network": "Can't reach the server. Check your internet connection and try again.",
+    "timeout": "The server is taking too long to respond. Please try again.",
+    "generic": "Something went wrong. Please try again.",
+    "sessionExpired": "Your session has ended. Please log in again."
+  },
+  "validation": {
+    "required": "This field is required.",
+    "email": "Enter a valid email address.",
+    "passwordWeak": "At least {{min}} characters, with a letter and a number.",
+    "passwordMismatch": "The two passwords do not match.",
+    "codeLength": "Enter the {{length}}-digit code."
+  },
+  "customer": {
+    "welcome": "Welcome to",
+    "contact": "Contact the store",
+    "hours": "Opening hours",
+    "address": "Address",
+    "comingSoonNote": "Browse products and categories here soon."
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "themeSystem": "System",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "staff": "Staff",
+    "staffLogin": "Staff login",
+    "openStaffPanel": "Open staff panel",
+    "about": "About",
+    "version": "Version {{version}}"
+  },
+  "auth": {
+    "loginTitle": "Staff login",
+    "loginSubtitle": "For the store admin and sellers.",
+    "email": "Email",
+    "password": "Password",
+    "login": "Log in",
+    "forgotPassword": "Forgot password?",
+    "logout": "Log out",
+    "logoutConfirm": "Log out of this device?",
+    "forgotTitle": "Reset password",
+    "forgotSubtitle": "Enter your email. We'll send a {{length}}-digit code.",
+    "sendCode": "Send code",
+    "codeSentTo": "If {{email}} is registered, a code has been sent to it.",
+    "code": "Code from email",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm new password",
+    "resetPassword": "Reset password",
+    "resetDone": "Password changed. Please log in."
+  },
+  "staff": {
+    "greeting": "Hello, {{name}}",
+    "roleAdmin": "Admin",
+    "roleSeller": "Seller",
+    "permissionsCount_one": "{{count}} permission",
+    "permissionsCount_other": "{{count}} permissions",
+    "noAccessTitle": "No access yet",
+    "noAccessBody": "Ask the store admin to give you permissions.",
+    "viewAsCustomer": "View store as customer",
+    "panelNote": "Your tools will appear here."
+  }
+}

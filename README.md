@@ -5,7 +5,7 @@ Kirana store management app with Admin, Seller and Customer panels.
 | Part | Tech |
 |---|---|
 | Backend API (`backend/`) | Python 3.12, FastAPI, SQLAlchemy 2, Alembic, MySQL 8 |
-| App (`mobile/`, from Phase 6) | React Native (Expo, TypeScript): Android, iOS and web |
+| App (`mobile/`) | React Native (Expo SDK 58, TypeScript, Expo Router): Android, iOS and web |
 
 ## Backend – local setup
 
@@ -37,3 +37,15 @@ uv run ruff check . && uv run ruff format --check .
 | Fixed technical values (decimal places, page sizes, date formats) | `backend/app/core/constants.py` |
 | Message text in English / Punjabi | `backend/app/locales/en.json`, `pa.json` |
 | Starter units and categories | `backend/app/db/seed_data.py` |
+
+## App – local setup
+
+Requirements: Node.js 22.13+ and the backend running. Details in [`mobile/README.md`](mobile/README.md).
+
+```bash
+cd mobile
+npm install
+cp .env.example .env   # EXPO_PUBLIC_API_URL
+npm start              # Expo Go on a phone, or press w for the web
+npm run check          # lint + typecheck + tests
+```

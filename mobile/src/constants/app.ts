@@ -1,0 +1,37 @@
+/** Fixed app-wide values. Change them here only. */
+
+export const LANGUAGES = [
+  { code: 'en', nativeName: 'English' },
+  { code: 'pa', nativeName: 'ਪੰਜਾਬੀ' },
+] as const; // add { code: 'hi', nativeName: 'हिन्दी' } + locales/hi.json for Hindi
+
+export type LanguageCode = (typeof LANGUAGES)[number]['code'];
+export const DEFAULT_LANGUAGE: LanguageCode = 'en';
+
+export const THEME_PREFERENCES = ['system', 'light', 'dark'] as const;
+export type ThemePreference = (typeof THEME_PREFERENCES)[number];
+
+/** Keys for on-device storage. */
+export const STORAGE_KEYS = {
+  language: 'pref.language',
+  theme: 'pref.theme',
+  accessToken: 'auth.access_token',
+  refreshToken: 'auth.refresh_token',
+} as const;
+
+export const ROLES = { admin: 'admin', seller: 'seller' } as const;
+export type Role = (typeof ROLES)[keyof typeof ROLES];
+
+/** Data fetching */
+export const QUERY_STALE_MS = 60_000;
+export const QUERY_RETRY_COUNT = 1;
+
+/** Validation limits shared with the API */
+export const PASSWORD_MIN_LENGTH = 8;
+export const RESET_CODE_LENGTH = 6;
+export const DEVICE_NAME = 'Smart Kirana app';
+
+/** Currency and dates */
+export const CURRENCY = 'INR';
+export const NUMBER_LOCALE = 'en-IN'; // Indian digit grouping: 1,23,456.00 (Western digits in every language)
+export const STORE_TIME_ZONE = 'Asia/Kolkata';
