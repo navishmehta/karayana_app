@@ -8,7 +8,11 @@
     "conflict": "This action conflicts with existing data.",
     "too_many_requests": "Too many attempts. Please wait and try again.",
     "http_error": "The request could not be completed.",
-    "server_error": "Something went wrong. Please try again."
+    "server_error": "Something went wrong. Please try again.",
+    "token_expired": "Your session has expired. Please refresh your login.",
+    "invalid_credentials": "Incorrect email or password.",
+    "account_inactive": "Your account has been deactivated. Please contact the store admin.",
+    "invalid_reset_code": "The reset code is invalid or has expired."
   },
   "validation": {
     "invalid": "{attribute} is not valid.",
@@ -40,22 +44,113 @@
     "value_error": "{attribute} is not valid.",
     "extra_forbidden": "{attribute} is not allowed.",
     "json_invalid": "The request body is not valid JSON.",
-    "email": "{attribute} must be a valid email address."
+    "email": "{attribute} must be a valid email address.",
+    "email_taken": "This email is already used by another account.",
+    "password_weak": "Password must be at least 8 characters and include a letter and a number.",
+    "password_mismatch": "The two passwords do not match.",
+    "password_same": "The new password must be different from the current one.",
+    "current_password": "The current password is incorrect.",
+    "locale_unsupported": "This language is not supported.",
+    "phone_invalid": "Enter a 10-digit mobile number.",
+    "permission_not_grantable": "\"{permission}\" can only be done by the admin.",
+    "permission_dependency": "\"{permission}\" also requires: {required}."
   },
   "attributes": {
     "name": "Name",
     "email": "Email",
     "phone": "Phone number",
     "password": "Password",
-    "locale": "Language"
+    "locale": "Language",
+    "current_password": "Current password",
+    "password_confirmation": "Password confirmation",
+    "code": "Code",
+    "device_name": "Device name",
+    "permissions": "Permissions",
+    "is_active": "Status",
+    "platform": "Platform",
+    "token": "Token",
+    "refresh_token": "Refresh token"
   },
   "permissions": {
-    "dashboard": { "view": "View dashboard" },
-    "products": { "view": "View products", "create": "Add products", "update": "Edit products", "delete": "Delete products" },
-    "categories": { "view": "View categories", "create": "Add categories", "update": "Edit categories", "delete": "Delete categories" },
-    "pricing": { "view_purchase": "View purchase price", "view_selling": "View selling price", "update_selling": "Edit selling price" },
-    "stock": { "view": "View stock", "update": "Update stock" },
-    "expiry": { "view": "View expiry", "update": "Update expiry" },
-    "reports": { "view": "View reports", "export": "Export reports" }
+    "dashboard": {
+      "view": "View dashboard"
+    },
+    "products": {
+      "view": "View products",
+      "create": "Add products",
+      "update": "Edit products",
+      "delete": "Delete products"
+    },
+    "categories": {
+      "view": "View categories",
+      "create": "Add categories",
+      "update": "Edit categories",
+      "delete": "Delete categories"
+    },
+    "pricing": {
+      "view_purchase": "View purchase price",
+      "view_selling": "View selling price",
+      "update_selling": "Edit selling price"
+    },
+    "stock": {
+      "view": "View stock",
+      "update": "Update stock"
+    },
+    "expiry": {
+      "view": "View expiry",
+      "update": "Update expiry"
+    },
+    "reports": {
+      "view": "View reports",
+      "export": "Export reports"
+    }
+  },
+  "messages": {
+    "logged_out": "You have been logged out.",
+    "logged_out_all": "You have been logged out from all devices.",
+    "password_changed": "Your password has been changed.",
+    "reset_code_sent": "If this email is registered, a reset code has been sent to it.",
+    "password_reset": "Your password has been reset. Please log in.",
+    "device_registered": "Device registered for notifications.",
+    "seller_password_reset": "The seller's password has been reset and they have been logged out."
+  },
+  "permission_groups": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "categories": "Categories",
+    "pricing": "Pricing",
+    "stock": "Stock",
+    "expiry": "Expiry",
+    "reports": "Reports"
+  },
+  "activity": {
+    "auth": {
+      "login": "Logged in",
+      "login_failed": "Failed login attempt",
+      "logout": "Logged out",
+      "logout_all": "Logged out from all devices",
+      "profile_updated": "Updated profile",
+      "password_changed": "Changed password",
+      "password_reset_requested": "Requested a password reset code",
+      "password_reset": "Reset password with code"
+    },
+    "sellers": {
+      "created": "Created seller",
+      "updated": "Updated seller details",
+      "permissions_updated": "Changed seller permissions",
+      "activated": "Activated seller",
+      "deactivated": "Deactivated seller",
+      "password_reset": "Reset seller password",
+      "deleted": "Deleted seller"
+    }
+  },
+  "emails": {
+    "password_reset": {
+      "subject": "{store}: password reset code",
+      "greeting": "Hello {name},",
+      "intro": "Use this code in the app to reset your password:",
+      "expiry": "The code expires in {minutes} minutes.",
+      "ignore": "If you did not ask for this, you can ignore this email."
+    }
   }
 }

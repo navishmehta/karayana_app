@@ -37,6 +37,29 @@ class Settings(BaseSettings):
     admin_email: str | None = None
     admin_password: SecretStr | None = None
 
+    # Authentication. JWT_SECRET must be a long random value (e.g. `openssl rand -hex 32`).
+    jwt_secret: SecretStr = SecretStr("")
+    access_token_ttl_minutes: int = 15
+    refresh_token_ttl_days: int = 30
+    password_min_length: int = 8
+    reset_code_length: int = 6
+    reset_code_ttl_minutes: int = 15
+    reset_code_max_attempts: int = 5
+
+    # Attempts per minute (per email + IP).
+    rate_limit_login_per_minute: int = 5
+    rate_limit_password_reset_per_minute: int = 3
+
+    # Email. "log" writes emails to the log (local/testing); "smtp" sends them.
+    mail_driver: str = "log"
+    mail_from_address: str = "no-reply@example.com"
+    mail_from_name: str = "Smart Kirana"
+    smtp_host: str = "localhost"
+    smtp_port: int = 587
+    smtp_username: str | None = None
+    smtp_password: SecretStr | None = None
+    smtp_use_tls: bool = True
+
     # Web catalogue / web admin origins allowed to call the API from a browser.
     cors_origins: list[str] = []
 

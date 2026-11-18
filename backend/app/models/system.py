@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any
 
 from sqlalchemy import JSON, Boolean, ForeignKey, Index, String, Text, UniqueConstraint
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, BigId, CreatedAtMixin, IdMixin, TimestampMixin, UtcDateTime
 
@@ -77,3 +77,5 @@ class ActivityLog(IdMixin, CreatedAtMixin, Base):
     properties: Mapped[dict[str, Any] | None] = mapped_column(JSON)
     ip_address: Mapped[str | None] = mapped_column(String(45))
     user_agent: Mapped[str | None] = mapped_column(Text)
+
+    user: Mapped["User | None"] = relationship(viewonly=True)  # noqa: F821

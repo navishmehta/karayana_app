@@ -16,6 +16,17 @@ DISPLAY_DATE_FORMAT: Final = "%d-%m-%Y"
 
 DEFAULT_STORE_SLUG: Final = "main"
 
+# Authentication
+JWT_ALGORITHM: Final = "HS256"
+TOKEN_TYPE: Final = "Bearer"
+REFRESH_TOKEN_BYTES: Final = 48
+RATE_LIMIT_WINDOW_SECONDS: Final = 60
+DEVICE_NAME_MAX_LENGTH: Final = 100
+DEVICE_TOKEN_MAX_LENGTH: Final = 255
+
+# Indian mobile number: 10 digits starting 6-9.
+PHONE_PATTERN: Final = r"^[6-9]\d{9}$"
+
 DEFAULT_PER_PAGE: Final = 20
 MAX_PER_PAGE: Final = 100
 

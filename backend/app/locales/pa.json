@@ -8,7 +8,11 @@
     "conflict": "ਇਹ ਕਾਰਵਾਈ ਮੌਜੂਦਾ ਡਾਟਾ ਨਾਲ ਟਕਰਾਉਂਦੀ ਹੈ।",
     "too_many_requests": "ਬਹੁਤ ਜ਼ਿਆਦਾ ਕੋਸ਼ਿਸ਼ਾਂ। ਕਿਰਪਾ ਕਰਕੇ ਥੋੜ੍ਹੀ ਦੇਰ ਬਾਅਦ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
     "http_error": "ਬੇਨਤੀ ਪੂਰੀ ਨਹੀਂ ਹੋ ਸਕੀ।",
-    "server_error": "ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"
+    "server_error": "ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+    "token_expired": "ਤੁਹਾਡਾ ਸੈਸ਼ਨ ਖਤਮ ਹੋ ਗਿਆ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਲੌਗਇਨ ਤਾਜ਼ਾ ਕਰੋ।",
+    "invalid_credentials": "ਈਮੇਲ ਜਾਂ ਪਾਸਵਰਡ ਗਲਤ ਹੈ।",
+    "account_inactive": "ਤੁਹਾਡਾ ਖਾਤਾ ਬੰਦ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਸਟੋਰ ਐਡਮਿਨ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
+    "invalid_reset_code": "ਰੀਸੈੱਟ ਕੋਡ ਗਲਤ ਹੈ ਜਾਂ ਇਸ ਦੀ ਮਿਆਦ ਖਤਮ ਹੋ ਗਈ ਹੈ।"
   },
   "validation": {
     "invalid": "{attribute} ਸਹੀ ਨਹੀਂ ਹੈ।",
@@ -40,22 +44,113 @@
     "value_error": "{attribute} ਸਹੀ ਨਹੀਂ ਹੈ।",
     "extra_forbidden": "{attribute} ਦੀ ਇਜਾਜ਼ਤ ਨਹੀਂ ਹੈ।",
     "json_invalid": "ਬੇਨਤੀ ਦਾ ਡਾਟਾ ਸਹੀ JSON ਨਹੀਂ ਹੈ।",
-    "email": "{attribute} ਇੱਕ ਸਹੀ ਈਮੇਲ ਪਤਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।"
+    "email": "{attribute} ਇੱਕ ਸਹੀ ਈਮੇਲ ਪਤਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
+    "email_taken": "ਇਹ ਈਮੇਲ ਪਹਿਲਾਂ ਹੀ ਕਿਸੇ ਹੋਰ ਖਾਤੇ ਵਿੱਚ ਵਰਤੀ ਜਾ ਰਹੀ ਹੈ।",
+    "password_weak": "ਪਾਸਵਰਡ ਘੱਟੋ-ਘੱਟ 8 ਅੱਖਰਾਂ ਦਾ ਹੋਵੇ ਅਤੇ ਉਸ ਵਿੱਚ ਇੱਕ ਅੱਖਰ ਅਤੇ ਇੱਕ ਨੰਬਰ ਹੋਵੇ।",
+    "password_mismatch": "ਦੋਵੇਂ ਪਾਸਵਰਡ ਮੇਲ ਨਹੀਂ ਖਾਂਦੇ।",
+    "password_same": "ਨਵਾਂ ਪਾਸਵਰਡ ਮੌਜੂਦਾ ਪਾਸਵਰਡ ਤੋਂ ਵੱਖਰਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
+    "current_password": "ਮੌਜੂਦਾ ਪਾਸਵਰਡ ਗਲਤ ਹੈ।",
+    "locale_unsupported": "ਇਹ ਭਾਸ਼ਾ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",
+    "phone_invalid": "10 ਅੰਕਾਂ ਦਾ ਮੋਬਾਈਲ ਨੰਬਰ ਦਰਜ ਕਰੋ।",
+    "permission_not_grantable": "\"{permission}\" ਸਿਰਫ਼ ਐਡਮਿਨ ਹੀ ਕਰ ਸਕਦਾ ਹੈ।",
+    "permission_dependency": "\"{permission}\" ਲਈ ਇਹ ਵੀ ਜ਼ਰੂਰੀ ਹੈ: {required}।"
   },
   "attributes": {
     "name": "ਨਾਮ",
     "email": "ਈਮੇਲ",
     "phone": "ਫ਼ੋਨ ਨੰਬਰ",
     "password": "ਪਾਸਵਰਡ",
-    "locale": "ਭਾਸ਼ਾ"
+    "locale": "ਭਾਸ਼ਾ",
+    "current_password": "ਮੌਜੂਦਾ ਪਾਸਵਰਡ",
+    "password_confirmation": "ਪਾਸਵਰਡ ਦੀ ਪੁਸ਼ਟੀ",
+    "code": "ਕੋਡ",
+    "device_name": "ਡਿਵਾਈਸ ਦਾ ਨਾਮ",
+    "permissions": "ਇਜਾਜ਼ਤਾਂ",
+    "is_active": "ਸਥਿਤੀ",
+    "platform": "ਪਲੇਟਫਾਰਮ",
+    "token": "ਟੋਕਨ",
+    "refresh_token": "ਰਿਫ੍ਰੈਸ਼ ਟੋਕਨ"
   },
   "permissions": {
-    "dashboard": { "view": "ਡੈਸ਼ਬੋਰਡ ਦੇਖੋ" },
-    "products": { "view": "ਉਤਪਾਦ ਦੇਖੋ", "create": "ਉਤਪਾਦ ਸ਼ਾਮਲ ਕਰੋ", "update": "ਉਤਪਾਦ ਸੋਧੋ", "delete": "ਉਤਪਾਦ ਮਿਟਾਓ" },
-    "categories": { "view": "ਸ਼੍ਰੇਣੀਆਂ ਦੇਖੋ", "create": "ਸ਼੍ਰੇਣੀਆਂ ਸ਼ਾਮਲ ਕਰੋ", "update": "ਸ਼੍ਰੇਣੀਆਂ ਸੋਧੋ", "delete": "ਸ਼੍ਰੇਣੀਆਂ ਮਿਟਾਓ" },
-    "pricing": { "view_purchase": "ਖਰੀਦ ਕੀਮਤ ਦੇਖੋ", "view_selling": "ਵੇਚ ਕੀਮਤ ਦੇਖੋ", "update_selling": "ਵੇਚ ਕੀਮਤ ਸੋਧੋ" },
-    "stock": { "view": "ਸਟਾਕ ਦੇਖੋ", "update": "ਸਟਾਕ ਅੱਪਡੇਟ ਕਰੋ" },
-    "expiry": { "view": "ਮਿਆਦ ਦੇਖੋ", "update": "ਮਿਆਦ ਅੱਪਡੇਟ ਕਰੋ" },
-    "reports": { "view": "ਰਿਪੋਰਟਾਂ ਦੇਖੋ", "export": "ਰਿਪੋਰਟਾਂ ਡਾਊਨਲੋਡ ਕਰੋ" }
+    "dashboard": {
+      "view": "ਡੈਸ਼ਬੋਰਡ ਦੇਖੋ"
+    },
+    "products": {
+      "view": "ਉਤਪਾਦ ਦੇਖੋ",
+      "create": "ਉਤਪਾਦ ਸ਼ਾਮਲ ਕਰੋ",
+      "update": "ਉਤਪਾਦ ਸੋਧੋ",
+      "delete": "ਉਤਪਾਦ ਮਿਟਾਓ"
+    },
+    "categories": {
+      "view": "ਸ਼੍ਰੇਣੀਆਂ ਦੇਖੋ",
+      "create": "ਸ਼੍ਰੇਣੀਆਂ ਸ਼ਾਮਲ ਕਰੋ",
+      "update": "ਸ਼੍ਰੇਣੀਆਂ ਸੋਧੋ",
+      "delete": "ਸ਼੍ਰੇਣੀਆਂ ਮਿਟਾਓ"
+    },
+    "pricing": {
+      "view_purchase": "ਖਰੀਦ ਕੀਮਤ ਦੇਖੋ",
+      "view_selling": "ਵੇਚ ਕੀਮਤ ਦੇਖੋ",
+      "update_selling": "ਵੇਚ ਕੀਮਤ ਸੋਧੋ"
+    },
+    "stock": {
+      "view": "ਸਟਾਕ ਦੇਖੋ",
+      "update": "ਸਟਾਕ ਅੱਪਡੇਟ ਕਰੋ"
+    },
+    "expiry": {
+      "view": "ਮਿਆਦ ਦੇਖੋ",
+      "update": "ਮਿਆਦ ਅੱਪਡੇਟ ਕਰੋ"
+    },
+    "reports": {
+      "view": "ਰਿਪੋਰਟਾਂ ਦੇਖੋ",
+      "export": "ਰਿਪੋਰਟਾਂ ਡਾਊਨਲੋਡ ਕਰੋ"
+    }
+  },
+  "messages": {
+    "logged_out": "ਤੁਸੀਂ ਲੌਗਆਊਟ ਹੋ ਗਏ ਹੋ।",
+    "logged_out_all": "ਤੁਸੀਂ ਸਾਰੇ ਡਿਵਾਈਸਾਂ ਤੋਂ ਲੌਗਆਊਟ ਹੋ ਗਏ ਹੋ।",
+    "password_changed": "ਤੁਹਾਡਾ ਪਾਸਵਰਡ ਬਦਲ ਦਿੱਤਾ ਗਿਆ ਹੈ।",
+    "reset_code_sent": "ਜੇ ਇਹ ਈਮੇਲ ਰਜਿਸਟਰਡ ਹੈ, ਤਾਂ ਇਸ ਉੱਤੇ ਰੀਸੈੱਟ ਕੋਡ ਭੇਜ ਦਿੱਤਾ ਗਿਆ ਹੈ।",
+    "password_reset": "ਤੁਹਾਡਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਹੋ ਗਿਆ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਲੌਗਇਨ ਕਰੋ।",
+    "device_registered": "ਡਿਵਾਈਸ ਸੂਚਨਾਵਾਂ ਲਈ ਰਜਿਸਟਰ ਹੋ ਗਿਆ ਹੈ।",
+    "seller_password_reset": "ਵਿਕਰੇਤਾ ਦਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਹੋ ਗਿਆ ਹੈ ਅਤੇ ਉਹ ਲੌਗਆਊਟ ਹੋ ਗਏ ਹਨ।"
+  },
+  "permission_groups": {
+    "dashboard": "ਡੈਸ਼ਬੋਰਡ",
+    "products": "ਉਤਪਾਦ",
+    "categories": "ਸ਼੍ਰੇਣੀਆਂ",
+    "pricing": "ਕੀਮਤਾਂ",
+    "stock": "ਸਟਾਕ",
+    "expiry": "ਮਿਆਦ",
+    "reports": "ਰਿਪੋਰਟਾਂ"
+  },
+  "activity": {
+    "auth": {
+      "login": "ਲੌਗਇਨ ਕੀਤਾ",
+      "login_failed": "ਲੌਗਇਨ ਦੀ ਅਸਫਲ ਕੋਸ਼ਿਸ਼",
+      "logout": "ਲੌਗਆਊਟ ਕੀਤਾ",
+      "logout_all": "ਸਾਰੇ ਡਿਵਾਈਸਾਂ ਤੋਂ ਲੌਗਆਊਟ ਕੀਤਾ",
+      "profile_updated": "ਪ੍ਰੋਫਾਈਲ ਅੱਪਡੇਟ ਕੀਤੀ",
+      "password_changed": "ਪਾਸਵਰਡ ਬਦਲਿਆ",
+      "password_reset_requested": "ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕੋਡ ਮੰਗਿਆ",
+      "password_reset": "ਕੋਡ ਨਾਲ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕੀਤਾ"
+    },
+    "sellers": {
+      "created": "ਵਿਕਰੇਤਾ ਬਣਾਇਆ",
+      "updated": "ਵਿਕਰੇਤਾ ਦੇ ਵੇਰਵੇ ਅੱਪਡੇਟ ਕੀਤੇ",
+      "permissions_updated": "ਵਿਕਰੇਤਾ ਦੀਆਂ ਇਜਾਜ਼ਤਾਂ ਬਦਲੀਆਂ",
+      "activated": "ਵਿਕਰੇਤਾ ਚਾਲੂ ਕੀਤਾ",
+      "deactivated": "ਵਿਕਰੇਤਾ ਬੰਦ ਕੀਤਾ",
+      "password_reset": "ਵਿਕਰੇਤਾ ਦਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕੀਤਾ",
+      "deleted": "ਵਿਕਰੇਤਾ ਮਿਟਾਇਆ"
+    }
+  },
+  "emails": {
+    "password_reset": {
+      "subject": "{store}: ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕੋਡ",
+      "greeting": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ {name},",
+      "intro": "ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰਨ ਲਈ ਐਪ ਵਿੱਚ ਇਹ ਕੋਡ ਵਰਤੋ:",
+      "expiry": "ਇਹ ਕੋਡ {minutes} ਮਿੰਟਾਂ ਵਿੱਚ ਖਤਮ ਹੋ ਜਾਵੇਗਾ।",
+      "ignore": "ਜੇ ਤੁਸੀਂ ਇਹ ਨਹੀਂ ਮੰਗਿਆ, ਤਾਂ ਇਸ ਈਮੇਲ ਨੂੰ ਨਜ਼ਰਅੰਦਾਜ਼ ਕਰ ਦਿਓ।"
+    }
   }
 }

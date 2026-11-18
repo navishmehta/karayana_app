@@ -21,11 +21,23 @@ logger = logging.getLogger(__name__)
 class AppError(Exception):
     """Business-rule failure with a stable error code and optional field errors."""
 
-    def __init__(self, code: ErrorCode, errors: dict[str, list[str]] | None = None, status: int | None = None):
+    def __init__(
+        self,
+        code: ErrorCode,
+        errors: dict[str, list[str]] | None = None,
+        status: int | None = None,
+        headers: dict[str, str] | None = None,
+    ):
         super().__init__(code.value)
         self.code = code
         self.errors = errors
         self.status = status or code.http_status
+        self.headers = headers or {}
+
+
+def field_error(field: str, message_key: str, **params: Any) -> AppError:
+    """422 for one field, e.g. raise field_error("email", "validation.email_taken")."""
+    return AppError(ErrorCode.VALIDATION_FAILED, errors={field: [t(message_key, **params)]})
 
 
 def error_response(
@@ -85,7 +97,9 @@ def register_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(AppError)
     async def _app_error(request: Request, exc: AppError) -> JSONResponse:
         _use_request_locale(request)
-        return error_response(exc.code, exc.status, exc.errors)
+        response = error_response(exc.code, exc.status, exc.errors)
+        response.headers.update(exc.headers)
+        return response
 
     @app.exception_handler(RequestValidationError)
     async def _validation_error(request: Request, exc: RequestValidationError) -> JSONResponse:

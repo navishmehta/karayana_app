@@ -4,6 +4,8 @@ from sqlalchemy import Boolean, Column, ForeignKey, String, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.constants import EMAIL_MAX_LENGTH, LOCALE_MAX_LENGTH, NAME_MAX_LENGTH, PHONE_MAX_LENGTH
+from app.enums.permission import Permission
+from app.enums.role import Role as RoleName
 from app.models.base import Base, BigId, CreatedAtMixin, IdMixin, SoftDeleteMixin, TimestampMixin, UtcDateTime
 
 # role_permissions / user_permissions: plain association tables.
@@ -52,6 +54,25 @@ class User(IdMixin, TimestampMixin, SoftDeleteMixin, Base):
 
     role: Mapped[Role] = relationship(lazy="joined")
     permissions: Mapped[list[PermissionModel]] = relationship(secondary=user_permissions)
+
+    @property
+    def is_admin(self) -> bool:
+        return self.role.name == RoleName.ADMIN
+
+    @property
+    def is_seller(self) -> bool:
+        return self.role.name == RoleName.SELLER
+
+    @property
+    def permission_set(self) -> set[Permission]:
+        """Effective permissions: the admin has all; a seller has only what was granted."""
+        if self.is_admin:
+            return set(Permission)
+        known = {p.value for p in Permission}
+        return {Permission(p.key) for p in self.permissions if p.key in known}
+
+    def has_permission(self, permission: Permission) -> bool:
+        return permission in self.permission_set
 
 
 class AuthSession(IdMixin, CreatedAtMixin, Base):

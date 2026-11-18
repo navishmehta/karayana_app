@@ -40,7 +40,7 @@ def test_seed_creates_everything_once(seeded_db: Session) -> None:
 
     admin = db.scalar(select(User))
     assert admin.role.name == Role.ADMIN
-    assert admin.email == "admin@test.local"
+    assert admin.email == "admin@kirana.test"
     assert verify_password("Admin12345", admin.password_hash)
     assert admin.password_hash != "Admin12345"
 

@@ -10,8 +10,10 @@ os.environ["DATABASE_URL"] = os.environ.get(
 )
 os.environ["ENVIRONMENT"] = "testing"
 os.environ["DEBUG"] = "false"  # like production: no internal details in errors
-os.environ["ADMIN_EMAIL"] = "admin@test.local"
+os.environ["ADMIN_EMAIL"] = "admin@kirana.test"
 os.environ["ADMIN_PASSWORD"] = "Admin12345"
+os.environ["JWT_SECRET"] = "test-secret-not-for-production-0123456789abcdef"
+os.environ["MAIL_DRIVER"] = "log"
 
 from collections.abc import Iterator  # noqa: E402
 
@@ -23,9 +25,11 @@ from sqlalchemy.orm import Session  # noqa: E402
 
 from alembic import command  # noqa: E402
 from app.core.database import engine, get_db  # noqa: E402
+from app.core.rate_limit import rate_limiter  # noqa: E402
 from app.db import seed  # noqa: E402
 from app.main import create_app  # noqa: E402
 from app.models import Base  # noqa: E402
+from app.services.mail import LogMailer  # noqa: E402
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -60,9 +64,16 @@ def seeded_db(db: Session) -> Session:
     return db
 
 
+@pytest.fixture(autouse=True)
+def _reset_shared_state() -> Iterator[None]:
+    rate_limiter.reset()
+    LogMailer.outbox.clear()
+    yield
+
+
 @pytest.fixture
-def client(db: Session) -> Iterator[TestClient]:
+def client(seeded_db: Session) -> Iterator[TestClient]:
     app = create_app()
-    app.dependency_overrides[get_db] = lambda: db
+    app.dependency_overrides[get_db] = lambda: seeded_db
     with TestClient(app, raise_server_exceptions=False) as test_client:
         yield test_client
