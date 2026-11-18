@@ -24,6 +24,17 @@ return [
         'reset_code_ttl_minutes' => 15,
     ],
 
+    // Uploaded images are re-encoded to WebP (also strips EXIF/GPS and any embedded payload).
+    'media' => [
+        'disk' => env('MEDIA_DISK', 'public'), // 'public' locally; an S3-compatible disk (R2/Spaces) in production
+        'max_upload_kb' => 5120,
+        'allowed_mimes' => ['jpg', 'jpeg', 'png', 'webp'],
+        'full_width' => 1200,
+        'thumb_width' => 400,
+        'webp_quality' => 80,
+        'max_images_per_product' => 6,
+    ],
+
     // Requests per minute.
     'rate_limits' => [
         'login' => 5,           // per email + IP

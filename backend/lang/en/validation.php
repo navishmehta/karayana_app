@@ -135,7 +135,7 @@ return [
     'present_unless' => 'The :attribute field must be present unless :other is :value.',
     'present_with' => 'The :attribute field must be present when :values is present.',
     'present_with_all' => 'The :attribute field must be present when :values are present.',
-    'prohibited' => 'The :attribute field is prohibited.',
+    'prohibited' => 'You do not have permission to set :attribute.',
     'prohibited_if' => 'The :attribute field is prohibited when :other is :value.',
     'prohibited_if_accepted' => 'The :attribute field is prohibited when :other is accepted.',
     'prohibited_if_declined' => 'The :attribute field is prohibited when :other is declined.',
@@ -171,6 +171,11 @@ return [
 
     // App-specific rules
     'permission_dependency' => '":permission" also requires: :required.',
+    'selling_above_mrp' => 'Selling price cannot be more than the MRP.',
+    'offer_not_below_selling' => 'Offer price must be lower than the selling price.',
+    'offer_end_before_start' => 'Offer end date cannot be before the start date.',
+    'max_below_min_stock' => 'Maximum stock cannot be less than the minimum stock level.',
+    'whole_number_for_unit' => 'Use a whole number for items sold in :unit.',
 
     /*
     |--------------------------------------------------------------------------
@@ -200,6 +205,22 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'category_id' => 'category',
+        'brand_id' => 'brand',
+        'unit_id' => 'unit',
+        'sku' => 'product code (SKU)',
+        'selling_price' => 'selling price',
+        'purchase_price' => 'purchase price',
+        'mrp' => 'MRP',
+        'offer_price' => 'offer price',
+        'offer_starts_at' => 'offer start date',
+        'offer_ends_at' => 'offer end date',
+        'min_stock_level' => 'minimum stock level',
+        'max_stock_level' => 'maximum stock level',
+        'internal_notes' => 'internal notes',
+        'hsn_code' => 'HSN code',
+        'name_translations' => 'translated name',
+    ],
 
 ];

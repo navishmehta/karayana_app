@@ -12,6 +12,7 @@ composer install
 cp .env.example .env          # set DB_* and ADMIN_EMAIL / ADMIN_PASSWORD
 php artisan key:generate
 php artisan migrate --seed    # creates store, roles, permissions, admin, units, starter categories
+php artisan storage:link      # serves uploaded images locally (MEDIA_DISK=public)
 php artisan serve             # http://localhost:8000/api/v1/health
 ```
 

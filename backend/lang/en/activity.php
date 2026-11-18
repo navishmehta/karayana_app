@@ -21,4 +21,23 @@ return [
         'password_reset' => 'Reset seller password',
         'deleted' => 'Deleted seller',
     ],
+    'categories' => [
+        'created' => 'Created category',
+        'updated' => 'Updated category',
+        'image_updated' => 'Changed category image',
+        'image_removed' => 'Removed category image',
+        'reordered' => 'Reordered categories',
+        'deleted' => 'Deleted category',
+    ],
+    'products' => [
+        'created' => 'Created product',
+        'updated' => 'Updated product details',
+        'price_changed' => 'Changed product prices',
+        'image_added' => 'Added product image',
+        'image_removed' => 'Removed product image',
+        'deleted' => 'Deleted product',
+        'restored' => 'Restored product',
+    ],
+    'brands' => ['created' => 'Created brand', 'updated' => 'Updated brand', 'deleted' => 'Deleted brand'],
+    'units' => ['created' => 'Created unit', 'updated' => 'Updated unit', 'deleted' => 'Deleted unit'],
 ];

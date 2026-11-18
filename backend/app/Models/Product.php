@@ -4,6 +4,10 @@ namespace App\Models;
 
 use App\Constants\AppConstants;
 use App\Enums\StockStatus;
+use App\Models\Concerns\BelongsToStore;
+use App\Models\Concerns\HasUniqueSlug;
+use Database\Factories\ProductFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,10 +20,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Product extends Model
 {
-    use SoftDeletes;
+    /** @use HasFactory<ProductFactory> */
+    use BelongsToStore, HasFactory, HasUniqueSlug, SoftDeletes;
+
+    /** Fields only users with pricing.view_purchase may see or set. */
+    public const PRIVATE_FIELDS = ['purchase_price', 'internal_notes'];
+
+    /** Fields that need pricing.update_selling to change after creation. */
+    public const SELLING_PRICE_FIELDS = ['selling_price', 'mrp', 'offer_price', 'offer_starts_at', 'offer_ends_at'];
 
     protected $fillable = [
-        'store_id', 'category_id', 'brand_id', 'unit_id', 'name', 'slug', 'description', 'sku', 'barcode',
+        'category_id', 'brand_id', 'unit_id', 'name', 'description', 'sku', 'barcode',
         'purchase_price', 'selling_price', 'mrp', 'offer_price', 'offer_starts_at', 'offer_ends_at',
         'tax_rate', 'hsn_code', 'min_stock_level', 'max_stock_level', 'track_expiry',
         'show_expiry_to_customers', 'is_active', 'is_visible_to_customers', 'is_featured',
@@ -64,7 +75,7 @@ class Product extends Model
 
     public function images(): HasMany
     {
-        return $this->hasMany(ProductImage::class)->orderBy('sort_order');
+        return $this->hasMany(ProductImage::class)->orderByDesc('is_primary')->orderBy('sort_order');
     }
 
     public function batches(): HasMany

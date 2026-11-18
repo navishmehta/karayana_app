@@ -38,6 +38,7 @@ return new class extends Migration
             $table->string('slug', 140);
             $table->text('description')->nullable();
             $table->string('image_path')->nullable();
+            $table->string('image_thumb_path')->nullable();
             $table->integer('sort_order')->default(0);
             $table->boolean('is_active')->default(true);
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();

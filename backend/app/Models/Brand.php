@@ -2,15 +2,20 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToStore;
+use App\Models\Concerns\HasUniqueSlug;
+use Database\Factories\BrandFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Brand extends Model
 {
-    use SoftDeletes;
+    /** @use HasFactory<BrandFactory> */
+    use BelongsToStore, HasFactory, HasUniqueSlug, SoftDeletes;
 
-    protected $fillable = ['store_id', 'name', 'slug', 'is_active'];
+    protected $fillable = ['name', 'is_active'];
 
     protected $casts = ['is_active' => 'boolean'];
 

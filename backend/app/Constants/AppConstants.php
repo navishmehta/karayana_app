@@ -44,5 +44,18 @@ final class AppConstants
     /** Indian mobile number: 10 digits starting 6-9. */
     public const PHONE_REGEX = '/^[6-9]\\d{9}$/';
 
+    /** Auto-generated product code: SK-000123. */
+    public const SKU_PREFIX = 'SK-';
+
+    public const SKU_PAD_LENGTH = 6;
+
+    /** Upper limits accepted by validation (fit DECIMAL(12,2) / DECIMAL(12,3)). */
+    public const MAX_PRICE = 9999999.99;
+
+    public const MAX_QUANTITY = 999999.999;
+
+    /** Max length of a search term. */
+    public const MAX_SEARCH_LENGTH = 100;
+
     private function __construct() {}
 }

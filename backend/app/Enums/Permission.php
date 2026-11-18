@@ -60,6 +60,18 @@ enum Permission: string
         return array_values(array_unique($all, SORT_REGULAR));
     }
 
+    /** Route middleware requiring this permission, e.g. 'permission:products.view'. */
+    public function middleware(): string
+    {
+        return 'permission:'.$this->value;
+    }
+
+    /** Route middleware requiring any one of the given permissions. */
+    public static function anyMiddleware(self ...$permissions): string
+    {
+        return 'permission:'.implode('|', array_map(fn (self $p) => $p->value, $permissions));
+    }
+
     public function group(): string
     {
         return explode('.', $this->value)[0];

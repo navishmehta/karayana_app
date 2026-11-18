@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Constants\AppConstants;
+use App\Models\Concerns\BelongsToStore;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /** quantity_remaining is the source of truth for stock; change it only via the inventory service. */
 class ProductBatch extends Model
 {
+    use BelongsToStore;
+
     protected $fillable = [
         'store_id', 'product_id', 'batch_number', 'manufacturing_date', 'expiry_date',
         'quantity_received', 'quantity_remaining', 'purchase_price', 'received_at',

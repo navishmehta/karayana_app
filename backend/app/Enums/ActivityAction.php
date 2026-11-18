@@ -25,6 +25,29 @@ enum ActivityAction: string
     case SellerPasswordReset = 'sellers.password_reset';
     case SellerDeleted = 'sellers.deleted';
 
+    case CategoryCreated = 'categories.created';
+    case CategoryUpdated = 'categories.updated';
+    case CategoryImageUpdated = 'categories.image_updated';
+    case CategoryImageRemoved = 'categories.image_removed';
+    case CategoriesReordered = 'categories.reordered';
+    case CategoryDeleted = 'categories.deleted';
+
+    case ProductCreated = 'products.created';
+    case ProductUpdated = 'products.updated';
+    case ProductPriceChanged = 'products.price_changed';
+    case ProductImageAdded = 'products.image_added';
+    case ProductImageRemoved = 'products.image_removed';
+    case ProductDeleted = 'products.deleted';
+    case ProductRestored = 'products.restored';
+
+    case BrandCreated = 'brands.created';
+    case BrandUpdated = 'brands.updated';
+    case BrandDeleted = 'brands.deleted';
+
+    case UnitCreated = 'units.created';
+    case UnitUpdated = 'units.updated';
+    case UnitDeleted = 'units.deleted';
+
     public function logName(): string
     {
         return explode('.', $this->value)[0];

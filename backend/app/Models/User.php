@@ -63,6 +63,12 @@ class User extends Authenticatable implements HasLocalePreference
         return $this->hasRole(Role::Admin->value);
     }
 
+    /** Typed permission check (admin always true via Gate::before). */
+    public function hasPermission(Permission $permission): bool
+    {
+        return $this->can($permission->value);
+    }
+
     public function roleName(): ?string
     {
         return $this->isAdmin() ? Role::Admin->value : ($this->hasRole(Role::Seller->value) ? Role::Seller->value : null);

@@ -38,6 +38,9 @@ class AppServiceProvider extends ServiceProvider
 
         Password::defaults(fn () => Password::min(config('kirana.auth.password_min_length'))->letters()->numbers());
 
+        // Numeric IDs only, so paths like products/lookup never hit {product}.
+        Route::patterns(['seller' => '[0-9]+', 'category' => '[0-9]+', 'product' => '[0-9]+', 'image' => '[0-9]+', 'brand' => '[0-9]+', 'unit' => '[0-9]+']);
+
         // {seller} only resolves to a seller of the logged-in admin's store; anything else is a 404.
         Route::bind('seller', fn (string $id) => Models\User::sellers()
             ->where('store_id', request()->user()?->store_id)

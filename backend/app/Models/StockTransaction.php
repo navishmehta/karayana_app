@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Constants\AppConstants;
 use App\Enums\StockTransactionType;
+use App\Models\Concerns\BelongsToStore;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -12,6 +13,8 @@ use LogicException;
 /** Append-only stock ledger. Mistakes are corrected with a new reversing transaction. */
 class StockTransaction extends Model
 {
+    use BelongsToStore;
+
     public const UPDATED_AT = null;
 
     protected $fillable = [
