@@ -98,3 +98,13 @@ it('reloads permissions when the server refuses an action', async () => {
   expect(onForbidden).toHaveBeenCalledTimes(1);
   expect(onSessionEnded).not.toHaveBeenCalled();
 });
+
+it('gets a fresh token first when the app was opened offline (logged in, but no access token yet)', async () => {
+  token = '';
+  configureAuth({ getAccessToken: () => token || null, needsToken: () => !token, refresh, onSessionEnded, onForbidden });
+  fetchMock.mockResolvedValueOnce(json(200, { data: 1 }));
+  await request('/dashboard');
+  expect(refresh).toHaveBeenCalledTimes(1);
+  expect(fetchMock.mock.calls[0][1].headers.Authorization).toBe('Bearer new-token');
+  expect(onSessionEnded).not.toHaveBeenCalled(); // not logged out on reconnect
+});

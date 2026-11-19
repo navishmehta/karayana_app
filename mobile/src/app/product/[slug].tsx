@@ -12,6 +12,7 @@ import { spacing } from '@/theme/tokens';
 import { localizedName } from '@/utils/catalogue';
 import { errorMessage } from '@/utils/errors';
 import { formatDate } from '@/utils/format';
+import { showError } from '@/utils/query';
 
 const MAX_WIDTH = 720;
 
@@ -23,7 +24,7 @@ export default function ProductScreen() {
   const store = useStoreInfo();
 
   if (product.isPending) return <LoadingView />;
-  if (product.isError) {
+  if (showError(product)) {
     return (
       <View style={[styles.root, { backgroundColor: colors.background }]}>
         <ScreenHeader title="" />

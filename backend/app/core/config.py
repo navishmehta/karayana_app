@@ -55,7 +55,7 @@ class Settings(BaseSettings):
     # Email. "log" writes emails to the log (local/testing); "smtp" sends them.
     mail_driver: str = "log"
     mail_from_address: str = "no-reply@example.com"
-    mail_from_name: str = "Smart Kirana"
+    mail_from_name: str = "Ramesh Karayana Store"
     smtp_host: str = "localhost"
     smtp_port: int = 587
     smtp_username: str | None = None

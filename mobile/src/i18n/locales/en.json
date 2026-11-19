@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Smart Kirana",
+    "appName": "Ramesh Karayana Store",
     "retry": "Try again",
     "loading": "Loading…",
     "cancel": "Cancel",
@@ -568,5 +568,31 @@
     },
     "contact": "Questions? Contact {{store}}: {{contact}}",
     "updated": "Last updated: {{date}}"
+  },
+  "offline": {
+    "banner": "You're offline · showing saved data",
+    "offlineWithPending": "Offline · {{count}} changes waiting to be sent",
+    "pending": "Changes waiting to be sent: {{count}}",
+    "syncing": "Sending {{count}} saved changes…",
+    "savedOffline": "Saved on this phone. It will be sent automatically when you're back online.",
+    "screenTitle": "Unsent changes",
+    "explainOffline": "These stock changes are saved on this phone. They will be sent automatically when the internet is back.",
+    "explainOnline": "These stock changes are being sent. If the shop's rules refuse one, it stays here with the reason.",
+    "syncNow": "Send now",
+    "savedAt": "Saved {{time}}",
+    "waiting": "Waiting for internet",
+    "sending": "Sending…",
+    "refused": "Not saved: {{reason}}",
+    "retry": "Try again",
+    "discard": "Discard",
+    "discardConfirm": "Discard this change? It will not be saved.",
+    "empty": "Everything has been sent.",
+    "logoutWarning": "{{count}} stock changes on this phone have not been sent yet. Logging out deletes them."
+  },
+  "crash": {
+    "title": "Something went wrong",
+    "body": "This screen hit an unexpected problem. Your data is safe — try again.",
+    "retry": "Try again",
+    "home": "Go to home"
   }
 }

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
@@ -27,6 +27,8 @@ import { useAppTheme } from '@/theme/ThemeProvider';
 import { radius, spacing } from '@/theme/tokens';
 import { errorMessage } from '@/utils/errors';
 import { formatDateTime } from '@/utils/format';
+import { showError } from '@/utils/query';
+import { goBack } from '@/utils/navigation';
 
 const ACTIVITY_ROWS = 10;
 
@@ -72,13 +74,13 @@ export default function SellerScreen() {
     onSuccess: () => {
       void refreshAfterChange();
       toast.success(t('staff.common.deleted'));
-      router.back();
+      goBack('/staff/sellers');
     },
     onError,
   });
 
   if (seller.isPending) return <LoadingView />;
-  if (seller.isError) return <ErrorState message={errorMessage(seller.error, t)} onRetry={() => void seller.refetch()} />;
+  if (showError(seller)) return <ErrorState message={errorMessage(seller.error, t)} onRetry={() => void seller.refetch()} />;
   const s = seller.data;
   const permissions = draft ?? s.permissions;
   const permissionsChanged = [...permissions].sort().join() !== [...s.permissions].sort().join();

@@ -12,6 +12,7 @@ import { downloadAndShare } from '@/lib/download';
 import { useAppTheme } from '@/theme/ThemeProvider';
 import { radius, spacing } from '@/theme/tokens';
 import { errorMessage } from '@/utils/errors';
+import { showError } from '@/utils/query';
 import {
   columnWidth,
   EMPTY_REPORT_FILTERS,
@@ -91,7 +92,7 @@ export default function ReportScreen() {
 
       {report.isPending ? (
         <LoadingView />
-      ) : report.isError ? (
+      ) : showError(report) ? (
         <ErrorState message={errorMessage(report.error, t)} onRetry={() => void report.refetch()} />
       ) : (
         <ScrollView horizontal contentContainerStyle={styles.tableScroll}>

@@ -9,6 +9,7 @@ import { useAppTheme } from '@/theme/ThemeProvider';
 import { spacing } from '@/theme/tokens';
 import { gridColumns, gridItemWidth } from '@/utils/catalogue';
 import { errorMessage } from '@/utils/errors';
+import { showError } from '@/utils/query';
 
 const MAX_WIDTH = 1200;
 
@@ -25,7 +26,7 @@ export default function CategoriesScreen() {
     <SafeAreaView edges={['top']} style={[styles.root, { backgroundColor: colors.background }]}>
       {categories.isPending ? (
         <LoadingView />
-      ) : categories.isError ? (
+      ) : showError(categories) ? (
         <ErrorState message={errorMessage(categories.error, t)} onRetry={() => void categories.refetch()} />
       ) : (
         <FlatList

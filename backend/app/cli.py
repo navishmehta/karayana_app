@@ -24,6 +24,23 @@ def seed_command() -> None:
     typer.echo("Seed complete.")
 
 
+@cli.command("seed-demo")
+def seed_demo_command() -> None:
+    """Local testing only: fill an empty shop with ~50 products, 4 sellers and 30 days of realistic history."""
+    from app.core.database import engine
+    from app.db.demo import DemoError, build_demo_shop
+
+    logging.basicConfig(level=logging.WARNING)
+    typer.echo("Building the demo shop (30 days of history) — this takes a minute or two…")
+    try:
+        with engine.connect() as connection:
+            result = build_demo_shop(connection)
+    except DemoError as exc:
+        typer.echo(f"Not done: {exc}", err=True)
+        raise typer.Exit(1) from exc
+    typer.echo(f"Demo shop ready: {result['products']} products, {result['sellers']} sellers, {result['days']} days.")
+
+
 @cli.command("refresh-stock")
 def refresh_stock_command() -> None:
     """Nightly (00:05 IST): batches that expired at midnight stop counting as sellable."""

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View } from 'react-native';
@@ -19,7 +19,10 @@ import { displayToApiDate, isValidDisplayDate } from '@/utils/dates';
 import { errorMessage } from '@/utils/errors';
 import { formatDate, formatQuantity } from '@/utils/format';
 import { newRequestKey, orNull } from '@/utils/forms';
+import { isOnline } from '@/lib/network';
+import { isConnectionError, useOfflineQueue } from '@/lib/offlineQueue';
 import { isApiError } from '@/api/errors';
+import { goBack } from '@/utils/navigation';
 
 const QUANTITY = /^\d{1,6}(\.\d{1,3})?$/;
 const FEFO_ID = 0;
@@ -35,6 +38,8 @@ export default function StockMoveScreen() {
   const seePurchase = useCan(PERMISSIONS.pricingViewPurchase);
 
   const [productId, setProductId] = useState<number | null>(params.productId ? Number(params.productId) : null);
+  // The product as shown in the picker: enough to fill the form even when its details can't load (offline).
+  const [picked, setPicked] = useState<StaffProduct | null>(null);
   const [batchId, setBatchId] = useState<number>(params.batchId ? Number(params.batchId) : FEFO_ID);
   const [picker, setPicker] = useState<'product' | 'batch' | null>(null);
   const [search, setSearch] = useState('');
@@ -61,7 +66,7 @@ export default function StockMoveScreen() {
 
   if (!canMove) return <ErrorState message={t('staff.common.noPermission')} />;
 
-  const p = product.data;
+  const p = product.data ?? (picked?.id === productId ? picked : undefined);
   const unit = p?.unit.short_name ?? '';
   // Before a product is chosen there is no unit: use the label's plain version (e.g. "Quantity", not "Quantity ()").
   const withUnit = (key: string) => (unit ? t(key, { unit }) : t(`${key}NoUnit`));
@@ -115,12 +120,27 @@ export default function StockMoveScreen() {
     setErrors(found);
     if (Object.keys(found).length) return;
     setSaving(true);
+    // No internet: keep the change on the phone; it is sent automatically when the connection returns.
+    const saveOffline = () => {
+      const label = `${p?.name ?? ''} · ${t(`staff.stock.actions.${kind}`)} · ${formatQuantity(quantity, unit)}`;
+      useOfflineQueue.getState().add({ key: requestKey, kind, body: body(), label });
+      toast.success(t('offline.savedOffline'));
+      goBack('/staff/stock');
+    };
     try {
+      if (!isOnline()) {
+        saveOffline();
+        return;
+      }
       await inventoryApi.move(kind, body(), requestKey);
       await refreshAfterChange();
       toast.success(t('staff.stock.saved'));
-      router.back();
+      goBack('/staff/stock');
     } catch (error) {
+      if (isConnectionError(error)) {
+        saveOffline(); // same key: if the first attempt did reach the server, it is not counted twice
+        return;
+      }
       const field = (name: string) => (isApiError(error) ? error.fieldError(name) : undefined);
       setErrors({
         quantity: field('quantity') ?? field('counted_quantity'),
@@ -235,6 +255,7 @@ export default function StockMoveScreen() {
         onSearch={setSearch}
         onClose={() => setPicker(null)}
         onSelect={(item) => {
+          setPicked(productSearch.data?.find((candidate) => candidate.id === item.id) ?? null);
           setProductId(item.id);
           setBatchId(FEFO_ID);
           setPicker(null);

@@ -18,6 +18,7 @@ import { useDashboard } from '@/hooks/useStaff';
 import { radius, spacing } from '@/theme/tokens';
 import { errorMessage } from '@/utils/errors';
 import { formatDate, formatDateTime, formatMoney, formatQuantity } from '@/utils/format';
+import { showError } from '@/utils/query';
 
 const CHART_DAYS = ['7', '30'] as const;
 const TOP_CATEGORIES = 6;
@@ -40,7 +41,7 @@ export default function DashboardScreen() {
     if (landing.name !== 'index') return <Redirect href={landing.href} />;
   }
   if (dashboard.isPending) return <LoadingView />;
-  if (dashboard.isError) return <ErrorState message={errorMessage(dashboard.error, t)} onRetry={() => void dashboard.refetch()} />;
+  if (showError(dashboard)) return <ErrorState message={errorMessage(dashboard.error, t)} onRetry={() => void dashboard.refetch()} />;
 
   const d = dashboard.data;
   const links = dashboardLinks(user);

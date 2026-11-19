@@ -34,9 +34,11 @@ interface PagedListProps<T> {
 export function PagedList<T>({ items, keyOf, render, header, query, emptyTitle, emptyBody, emptyIcon, bottomSpace }: PagedListProps<T>) {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
+  // Saved items stay visible when a reload fails (e.g. offline); the error only shows when there is nothing.
+  const failed = query.isError && items.length === 0;
   const empty = query.isPending ? (
     <LoadingView />
-  ) : query.isError ? (
+  ) : failed ? (
     <ErrorState message={errorMessage(query.error, t)} onRetry={() => void query.refetch()} />
   ) : (
     <EmptyState icon={emptyIcon} title={emptyTitle} body={emptyBody} />
@@ -44,7 +46,7 @@ export function PagedList<T>({ items, keyOf, render, header, query, emptyTitle, 
 
   return (
     <FlatList
-      data={query.isPending || query.isError ? [] : items}
+      data={query.isPending || failed ? [] : items}
       keyExtractor={(item) => String(keyOf(item))}
       renderItem={({ item }) => render(item)}
       ListHeaderComponent={header}

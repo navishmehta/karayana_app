@@ -11,6 +11,7 @@ import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useAppTheme } from '@/theme/ThemeProvider';
 import { radius, spacing, TOUCH_TARGET } from '@/theme/tokens';
 import { activeFilterCount, type CatalogueFilters, toCatalogueQuery } from '@/utils/catalogue';
+import { showError } from '@/utils/query';
 
 import { FilterSheet } from './FilterSheet';
 import { ProductGrid } from './ProductGrid';
@@ -48,7 +49,7 @@ export function CatalogueBrowser({ initial, autoFocus }: { initial: CatalogueFil
           )}
         </Pressable>
       </View>
-      {!pages.isPending && !pages.isError && (
+      {!pages.isPending && !showError(pages) && (
         <AppText size="small" color="textMuted" accessibilityLiveRegion="polite">
           {t('catalogue.resultsCount', { count: pages.total })}
         </AppText>
@@ -62,7 +63,7 @@ export function CatalogueBrowser({ initial, autoFocus }: { initial: CatalogueFil
         products={pages.products}
         header={header}
         isPending={pages.isPending}
-        isError={pages.isError}
+        isError={showError(pages)}
         error={pages.error}
         isRefetching={pages.isRefetching}
         isFetchingNextPage={pages.isFetchingNextPage}

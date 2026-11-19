@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Smart Kirana",
+    "name": "Ramesh Karayana Store",
     "slug": "smart-kirana",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -46,8 +46,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Smart Kirana uses your photos to add product and category images.",
-          "cameraPermission": "Smart Kirana uses the camera to take product photos."
+          "photosPermission": "Ramesh Karayana Store uses your photos to add product and category images.",
+          "cameraPermission": "Ramesh Karayana Store uses the camera to take product photos."
         }
       ],
       "expo-sharing",

@@ -11,6 +11,7 @@ import { Button } from './Button';
 export function ConfirmDialog({
   visible,
   title,
+  message,
   confirmLabel,
   destructive,
   loading,
@@ -19,6 +20,8 @@ export function ConfirmDialog({
 }: {
   visible: boolean;
   title: string;
+  /** Extra explanation under the title (e.g. what will be lost). */
+  message?: string;
   confirmLabel: string;
   destructive?: boolean;
   loading?: boolean;
@@ -34,6 +37,7 @@ export function ConfirmDialog({
           <AppText size="subtitle" weight="semibold">
             {title}
           </AppText>
+          {message && <AppText color="textMuted">{message}</AppText>}
           <View style={styles.actions}>
             <Button title={t('common.cancel')} variant="ghost" onPress={onCancel} />
             <Button

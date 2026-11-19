@@ -17,6 +17,9 @@ export const STORAGE_KEYS = {
   theme: 'pref.theme',
   accessToken: 'auth.access_token',
   refreshToken: 'auth.refresh_token',
+  lastUser: 'auth.last_user', // staff profile, so the staff side opens offline
+  queryCache: 'cache.queries', // data saved for offline viewing
+  offlineQueue: 'offline.queue', // stock changes waiting for the internet
 } as const;
 
 export const ROLES = { admin: 'admin', seller: 'seller' } as const;
@@ -25,6 +28,11 @@ export type Role = (typeof ROLES)[keyof typeof ROLES];
 /** Data fetching */
 export const QUERY_STALE_MS = 60_000;
 export const QUERY_RETRY_COUNT = 1;
+
+/** Offline */
+const DAY_MS = 24 * 60 * 60 * 1000;
+export const OFFLINE_CACHE_MAX_AGE_MS = 7 * DAY_MS; // saved data older than this is thrown away
+export const OFFLINE_BANNER_BOTTOM_OFFSET = 84; // keeps the offline pill above the tab bar
 
 /** Catalogue */
 export const CATALOGUE_PAGE_SIZE = 20; // API maximum is 50
@@ -39,7 +47,7 @@ export const RESET_CODE_LENGTH = 6;
 export const PRIVACY_UPDATED = '19-11-2026';
 /** Order of the privacy policy sections (text in the locale files under privacy.sections.<key>). */
 export const PRIVACY_SECTIONS = ['customers', 'staff', 'photos', 'notifications', 'sharing', 'deleting'] as const;
-export const DEVICE_NAME = 'Smart Kirana app';
+export const DEVICE_NAME = 'Ramesh Karayana Store app';
 
 /** Currency and dates */
 export const CURRENCY = 'INR';

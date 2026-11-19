@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +20,8 @@ import { useAppTheme } from '@/theme/ThemeProvider';
 import { radius, spacing } from '@/theme/tokens';
 import { errorMessage } from '@/utils/errors';
 import { applyServerErrors, orNull } from '@/utils/forms';
+import { showError } from '@/utils/query';
+import { goBack } from '@/utils/navigation';
 
 const IMAGE_SIZE = 96;
 
@@ -31,7 +33,7 @@ export default function CategoryFormScreen() {
   const category = useStaffCategory(categoryId);
 
   if (categoryId && category.isPending) return <LoadingView />;
-  if (categoryId && category.isError) return <ErrorState message={errorMessage(category.error, t)} onRetry={() => void category.refetch()} />;
+  if (categoryId && showError(category)) return <ErrorState message={errorMessage(category.error, t)} onRetry={() => void category.refetch()} />;
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <ScreenHeader title={categoryId ? t('staff.categories.editTitle') : t('staff.categories.newTitle')} />
@@ -78,7 +80,7 @@ function CategoryForm({ category }: { category?: StaffCategory }) {
       else if (access.editImage && category?.image_url && !image.preview) await categoryApi.removeImage(category.id);
       await refreshAfterChange();
       toast.success(t('staff.common.saved'));
-      router.back();
+      goBack('/staff/categories');
     } catch (error) {
       const leftovers = applyServerErrors(error, setError, ['name', 'namePa', 'description'] as const, { name_translations: 'namePa' });
       setFormError(leftovers[0] ?? errorMessage(error, t));
@@ -92,7 +94,7 @@ function CategoryForm({ category }: { category?: StaffCategory }) {
       await categoryApi.remove(category.id);
       await refreshAfterChange();
       toast.success(t('staff.common.deleted'));
-      router.back();
+      goBack('/staff/categories');
     } catch (error) {
       toast.error(errorMessage(error, t)); // e.g. "This category still has products…"
       setConfirmDelete(false);

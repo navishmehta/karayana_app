@@ -10,7 +10,7 @@ import {
   NotoSansGurmukhi_600SemiBold,
   NotoSansGurmukhi_700Bold,
 } from '@expo-google-fonts/noto-sans-gurmukhi';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -20,11 +20,17 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useSession } from '@/auth/session';
 import { restoreLanguage } from '@/i18n';
-import { queryClient } from '@/lib/queryClient';
-import { ToastHost } from '@/components/ui';
+import { startNetworkMonitoring } from '@/lib/network';
+import { persistOptions, queryClient } from '@/lib/queryClient';
+import { OfflineBanner, ToastHost } from '@/components/ui';
+import { CrashScreen } from '@/components/ui/CrashScreen';
 import { ThemeProvider, useAppTheme } from '@/theme/ThemeProvider';
 
 void SplashScreen.preventAutoHideAsync();
+startNetworkMonitoring();
+
+/** Any unexpected error in a screen shows a friendly "try again" page instead of closing the app. */
+export { CrashScreen as ErrorBoundary };
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
@@ -52,11 +58,11 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-      <QueryClientProvider client={queryClient}>
+      <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
         <ThemeProvider>
           <RootStack />
         </ThemeProvider>
-      </QueryClientProvider>
+      </PersistQueryClientProvider>
     </SafeAreaProvider>
   );
 }
@@ -81,6 +87,7 @@ function RootStack() {
           <Stack.Screen name="staff" />
         </Stack.Protected>
       </Stack>
+      <OfflineBanner />
       <ToastHost />
     </>
   );

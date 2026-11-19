@@ -22,6 +22,8 @@ import { spacing } from '@/theme/tokens';
 import { apiToDisplayDate, displayToApiDate } from '@/utils/dates';
 import { errorMessage } from '@/utils/errors';
 import { applyServerErrors, orNull, pickDefaultUnit } from '@/utils/forms';
+import { showError } from '@/utils/query';
+import { goBack } from '@/utils/navigation';
 
 const schema = (t: Parameters<typeof requiredText>[0], requireSelling: boolean) =>
   z.object({
@@ -124,7 +126,7 @@ export default function ProductFormScreen() {
   const { t } = useTranslation();
 
   if ((productId && existing.isPending) || units.isPending) return <LoadingView />;
-  if (productId && existing.isError) return <ErrorState message={errorMessage(existing.error, t)} onRetry={() => void existing.refetch()} />;
+  if (productId && showError(existing)) return <ErrorState message={errorMessage(existing.error, t)} onRetry={() => void existing.refetch()} />;
 
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
@@ -203,7 +205,7 @@ function ProductForm({ product, defaultUnit }: { product?: StaffProduct; default
       await refreshAfterChange();
       queryClient.setQueryData(staffKeys.product(result.data.id), result);
       toast.success(editing ? t('staff.common.saved') : t('staff.products.created'));
-      if (editing) router.back();
+      if (editing) goBack('/staff/products');
       else router.replace({ pathname: '/staff/product/[id]', params: { id: String(result.data.id) } });
     } catch (error) {
       const leftovers = applyServerErrors(error, setError, FORM_FIELDS, API_FIELD_TO_FORM);

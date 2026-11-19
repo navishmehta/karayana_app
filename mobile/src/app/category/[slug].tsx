@@ -8,6 +8,7 @@ import { useCategory } from '@/hooks/useCatalogue';
 import { useAppTheme } from '@/theme/ThemeProvider';
 import { DEFAULT_FILTERS, localizedName } from '@/utils/catalogue';
 import { errorMessage } from '@/utils/errors';
+import { showError } from '@/utils/query';
 
 export default function CategoryScreen() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
@@ -20,7 +21,7 @@ export default function CategoryScreen() {
       <ScreenHeader title={category.data ? localizedName(category.data, i18n.language) : ''} />
       {category.isPending ? (
         <LoadingView />
-      ) : category.isError ? (
+      ) : showError(category) ? (
         <ErrorState message={errorMessage(category.error, t)} onRetry={() => void category.refetch()} />
       ) : (
         <CatalogueBrowser initial={{ ...DEFAULT_FILTERS, category: slug }} />

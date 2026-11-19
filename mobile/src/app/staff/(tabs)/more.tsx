@@ -8,7 +8,8 @@ import { can, isAdmin } from '@/auth/permissions';
 import { useSession } from '@/auth/session';
 import { AppText, Badge, Card, ConfirmDialog, EmptyState, ListRow, Screen } from '@/components/ui';
 import { PERMISSIONS } from '@/constants/permissions';
-import { queryClient } from '@/lib/queryClient';
+import { useOfflineQueue } from '@/lib/offlineQueue';
+import { clearSavedData } from '@/lib/queryClient';
 import { useAppTheme } from '@/theme/ThemeProvider';
 import { spacing } from '@/theme/tokens';
 
@@ -21,6 +22,7 @@ export default function MoreScreen() {
   const logout = useSession((s) => s.logout);
   const [confirming, setConfirming] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+  const pending = useOfflineQueue((s) => s.items.length);
   if (!user) return null;
 
   const admin = isAdmin(user);
@@ -68,6 +70,16 @@ export default function MoreScreen() {
           )}
         </Card>
       )}
+      {pending > 0 && (
+        <Card>
+          <ListRow
+            title={t('offline.screenTitle')}
+            subtitle={t('offline.pending', { count: pending })}
+            left={<Ionicons name="cloud-upload-outline" size={22} color={colors.warning} />}
+            onPress={() => router.push('/staff/pending')}
+          />
+        </Card>
+      )}
       <Card>
         {links
           .filter((l) => l.show)
@@ -81,6 +93,7 @@ export default function MoreScreen() {
       <ConfirmDialog
         visible={confirming}
         title={t('auth.logoutConfirm')}
+        message={pending ? t('offline.logoutWarning', { count: pending }) : undefined}
         confirmLabel={t('auth.logout')}
         destructive
         loading={loggingOut}
@@ -88,7 +101,9 @@ export default function MoreScreen() {
         onConfirm={async () => {
           setLoggingOut(true);
           await logout();
-          queryClient.removeQueries({ queryKey: ['staff'] }); // never show one user's data to the next
+          // Never show one user's data, or send their unsent changes, as the next user.
+          useOfflineQueue.getState().clear();
+          await clearSavedData();
           setLoggingOut(false);
           setConfirming(false);
           router.replace('/');

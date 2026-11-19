@@ -25,6 +25,8 @@ export interface RequestOptions {
 /** Provided by the session store so the client never imports it (no import cycle). */
 export interface AuthBridge {
   getAccessToken: () => string | null;
+  /** Logged in but without an access token yet (the app was opened offline): get one before sending. */
+  needsToken?: () => boolean;
   refresh: () => Promise<boolean>; // true when new tokens were obtained
   onSessionEnded: () => void;
   /** The server refused an action: permissions may have changed, so reload them. */
@@ -100,6 +102,7 @@ function refreshOnce(): Promise<boolean> {
 }
 
 export async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  if (options.auth !== false && auth?.needsToken?.()) await refreshOnce();
   let response = await send(path, options);
 
   if (response.status === 401 && options.auth !== false && auth) {

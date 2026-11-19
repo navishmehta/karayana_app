@@ -9,6 +9,7 @@ import { AppText, Button, Card, Screen, TextField } from '@/components/ui';
 import { RESET_CODE_LENGTH } from '@/constants/app';
 import { forgotSchema, resetSchema } from '@/lib/validation';
 import { errorMessage } from '@/utils/errors';
+import { goBack } from '@/utils/navigation';
 
 /** Step 1: email → code is sent. Step 2: code + new password. */
 export default function ForgotPasswordScreen() {
@@ -21,7 +22,7 @@ export default function ForgotPasswordScreen() {
         {t('auth.forgotTitle')}
       </AppText>
       <Card>{email ? <ResetStep email={email} /> : <EmailStep onSent={setEmail} />}</Card>
-      <Button title={t('common.back')} variant="ghost" onPress={() => router.back()} />
+      <Button title={t('common.back')} variant="ghost" onPress={() => goBack('/login')} />
     </Screen>
   );
 }

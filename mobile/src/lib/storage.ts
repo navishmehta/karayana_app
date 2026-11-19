@@ -11,6 +11,7 @@ import { Platform } from 'react-native';
 export const preferences = {
   get: (key: string): Promise<string | null> => AsyncStorage.getItem(key),
   set: (key: string, value: string): Promise<void> => AsyncStorage.setItem(key, value),
+  remove: (key: string): Promise<void> => AsyncStorage.removeItem(key),
 };
 
 const isWeb = Platform.OS === 'web';

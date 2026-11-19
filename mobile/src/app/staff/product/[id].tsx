@@ -30,6 +30,8 @@ import { useAppTheme } from '@/theme/ThemeProvider';
 import { radius, spacing } from '@/theme/tokens';
 import { errorMessage } from '@/utils/errors';
 import { formatDate, formatDateTime, formatMoney, formatPercent, formatQuantity } from '@/utils/format';
+import { showError } from '@/utils/query';
+import { goBack } from '@/utils/navigation';
 
 const MAX_IMAGES = 6;
 const IMAGE_SIZE = 88;
@@ -64,7 +66,7 @@ export default function StaffProductScreen() {
     onSuccess: () => {
       void refreshAfterChange();
       toast.success(t('staff.common.deleted'));
-      router.back();
+      goBack('/staff/products');
     },
     onError,
   });
@@ -86,7 +88,7 @@ export default function StaffProductScreen() {
   });
 
   if (product.isPending) return <LoadingView />;
-  if (product.isError) {
+  if (showError(product)) {
     return (
       <View style={[styles.root, { backgroundColor: colors.background }]}>
         <ScreenHeader title="" />

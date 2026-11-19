@@ -14,6 +14,7 @@ import { queryClient } from '@/lib/queryClient';
 import { useAppTheme } from '@/theme/ThemeProvider';
 import { CHIP_HIT_SLOP, radius, spacing } from '@/theme/tokens';
 import { errorMessage } from '@/utils/errors';
+import { showError } from '@/utils/query';
 
 const INDIA_DIALING_CODE = '91';
 const LOGO_SIZE = 64;
@@ -37,7 +38,7 @@ export default function CustomerHome() {
   const newArrivals = useHighlights('new');
 
   if (store.isPending) return <LoadingView />;
-  if (store.isError) return <ErrorState message={errorMessage(store.error, t)} onRetry={() => void store.refetch()} />;
+  if (showError(store)) return <ErrorState message={errorMessage(store.error, t)} onRetry={() => void store.refetch()} />;
 
   const s = store.data;
   const refreshing = store.isRefetching || categories.isRefetching || featured.isRefetching || newArrivals.isRefetching;

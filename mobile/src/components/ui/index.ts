@@ -17,3 +17,4 @@ export { toast, ToastHost } from './Toast';
 export { FadeIn } from './FadeIn';
 export { Gradient } from './Gradient';
 export { PressableScale } from './PressableScale';
+export { OfflineBanner } from './OfflineBanner';

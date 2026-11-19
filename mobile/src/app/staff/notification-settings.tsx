@@ -10,6 +10,7 @@ import { queryClient } from '@/lib/queryClient';
 import { useAppTheme } from '@/theme/ThemeProvider';
 import { spacing } from '@/theme/tokens';
 import { errorMessage } from '@/utils/errors';
+import { showError } from '@/utils/query';
 
 /** Each staff member chooses which alerts reach them (the admin switches alert types on/off for the store). */
 export default function NotificationSettingsScreen() {
@@ -32,7 +33,7 @@ export default function NotificationSettingsScreen() {
       <ScreenHeader title={t('staff.notifications.settings')} />
       {prefs.isPending ? (
         <LoadingView />
-      ) : prefs.isError ? (
+      ) : showError(prefs) ? (
         <ErrorState message={errorMessage(prefs.error, t)} onRetry={() => void prefs.refetch()} />
       ) : (
         <ScrollView contentContainerStyle={styles.content}>

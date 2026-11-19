@@ -18,6 +18,7 @@ import { useAppTheme } from '@/theme/ThemeProvider';
 import { radius, spacing } from '@/theme/tokens';
 import { errorMessage } from '@/utils/errors';
 import { applyServerErrors } from '@/utils/forms';
+import { showError } from '@/utils/query';
 
 const LOGO_SIZE = 88;
 const PHONE = /^[6-9]\d{9}$/;
@@ -31,7 +32,7 @@ export default function StoreSettingsScreen() {
       <ScreenHeader title={t('staff.more.storeSettings')} />
       {settings.isPending ? (
         <LoadingView />
-      ) : settings.isError ? (
+      ) : showError(settings) ? (
         <ErrorState message={errorMessage(settings.error, t)} onRetry={() => void settings.refetch()} />
       ) : (
         <SettingsForm settings={settings.data} />

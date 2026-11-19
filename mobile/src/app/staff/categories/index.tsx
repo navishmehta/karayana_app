@@ -13,6 +13,7 @@ import { refreshAfterChange, useStaffCategories } from '@/hooks/useStaff';
 import { useAppTheme } from '@/theme/ThemeProvider';
 import { radius, spacing, TOUCH_TARGET } from '@/theme/tokens';
 import { errorMessage } from '@/utils/errors';
+import { showError } from '@/utils/query';
 
 export default function CategoriesScreen() {
   const { t } = useTranslation();
@@ -41,7 +42,7 @@ export default function CategoriesScreen() {
       <ScreenHeader title={t('staff.more.categories')} />
       {categories.isPending ? (
         <LoadingView />
-      ) : categories.isError ? (
+      ) : showError(categories) ? (
         <ErrorState message={errorMessage(categories.error, t)} onRetry={() => void categories.refetch()} />
       ) : (
         <FlatList

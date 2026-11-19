@@ -8,6 +8,7 @@ import { useReports } from '@/hooks/useStaff';
 import { useAppTheme } from '@/theme/ThemeProvider';
 import { radius, spacing } from '@/theme/tokens';
 import { errorMessage } from '@/utils/errors';
+import { showError } from '@/utils/query';
 
 const ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
   products: 'cube-outline',
@@ -32,7 +33,7 @@ export default function ReportsScreen() {
       <ScreenHeader title={t('staff.more.reports')} />
       {reports.isPending ? (
         <LoadingView />
-      ) : reports.isError ? (
+      ) : showError(reports) ? (
         <ErrorState message={errorMessage(reports.error, t)} onRetry={() => void reports.refetch()} />
       ) : (
         <FlatList

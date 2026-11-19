@@ -27,6 +27,30 @@ Expo Go, or open the printed website address. Backend output (including password
 `backend/dev-server.log`. **Ctrl+C** stops everything. The script is `scripts/dev.sh`; first-time setup of each
 part is below.
 
+### Demo data for testing
+
+```bash
+cd backend && uv run python -m app.cli seed-demo
+```
+
+Fills an **empty** local shop with a realistic month: 52 products in all categories (photos, offers, featured,
+hidden, loose items by kg), one deleted product, 4 sellers with different permissions (one deactivated) and
+30 days of history — deliveries, sales, damage, count corrections and expiry write-offs — so the dashboard
+charts, reports, alerts, notifications and activity log all have data. Some products end up low or out of
+stock and some batches are expired or about to expire. It refuses to run in production or on a shop that
+already has products. Seller logins: `gurpreet@demo.test`, `aman@demo.test`, `simran@demo.test`
+(password `Demo@1234`; `rohit@demo.test` is deactivated). The shop is defined in `backend/app/db/demo_data.py`.
+
+## Offline mode
+
+- Everything a person has opened stays readable without internet (saved on the device for 7 days), and photos
+  are cached. Staff can open the app offline: the staff side opens with the saved login.
+- **Stock changes work offline**: stock in / out / count / damage are saved on the phone and sent automatically
+  when the connection returns, in order. Each keeps its Idempotency-Key, so nothing is ever counted twice.
+  If the server refuses one (e.g. not enough stock), it stays under **More → Unsent changes** with the reason.
+- Other changes (products, prices, sellers, settings) need internet; the app says so.
+- An unexpected error on a screen shows a "Try again" page instead of closing the app.
+
 ## Backend – local setup
 
 Requirements: [uv](https://docs.astral.sh/uv/) (installs Python 3.12 itself) and MySQL 8.0.16+.
