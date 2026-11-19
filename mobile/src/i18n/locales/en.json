@@ -275,7 +275,10 @@
       "saved": "Stock updated",
       "by": "by {{name}}",
       "after": "now {{qty}}",
-      "empty": "No stock movements yet"
+      "empty": "No stock movements yet",
+      "quantityNoUnit": "Quantity",
+      "countedQuantityNoUnit": "Counted on shelf",
+      "purchasePricePerUnitNoUnit": "Purchase price per unit"
     },
     "expiry": {
       "expired": "Expired",
@@ -367,7 +370,8 @@
       "resetPasswordHint": "The seller will be logged out of all devices.",
       "passwordReset": "Password reset",
       "delete": "Delete seller",
-      "deleteConfirm": "Delete \"{{name}}\"? Their past activity is kept."
+      "deleteConfirm": "Delete \"{{name}}\"? Their past activity is kept.",
+      "searchPlaceholder": "Search by name, email or phone…"
     },
     "activity": {
       "empty": "No activity yet",

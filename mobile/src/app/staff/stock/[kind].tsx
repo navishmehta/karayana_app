@@ -63,6 +63,8 @@ export default function StockMoveScreen() {
 
   const p = product.data;
   const unit = p?.unit.short_name ?? '';
+  // Before a product is chosen there is no unit: use the label's plain version (e.g. "Quantity", not "Quantity ()").
+  const withUnit = (key: string) => (unit ? t(key, { unit }) : t(`${key}NoUnit`));
   const batchList = (batches.data ?? []).filter((b) => Number(b.quantity_remaining) > 0 || kind === 'adjust');
   const chosenBatch = batchList.find((b) => b.id === batchId);
   const purchasePrice = price ?? p?.purchase_price ?? '';
@@ -164,7 +166,7 @@ export default function StockMoveScreen() {
 
         <Card>
           <TextField
-            label={kind === 'adjust' ? t('staff.stock.countedQuantity', { unit }) : t('staff.stock.quantity', { unit })}
+            label={withUnit(kind === 'adjust' ? 'staff.stock.countedQuantity' : 'staff.stock.quantity')}
             hint={kind === 'adjust' && chosenBatch ? t('staff.stock.systemSays', { qty: formatQuantity(chosenBatch.quantity_remaining, unit) }) : undefined}
             value={quantity}
             onChangeText={setQuantity}
@@ -196,7 +198,7 @@ export default function StockMoveScreen() {
               />
               {seePurchase && (
                 <TextField
-                  label={t('staff.stock.purchasePricePerUnit', { unit })}
+                  label={withUnit('staff.stock.purchasePricePerUnit')}
                   value={purchasePrice}
                   onChangeText={setPrice}
                   keyboardType="decimal-pad"

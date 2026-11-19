@@ -58,7 +58,7 @@ export default function CategoriesScreen() {
                 <ListRow
                   title={item.name}
                   subtitle={[item.name_translations.pa, t('catalogue.productsCount', { count: item.products_count })].filter(Boolean).join(' · ')}
-                  right={!item.is_active ? <Badge label={t('staff.common.inactive')} tone="textMuted" /> : undefined}
+                  below={!item.is_active ? <Badge label={t('staff.common.inactive')} tone="textMuted" /> : undefined}
                   onPress={canUpdate ? () => open(item.id) : undefined}
                 />
               </View>

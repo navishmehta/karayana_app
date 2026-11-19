@@ -10,6 +10,8 @@ import { AppText } from './AppText';
 interface ListRowProps {
   title: string;
   subtitle?: string;
+  /** Small extra content under the subtitle (e.g. a status badge), so it never squeezes the text. */
+  below?: ReactNode;
   left?: ReactNode;
   right?: ReactNode;
   onPress?: () => void;
@@ -17,7 +19,7 @@ interface ListRowProps {
   danger?: boolean;
 }
 
-export function ListRow({ title, subtitle, left, right, onPress, chevron = !!onPress, danger }: ListRowProps) {
+export function ListRow({ title, subtitle, below, left, right, onPress, chevron = !!onPress, danger }: ListRowProps) {
   const { colors } = useAppTheme();
   return (
     <Pressable
@@ -36,6 +38,7 @@ export function ListRow({ title, subtitle, left, right, onPress, chevron = !!onP
             {subtitle}
           </AppText>
         )}
+        {below}
       </View>
       {right}
       {chevron && <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />}

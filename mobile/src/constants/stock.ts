@@ -12,3 +12,6 @@ export const STOCK_REASONS: Record<StockKind, readonly string[]> = {
 
 /** Movements that work on one chosen batch. */
 export const NEEDS_BATCH: StockKind[] = ['adjust', 'damage'];
+
+/** Unit pre-selected for a new product (most kirana items are sold by the piece). Falls back to the first unit. */
+export const DEFAULT_UNIT_SHORT_NAME = 'pcs';

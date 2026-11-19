@@ -7,8 +7,8 @@ import { StyleSheet, View } from 'react-native';
 import type { PublicCategory } from '@/api/types';
 import { AppText, PressableScale } from '@/components/ui';
 import { useAppTheme } from '@/theme/ThemeProvider';
-import { radius, shadow, spacing, tintAt } from '@/theme/tokens';
-import { localizedName } from '@/utils/catalogue';
+import { CHIP_HEIGHT, CHIP_HIT_SLOP, radius, shadow, spacing, tintAt } from '@/theme/tokens';
+import { categoryIcon, localizedName } from '@/utils/catalogue';
 
 export const openCategory = (slug: string) => router.push({ pathname: '/category/[slug]', params: { slug } });
 
@@ -29,7 +29,7 @@ export function CategoryTile({ category, index = 0 }: { category: PublicCategory
         {category.image_thumb_url ? (
           <Image source={category.image_thumb_url} style={styles.image} contentFit="cover" />
         ) : (
-          <Ionicons name="basket" size={30} color={tint.fg} />
+          <Ionicons name={categoryIcon(category.name)} size={30} color={tint.fg} />
         )}
       </View>
       <AppText weight="semibold" align="center" numberOfLines={2}>
@@ -64,6 +64,7 @@ export function CategoryChip({
       accessibilityRole="button"
       accessibilityState={{ selected }}
       onPress={onPress ?? (() => openCategory(category.slug))}
+      hitSlop={CHIP_HIT_SLOP}
       style={[
         styles.chip,
         { backgroundColor: selected ? colors.primary : colors.surface, borderColor: selected ? colors.primary : colors.border },
@@ -93,6 +94,7 @@ const styles = StyleSheet.create({
   image: { width: '100%', height: '100%' },
   count: { borderRadius: radius.pill, paddingHorizontal: spacing.sm, paddingVertical: spacing.xxs },
   chip: {
+    minHeight: CHIP_HEIGHT,
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,

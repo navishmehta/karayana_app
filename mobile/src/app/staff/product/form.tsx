@@ -21,7 +21,7 @@ import { useAppTheme } from '@/theme/ThemeProvider';
 import { spacing } from '@/theme/tokens';
 import { apiToDisplayDate, displayToApiDate } from '@/utils/dates';
 import { errorMessage } from '@/utils/errors';
-import { applyServerErrors, orNull } from '@/utils/forms';
+import { applyServerErrors, orNull, pickDefaultUnit } from '@/utils/forms';
 
 const schema = (t: Parameters<typeof requiredText>[0], requireSelling: boolean) =>
   z.object({
@@ -129,7 +129,7 @@ export default function ProductFormScreen() {
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <ScreenHeader title={productId ? t('staff.products.form.editTitle') : t('staff.products.form.newTitle')} />
-      <ProductForm product={existing.data} defaultUnit={units.data?.[0]} />
+      <ProductForm product={existing.data} defaultUnit={pickDefaultUnit(units.data)} />
     </View>
   );
 }

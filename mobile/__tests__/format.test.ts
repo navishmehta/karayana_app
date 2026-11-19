@@ -1,5 +1,8 @@
 import { formatDate, formatDateTime, formatMoney, formatPercent, formatQuantity } from '@/utils/format';
 
+/** Dates use non-breaking hyphens/spaces so they never wrap; compare them as plain text. */
+const plain = (text: string) => text.replace(/\u2011/g, '-').replace(/\u00A0/g, ' ');
+
 describe('formatMoney', () => {
   it('uses rupees with Indian grouping and two decimals', () => {
     expect(formatMoney('123456.5')).toBe('₹1,23,456.50');
@@ -22,16 +25,17 @@ describe('formatQuantity', () => {
 
 describe('dates are DD-MM-YYYY in store time (IST)', () => {
   it('formats plain dates without shifting the day', () => {
-    expect(formatDate('2026-11-19')).toBe('19-11-2026');
+    expect(plain(formatDate('2026-11-19'))).toBe('19-11-2026');
   });
   it('converts timestamps to India time', () => {
     // 20:00 UTC on the 18th is 01:30 IST on the 19th
-    expect(formatDate('2026-11-18T20:00:00Z')).toBe('19-11-2026');
-    expect(formatDateTime('2026-11-18T20:00:00Z')).toBe('19-11-2026, 01:30');
-    expect(formatDateTime('2026-11-19T10:15:00+05:30')).toBe('19-11-2026, 10:15');
+    expect(plain(formatDate('2026-11-18T20:00:00Z'))).toBe('19-11-2026');
+    expect(plain(formatDateTime('2026-11-18T20:00:00Z'))).toBe('19-11-2026, 01:30');
+    expect(plain(formatDateTime('2026-11-19T10:15:00+05:30'))).toBe('19-11-2026, 10:15');
   });
   it('handles missing or broken values', () => {
     expect(formatDate(null)).toBe('—');
+    expect(formatDateTime('2026-11-19T10:15:00+05:30')).not.toMatch(/[- ]/); // nothing a line can break at
     expect(formatDateTime('not a date')).toBe('—');
   });
 });

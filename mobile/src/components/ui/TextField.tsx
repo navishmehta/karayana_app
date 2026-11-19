@@ -5,7 +5,7 @@ import { Pressable, StyleSheet, TextInput, type TextInputProps, View } from 'rea
 
 import { useTypography } from '@/hooks/useTypography';
 import { useAppTheme } from '@/theme/ThemeProvider';
-import { radius, spacing, TOUCH_TARGET } from '@/theme/tokens';
+import { noWebOutline, radius, spacing, TOUCH_TARGET } from '@/theme/tokens';
 
 import { AppText } from './AppText';
 
@@ -43,7 +43,7 @@ export function TextField({ label, error, hint, secure, style, ...rest }: TextFi
             setFocused(false);
             rest.onBlur?.(e);
           }}
-          style={[styles.input, typography('body'), { color: colors.text }, style]}
+          style={[styles.input, noWebOutline, typography('body'), { color: colors.text }, style]}
           {...rest}
         />
         {secure && (

@@ -137,7 +137,9 @@ class PublicCatalogue:
             PublicSort.PRICE_DESC: (price.desc(), Product.name.asc()),
             PublicSort.NEWEST: (Product.created_at.desc(), Product.id.desc()),
         }[filters.sort]
-        return stmt.order_by(*order, Product.id)
+        # Things customers can buy come first in every list; out-of-stock items move to the end.
+        sold_out_last = case((Product.stock_status == StockStatus.OUT_OF_STOCK.value, 1), else_=0)
+        return stmt.order_by(sold_out_last, *order, Product.id)
 
     def product(self, slug: str) -> Product:
         product = self.db.scalar(self._products().where(Product.slug == slug))

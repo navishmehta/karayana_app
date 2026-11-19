@@ -52,7 +52,7 @@ export default function ProductsScreen() {
           .filter(Boolean)
           .join(' · ')}
         left={<ProductImage uri={p.images[0]?.thumb_url} style={styles.thumb} iconSize={20} />}
-        right={p.stock_status && p.stock_status !== 'in_stock' ? <StockBadge status={p.stock_status} /> : !p.is_active ? <AppText size="small" color="textMuted">{t('staff.common.inactive')}</AppText> : undefined}
+        below={p.stock_status && p.stock_status !== 'in_stock' ? <StockBadge status={p.stock_status} /> : !p.is_active ? <AppText size="small" color="textMuted">{t('staff.common.inactive')}</AppText> : undefined}
         onPress={() => openProduct(p.id)}
       />
     </View>

@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTypography } from '@/hooks/useTypography';
 import { useAppTheme } from '@/theme/ThemeProvider';
-import { radius, spacing, TOUCH_TARGET } from '@/theme/tokens';
+import { noWebOutline, radius, spacing, TOUCH_TARGET } from '@/theme/tokens';
 
 import { AppText } from './AppText';
 import { Button } from './Button';
@@ -61,7 +61,7 @@ export function PickerSheet(props: PickerSheetProps) {
             placeholder={t('staff.common.search')}
             placeholderTextColor={colors.textMuted}
             accessibilityLabel={t('staff.common.search')}
-            style={[styles.input, typography('body'), { color: colors.text }]}
+            style={[styles.input, noWebOutline, typography('body'), { color: colors.text }]}
             autoCorrect={false}
           />
         </View>

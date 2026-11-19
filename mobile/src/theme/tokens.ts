@@ -1,3 +1,5 @@
+import type { TextStyle } from 'react-native';
+
 /**
  * Design tokens: every colour, size and font used by the app is defined here.
  * Dark mode is its own palette (deep green-black surfaces, softened accents), not just black.
@@ -161,8 +163,19 @@ export const spacing = { xxs: 2, xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32, 
 
 export const radius = { sm: 10, md: 14, lg: 20, xl: 28, pill: 999 } as const;
 
+/**
+ * Text inputs draw their own focus border, so the browser's default focus rectangle is turned off on the web.
+ * (`outlineStyle` only matters on the web; native platforms ignore it.)
+ */
+// React Native's types only list visible outline styles, so the web-only value is cast here, in one place.
+export const noWebOutline = { outlineStyle: 'none' } as unknown as TextStyle;
+
 /** Minimum touch target (accessibility). */
 export const TOUCH_TARGET = 48;
+
+/** Chips look slimmer than buttons; an invisible margin (hitSlop) still makes them TOUCH_TARGET tall to tap. */
+export const CHIP_HEIGHT = 40;
+export const CHIP_HIT_SLOP = (TOUCH_TARGET - CHIP_HEIGHT) / 2;
 
 export const fontSizes = { caption: 12, small: 14, body: 16, subtitle: 18, title: 22, heading: 28, display: 34 } as const;
 

@@ -93,7 +93,7 @@ describe.each(COMBOS)('%s theme, %s', (theme, language) => {
     expect(screen.getAllByText('Fresh Milk 1L').length).toBeGreaterThan(0); // product names are never translated
     expect(screen.getByText('₹65.00')).toBeTruthy();
     expect(screen.getByText(pa ? 'ਥੋੜ੍ਹੇ ਹੀ ਬਚੇ ਹਨ' : 'Only a few left')).toBeTruthy();
-    expect(screen.getByText('25-11-2026')).toBeTruthy(); // DD-MM-YYYY
+    expect(screen.getByText('25\u201111\u20112026')).toBeTruthy(); // DD-MM-YYYY, kept on one line
   });
 
   it('login', async () => {

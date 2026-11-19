@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 import { useTypography } from '@/hooks/useTypography';
 import { useAppTheme } from '@/theme/ThemeProvider';
-import { radius, shadow, spacing, TOUCH_TARGET } from '@/theme/tokens';
+import { noWebOutline, radius, shadow, spacing, TOUCH_TARGET } from '@/theme/tokens';
 
 import { AppText } from '@/components/ui';
 
@@ -13,12 +13,15 @@ interface SearchBarProps {
   onChangeText?: (text: string) => void;
   onPress?: () => void; // when set, the bar is a button that opens the search screen
   autoFocus?: boolean;
+  /** Defaults to the product search text. */
+  placeholder?: string;
 }
 
-export function SearchBar({ value, onChangeText, onPress, autoFocus }: SearchBarProps) {
+export function SearchBar({ value, onChangeText, onPress, autoFocus, placeholder }: SearchBarProps) {
   const { colors, scheme } = useAppTheme();
   const { t } = useTranslation();
   const typography = useTypography();
+  const hint = placeholder ?? t('catalogue.searchPlaceholder');
   const box = [
     styles.box,
     { backgroundColor: colors.surface, borderColor: colors.border },
@@ -31,7 +34,7 @@ export function SearchBar({ value, onChangeText, onPress, autoFocus }: SearchBar
         <View style={[styles.searchIcon, { backgroundColor: colors.primarySoft }]}>
           <Ionicons name="search" size={18} color={colors.primary} />
         </View>
-        <AppText color="textMuted">{t('catalogue.searchPlaceholder')}</AppText>
+        <AppText color="textMuted">{hint}</AppText>
       </Pressable>
     );
   }
@@ -40,15 +43,15 @@ export function SearchBar({ value, onChangeText, onPress, autoFocus }: SearchBar
     <View style={box}>
       <Ionicons name="search" size={20} color={colors.textMuted} />
       <TextInput
-        accessibilityLabel={t('catalogue.searchPlaceholder')}
-        placeholder={t('catalogue.searchPlaceholder')}
+        accessibilityLabel={hint}
+        placeholder={hint}
         placeholderTextColor={colors.textMuted}
         value={value}
         onChangeText={onChangeText}
         autoFocus={autoFocus}
         autoCorrect={false}
         returnKeyType="search"
-        style={[styles.input, typography('body'), { color: colors.text }]}
+        style={[styles.input, noWebOutline, typography('body'), { color: colors.text }]}
       />
       {!!value && (
         <Pressable accessibilityRole="button" accessibilityLabel={t('catalogue.clearSearch')} onPress={() => onChangeText?.('')} hitSlop={spacing.sm}>

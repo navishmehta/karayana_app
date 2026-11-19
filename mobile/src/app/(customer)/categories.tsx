@@ -7,7 +7,7 @@ import { AppText, EmptyState, ErrorState, FadeIn, LoadingView } from '@/componen
 import { useCategories } from '@/hooks/useCatalogue';
 import { useAppTheme } from '@/theme/ThemeProvider';
 import { spacing } from '@/theme/tokens';
-import { gridColumns } from '@/utils/catalogue';
+import { gridColumns, gridItemWidth } from '@/utils/catalogue';
 import { errorMessage } from '@/utils/errors';
 
 const MAX_WIDTH = 1200;
@@ -17,7 +17,9 @@ export default function CategoriesScreen() {
   const { colors } = useAppTheme();
   const { width } = useWindowDimensions();
   const categories = useCategories();
-  const columns = gridColumns(Math.min(width, MAX_WIDTH));
+  const contentWidth = Math.min(width, MAX_WIDTH) - spacing.lg * 2;
+  const columns = gridColumns(contentWidth);
+  const cellWidth = gridItemWidth(contentWidth, columns, spacing.md);
 
   return (
     <SafeAreaView edges={['top']} style={[styles.root, { backgroundColor: colors.background }]}>
@@ -32,7 +34,7 @@ export default function CategoriesScreen() {
           keyExtractor={(c) => c.slug}
           numColumns={columns}
           renderItem={({ item, index }) => (
-            <FadeIn index={index} style={styles.cell}>
+            <FadeIn index={index} style={[styles.cell, { width: cellWidth }]}>
               <CategoryTile category={item} index={index} />
             </FadeIn>
           )}
@@ -56,5 +58,5 @@ const styles = StyleSheet.create({
   root: { flex: 1 },
   content: { flexGrow: 1, width: '100%', maxWidth: MAX_WIDTH, alignSelf: 'center', padding: spacing.lg, gap: spacing.md },
   row: { gap: spacing.md },
-  cell: { flex: 1 },
+  cell: { flexDirection: 'row' }, // lets the tile inside fill the cell's height
 });

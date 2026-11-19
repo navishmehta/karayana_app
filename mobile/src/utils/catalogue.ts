@@ -1,5 +1,6 @@
 /** Pure helpers for the customer catalogue (easy to unit-test). */
 import { MAX_GRID_COLUMNS, PRODUCT_CARD_MIN_WIDTH } from '@/constants/app';
+import { CATEGORY_ICON_RULES, DEFAULT_CATEGORY_ICON } from '@/constants/categoryIcons';
 
 export const SORT_OPTIONS = ['name_asc', 'name_desc', 'price_asc', 'price_desc', 'newest'] as const;
 export type SortOption = (typeof SORT_OPTIONS)[number];
@@ -64,7 +65,21 @@ export function gridColumns(width: number): number {
   return Math.max(2, Math.min(MAX_GRID_COLUMNS, Math.floor(width / PRODUCT_CARD_MIN_WIDTH)));
 }
 
+/**
+ * Width of one grid cell, so a lone item on the last row keeps its column width instead of stretching.
+ * `contentWidth` is the list width without its side padding.
+ */
+export function gridItemWidth(contentWidth: number, columns: number, gap: number): number {
+  return Math.floor((contentWidth - gap * (columns - 1)) / columns);
+}
+
 /** Admin-entered translation if there is one, otherwise the name as typed. */
 export function localizedName(item: { name: string; name_translations?: Record<string, string> }, language: string): string {
   return item.name_translations?.[language] || item.name;
+}
+
+/** Icon for a category without a photo, chosen from words in its English name (see constants/categoryIcons.ts). */
+export function categoryIcon(name: string): (typeof CATEGORY_ICON_RULES)[number]['icon'] {
+  const text = name.toLowerCase();
+  return CATEGORY_ICON_RULES.find((rule) => rule.words.some((word) => text.includes(word)))?.icon ?? DEFAULT_CATEGORY_ICON;
 }

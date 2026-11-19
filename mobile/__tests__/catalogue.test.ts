@@ -2,6 +2,8 @@ import {
   activeFilterCount,
   DEFAULT_FILTERS,
   gridColumns,
+  gridItemWidth,
+  categoryIcon,
   localizedName,
   toCatalogueQuery,
 } from '@/utils/catalogue';
@@ -55,9 +57,21 @@ it('chooses 2 columns on phones and more on wide screens', () => {
   expect(gridColumns(2000)).toBe(5);
 });
 
+it('gives every grid cell a fixed column width, so a lone last item does not stretch', () => {
+  expect(gridItemWidth(358, 2, 12)).toBe(173); // (358 - 12) / 2
+  expect(gridItemWidth(700, 4, 12)).toBe(166);
+});
+
 it('uses the Punjabi category name when the admin entered one', () => {
   const dairy = { name: 'Dairy', name_translations: { pa: 'ਡੇਅਰੀ' } };
   expect(localizedName(dairy, 'pa')).toBe('ਡੇਅਰੀ');
   expect(localizedName(dairy, 'en')).toBe('Dairy');
   expect(localizedName({ name: 'Snacks', name_translations: {} }, 'pa')).toBe('Snacks');
+});
+
+it('picks a category icon from words in its name, with a fallback', () => {
+  expect(categoryIcon('Dairy')).toBe('water');
+  expect(categoryIcon('Cold Drinks')).toBe('beer');
+  expect(categoryIcon('Cleaning Products')).toBe('sparkles');
+  expect(categoryIcon('Puja Samagri')).toBe('pricetag'); // unknown -> default
 });

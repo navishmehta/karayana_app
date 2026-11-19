@@ -2,7 +2,7 @@ import type { AuthUser } from '@/api/types';
 import { canOpenTab, firstAllowedTab, STAFF_TABS } from '@/auth/staffTabs';
 import { PERMISSIONS as P } from '@/constants/permissions';
 import { apiToDisplayDate, displayToApiDate, isValidDisplayDate } from '@/utils/dates';
-import { applyServerErrors, newRequestKey, orNull } from '@/utils/forms';
+import { applyServerErrors, newRequestKey, orNull, pickDefaultUnit } from '@/utils/forms';
 import { ApiError } from '@/api/errors';
 
 const user = (role: 'admin' | 'seller', permissions: AuthUser['permissions'] = []): AuthUser => ({
@@ -56,5 +56,16 @@ describe('form helpers', () => {
     expect(newRequestKey()).not.toBe(newRequestKey());
     expect(orNull('  ')).toBeNull();
     expect(orNull(' Amul ')).toBe('Amul');
+  });
+});
+
+describe('new product unit', () => {
+  const unit = (short_name: string, is_active = true) => ({ short_name, is_active });
+  it('pre-selects pieces even when another unit comes first', () => {
+    expect(pickDefaultUnit([unit('btl'), unit('kg'), unit('pcs')])?.short_name).toBe('pcs');
+  });
+  it('falls back to the first active unit', () => {
+    expect(pickDefaultUnit([unit('btl', false), unit('kg')])?.short_name).toBe('kg');
+    expect(pickDefaultUnit(undefined)).toBeUndefined();
   });
 });

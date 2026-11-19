@@ -1,6 +1,7 @@
 import type { FieldValues, Path, UseFormSetError } from 'react-hook-form';
 
 import { isApiError } from '@/api/errors';
+import { DEFAULT_UNIT_SHORT_NAME } from '@/constants/stock';
 
 /**
  * Put the server's per-field messages on the form. `aliases` maps API field names to form field names
@@ -27,3 +28,9 @@ export const newRequestKey = () => `${Date.now().toString(36)}-${Math.random().t
 
 /** Empty text -> null, otherwise trimmed text (for optional API fields). */
 export const orNull = (value: string | undefined | null): string | null => (value?.trim() ? value.trim() : null);
+
+/** The unit to pre-select on a new product: "pcs" if it exists, otherwise the first active unit. */
+export function pickDefaultUnit<T extends { short_name: string; is_active: boolean }>(units: readonly T[] | undefined): T | undefined {
+  const active = (units ?? []).filter((u) => u.is_active);
+  return active.find((u) => u.short_name === DEFAULT_UNIT_SHORT_NAME) ?? active[0];
+}

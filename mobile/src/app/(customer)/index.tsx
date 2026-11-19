@@ -12,7 +12,7 @@ import { useCategories, useHighlights, useStoreInfo } from '@/hooks/useCatalogue
 import { useHeroStatusBar } from '@/hooks/useHeroStatusBar';
 import { queryClient } from '@/lib/queryClient';
 import { useAppTheme } from '@/theme/ThemeProvider';
-import { radius, spacing } from '@/theme/tokens';
+import { CHIP_HIT_SLOP, radius, spacing } from '@/theme/tokens';
 import { errorMessage } from '@/utils/errors';
 
 const INDIA_DIALING_CODE = '91';
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   headerText: { flex: 1, gap: spacing.xxs },
   logo: { width: LOGO_SIZE, height: LOGO_SIZE, borderRadius: radius.lg, borderWidth: 2, borderColor: HERO_GLASS_STRONG },
   logoFallback: { alignItems: 'center', justifyContent: 'center', backgroundColor: HERO_GLASS },
-  chips: { gap: spacing.sm, paddingVertical: spacing.xxs },
+  chips: { gap: spacing.sm, paddingVertical: CHIP_HIT_SLOP, paddingRight: spacing.xl },
   emptyCard: { alignItems: 'center', paddingVertical: spacing.xxl },
   emptyIcon: { width: 72, height: 72, borderRadius: radius.xl, alignItems: 'center', justifyContent: 'center' },
   actions: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },

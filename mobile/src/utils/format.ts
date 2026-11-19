@@ -35,22 +35,31 @@ export function formatPercent(value: Amount): string {
   return n === null ? '—' : `${new Intl.NumberFormat(NUMBER_LOCALE, { maximumFractionDigits: 1 }).format(n)}%`;
 }
 
+const NON_BREAKING_HYPHEN = '\u2011';
+const NON_BREAKING_SPACE = '\u00A0';
+
+/**
+ * Dates and times are shown as one unbreakable piece, so a line never wraps in the middle ("20-" / "11-2026").
+ * They look the same as normal hyphens and spaces. For display only — never for values sent to the server.
+ */
+const keepTogether = (text: string) => text.replaceAll('-', NON_BREAKING_HYPHEN).replaceAll(' ', NON_BREAKING_SPACE);
+
 /** "2026-11-19" or an ISO timestamp -> "19-11-2026" (store time zone for timestamps). */
 export function formatDate(value: string | null | undefined): string {
   if (!value) return '—';
   if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
     const [y, m, d] = value.split('-');
-    return `${d}-${m}-${y}`;
+    return keepTogether(`${d}-${m}-${y}`);
   }
   const parts = storeParts(value);
-  return parts ? `${parts.day}-${parts.month}-${parts.year}` : '—';
+  return parts ? keepTogether(`${parts.day}-${parts.month}-${parts.year}`) : '—';
 }
 
 /** ISO timestamp -> "19-11-2026, 14:05" in store time. */
 export function formatDateTime(value: string | null | undefined): string {
   if (!value) return '—';
   const parts = storeParts(value);
-  return parts ? `${parts.day}-${parts.month}-${parts.year}, ${parts.hour}:${parts.minute}` : '—';
+  return parts ? keepTogether(`${parts.day}-${parts.month}-${parts.year}, ${parts.hour}:${parts.minute}`) : '—';
 }
 
 const storeDateTimeFormatter = new Intl.DateTimeFormat('en-GB', {

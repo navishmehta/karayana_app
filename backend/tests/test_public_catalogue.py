@@ -133,7 +133,8 @@ def test_offers_change_price_and_can_be_switched_off(client: TestClient, seeded_
     milk = client.get(f"{P}/products/{shop['milk'].slug}").json()["data"]
     assert (milk["price"], milk["on_offer"], milk["discount_percent"]) == ("60.00", True, "14.29")
     assert [p["name"] for p in client.get(f"{P}/products/offers").json()["data"]] == ["Milk"]
-    assert _names(client, sort="price_asc") == ["Milk", "Paneer", "Amul Butter"]  # sorted by today's price
+    # Sorted by today's price; out-of-stock Paneer (₹90) still comes after the things customers can buy.
+    assert _names(client, sort="price_asc") == ["Milk", "Amul Butter", "Paneer"]
 
     _set(seeded_db, SettingKey.OFFERS_ENABLED, False)
     milk = client.get(f"{P}/products/{shop['milk'].slug}").json()["data"]
@@ -145,6 +146,8 @@ def test_out_of_stock_label_or_hidden(client: TestClient, seeded_db: Session) ->
     shop = _shop(seeded_db)
     assert client.get(f"{P}/products/{shop['paneer'].slug}").json()["data"]["availability"] == "out_of_stock"
     assert "Paneer" not in _names(client, in_stock=True)
+    for sort in ("name_asc", "name_desc", "price_asc", "price_desc", "newest"):
+        assert _names(client, sort=sort)[-1] == "Paneer", sort  # sold-out items always come last
 
     _set(seeded_db, SettingKey.SHOW_OUT_OF_STOCK, False)
     assert "Paneer" not in _names(client)

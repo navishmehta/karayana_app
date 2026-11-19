@@ -30,7 +30,7 @@ export default function SellersScreen() {
       <ListRow
         title={s.name}
         subtitle={`${s.email} · ${t('staff.permissionsCount', { count: s.permissions.length })}`}
-        right={!s.is_active ? <Badge label={t('staff.common.inactive')} tone="textMuted" /> : undefined}
+        below={!s.is_active ? <Badge label={t('staff.common.inactive')} tone="textMuted" /> : undefined}
         onPress={() => router.push({ pathname: '/staff/sellers/[id]', params: { id: String(s.id) } })}
       />
     </View>
@@ -50,7 +50,7 @@ export default function SellersScreen() {
         bottomSpace
         header={
           <View style={styles.header}>
-            <SearchBar value={search} onChangeText={setSearch} />
+            <SearchBar value={search} onChangeText={setSearch} placeholder={t('staff.sellers.searchPlaceholder')} />
             <ChipGroup
               options={(['all', 'active', 'inactive'] as const).map((v) => ({ value: v, label: t(`staff.sellers.filters.${v}`) }))}
               value={status}

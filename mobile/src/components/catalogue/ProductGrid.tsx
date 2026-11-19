@@ -10,7 +10,7 @@ import type { PublicProduct } from '@/api/types';
 import { EmptyState, ErrorState, FadeIn, LoadingView } from '@/components/ui';
 import { useAppTheme } from '@/theme/ThemeProvider';
 import { spacing } from '@/theme/tokens';
-import { gridColumns } from '@/utils/catalogue';
+import { gridColumns, gridItemWidth } from '@/utils/catalogue';
 import { errorMessage } from '@/utils/errors';
 
 import { ProductCard } from './ProductCard';
@@ -37,7 +37,9 @@ export function ProductGrid(props: ProductGridProps) {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
   const { width } = useWindowDimensions();
-  const columns = gridColumns(Math.min(width, MAX_LIST_WIDTH) - spacing.lg * 2);
+  const contentWidth = Math.min(width, MAX_LIST_WIDTH) - spacing.lg * 2;
+  const columns = gridColumns(contentWidth);
+  const cellWidth = gridItemWidth(contentWidth, columns, spacing.md);
 
   const body = props.isPending ? (
     <LoadingView />
@@ -54,7 +56,7 @@ export function ProductGrid(props: ProductGridProps) {
       keyExtractor={(p) => p.slug}
       numColumns={columns}
       renderItem={({ item, index }) => (
-        <FadeIn index={index % ENTER_BATCH} style={styles.cell}>
+        <FadeIn index={index % ENTER_BATCH} style={{ width: cellWidth }}>
           <ProductCard product={item} />
         </FadeIn>
       )}
@@ -78,6 +80,5 @@ export function ProductGrid(props: ProductGridProps) {
 const styles = StyleSheet.create({
   content: { flexGrow: 1, width: '100%', maxWidth: MAX_LIST_WIDTH, alignSelf: 'center', padding: spacing.lg, gap: spacing.md },
   row: { gap: spacing.md },
-  cell: { flex: 1 },
   footer: { height: spacing.xxxl },
 });

@@ -275,7 +275,10 @@
       "saved": "ਸਟਾਕ ਅੱਪਡੇਟ ਹੋ ਗਿਆ",
       "by": "{{name}} ਦੁਆਰਾ",
       "after": "ਹੁਣ {{qty}}",
-      "empty": "ਅਜੇ ਕੋਈ ਸਟਾਕ ਆਵਾਜਾਈ ਨਹੀਂ"
+      "empty": "ਅਜੇ ਕੋਈ ਸਟਾਕ ਆਵਾਜਾਈ ਨਹੀਂ",
+      "quantityNoUnit": "ਮਾਤਰਾ",
+      "countedQuantityNoUnit": "ਸ਼ੈਲਫ਼ ਉੱਤੇ ਗਿਣੀ",
+      "purchasePricePerUnitNoUnit": "ਪ੍ਰਤੀ ਇਕਾਈ ਖਰੀਦ ਕੀਮਤ"
     },
     "expiry": {
       "expired": "ਮਿਆਦ ਪੁੱਗੀ",
@@ -367,7 +370,8 @@
       "resetPasswordHint": "ਵਿਕਰੇਤਾ ਸਾਰੇ ਡਿਵਾਈਸਾਂ ਤੋਂ ਲੌਗਆਊਟ ਹੋ ਜਾਵੇਗਾ।",
       "passwordReset": "ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਹੋ ਗਿਆ",
       "delete": "ਵਿਕਰੇਤਾ ਮਿਟਾਓ",
-      "deleteConfirm": "ਕੀ \"{{name}}\" ਨੂੰ ਮਿਟਾਉਣਾ ਹੈ? ਉਹਨਾਂ ਦੀ ਪਿਛਲੀ ਗਤੀਵਿਧੀ ਰਹੇਗੀ।"
+      "deleteConfirm": "ਕੀ \"{{name}}\" ਨੂੰ ਮਿਟਾਉਣਾ ਹੈ? ਉਹਨਾਂ ਦੀ ਪਿਛਲੀ ਗਤੀਵਿਧੀ ਰਹੇਗੀ।",
+      "searchPlaceholder": "ਨਾਮ, ਈਮੇਲ ਜਾਂ ਫ਼ੋਨ ਨਾਲ ਖੋਜੋ…"
     },
     "activity": {
       "empty": "ਅਜੇ ਕੋਈ ਗਤੀਵਿਧੀ ਨਹੀਂ",
