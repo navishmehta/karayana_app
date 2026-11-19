@@ -2,6 +2,7 @@ import { Redirect, router } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { dashboardLinks } from '@/auth/access';
 import { can, isAdmin } from '@/auth/permissions';
@@ -10,15 +11,19 @@ import { firstAllowedTab } from '@/auth/staffTabs';
 import { BarList, DailyColumns } from '@/components/staff/Charts';
 import { KpiTile } from '@/components/staff/KpiTile';
 import { NotificationBell } from '@/components/staff/NotificationBell';
-import { AppText, Card, EmptyState, ErrorState, ListRow, LoadingView, Screen, SegmentedControl } from '@/components/ui';
+import { AppText, Card, EmptyState, ErrorState, Gradient, ListRow, LoadingView, Screen, SegmentedControl } from '@/components/ui';
 import { PERMISSIONS } from '@/constants/permissions';
+import { useHeroStatusBar } from '@/hooks/useHeroStatusBar';
 import { useDashboard } from '@/hooks/useStaff';
-import { spacing } from '@/theme/tokens';
+import { radius, spacing } from '@/theme/tokens';
 import { errorMessage } from '@/utils/errors';
 import { formatDate, formatDateTime, formatMoney, formatQuantity } from '@/utils/format';
 
 const CHART_DAYS = ['7', '30'] as const;
 const TOP_CATEGORIES = 6;
+// Frosted-glass whites on the green hero (same in both themes).
+const HERO_GLASS = 'rgba(255, 255, 255, 0.14)';
+const HERO_MUTED = 'rgba(255, 255, 255, 0.85)';
 
 export default function DashboardScreen() {
   const { t } = useTranslation();
@@ -26,6 +31,8 @@ export default function DashboardScreen() {
   const allowed = can(user, PERMISSIONS.dashboardView);
   const [days, setDays] = useState<(typeof CHART_DAYS)[number]>('7');
   const dashboard = useDashboard(Number(days), allowed);
+  const insets = useSafeAreaInsets();
+  useHeroStatusBar();
 
   if (!user) return null;
   if (!allowed) {
@@ -40,16 +47,27 @@ export default function DashboardScreen() {
   const openProducts = (params: Record<string, string> = {}) => router.push({ pathname: '/staff/products', params });
 
   return (
-    <Screen refreshing={dashboard.isRefetching} onRefresh={() => void dashboard.refetch()}>
-      <View style={styles.headerRow}>
-        <View style={styles.header}>
-          <AppText size="title" weight="bold">
-            {t('staff.greeting', { name: user.name })}
-          </AppText>
-          <AppText color="textMuted">{isAdmin(user) ? t('staff.roleAdmin') : t('staff.roleSeller')}</AppText>
+    <Screen edges={[]} refreshing={dashboard.isRefetching} onRefresh={() => void dashboard.refetch()}>
+      <Gradient name="hero" style={[styles.hero, { paddingTop: insets.top + spacing.xl }]}>
+        <View style={[styles.blob, styles.blobLarge]} />
+        <View style={[styles.blob, styles.blobSmall]} />
+        <View style={styles.headerRow}>
+          <View style={styles.header}>
+            <AppText size="small" weight="medium" style={styles.heroMuted}>
+              {formatDate(new Date().toISOString())}
+            </AppText>
+            <AppText size="heading" weight="bold" color="textOnHero">
+              {t('staff.greeting', { name: user.name })}
+            </AppText>
+            <View style={styles.rolePill}>
+              <AppText size="caption" weight="semibold" color="textOnHero">
+                {isAdmin(user) ? t('staff.roleAdmin') : t('staff.roleSeller')}
+              </AppText>
+            </View>
+          </View>
+          <NotificationBell onHero />
         </View>
-        <NotificationBell />
-      </View>
+      </Gradient>
 
       <View style={styles.tiles}>
         <KpiTile label={t('staff.dashboard.products')} value={String(d.products_total)} icon="cube-outline" onPress={links.products ? () => openProducts() : undefined} />
@@ -171,6 +189,27 @@ export default function DashboardScreen() {
 }
 
 const styles = StyleSheet.create({
+  hero: {
+    marginHorizontal: -spacing.lg,
+    marginTop: -spacing.lg,
+    paddingHorizontal: spacing.xl,
+    paddingBottom: spacing.xxl,
+    borderBottomLeftRadius: radius.xl,
+    borderBottomRightRadius: radius.xl,
+    overflow: 'hidden',
+  },
+  blob: { position: 'absolute', borderRadius: 999, backgroundColor: HERO_GLASS },
+  blobLarge: { width: 200, height: 200, top: -80, right: -50 },
+  blobSmall: { width: 110, height: 110, bottom: -50, left: 40 },
+  heroMuted: { color: HERO_MUTED },
+  rolePill: {
+    alignSelf: 'flex-start',
+    marginTop: spacing.xs,
+    backgroundColor: HERO_GLASS,
+    borderRadius: radius.pill,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xxs,
+  },
   header: { gap: spacing.xxs, flex: 1 },
   headerRow: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.md },
   tiles: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },

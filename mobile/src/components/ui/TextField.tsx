@@ -22,14 +22,15 @@ export function TextField({ label, error, hint, secure, style, ...rest }: TextFi
   const typography = useTypography();
   const [focused, setFocused] = useState(false);
   const [hidden, setHidden] = useState(true);
-  const borderColor = error ? colors.danger : focused ? colors.primary : colors.border;
+  const borderColor = error ? colors.danger : focused ? colors.primary : 'transparent';
+  const background = focused ? colors.surface : colors.surfaceAlt;
 
   return (
     <View style={styles.wrapper}>
       <AppText size="small" weight="medium" color="textMuted">
         {label}
       </AppText>
-      <View style={[styles.box, { borderColor, backgroundColor: colors.surface }]}>
+      <View style={[styles.box, { borderColor, backgroundColor: background }]}>
         <TextInput
           accessibilityLabel={label}
           placeholderTextColor={colors.textMuted}

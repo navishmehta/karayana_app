@@ -16,6 +16,7 @@ jest.mock('expo-router', () => ({
   router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), canGoBack: () => true },
   useLocalSearchParams: () => ({ slug: 'fresh-milk' }),
   Redirect: () => null,
+  useFocusEffect: jest.fn(),
 }));
 jest.mock('react-native-safe-area-context', () => {
   const { View } = jest.requireActual('react-native');

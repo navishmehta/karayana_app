@@ -1,11 +1,15 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { AppText } from '@/components/ui';
+import { AppText, PressableScale } from '@/components/ui';
+import { withAlpha } from '@/theme/color';
 import { useAppTheme } from '@/theme/ThemeProvider';
-import { radius, spacing, type ThemeColors } from '@/theme/tokens';
+import { radius, shadow, spacing, type ThemeColors } from '@/theme/tokens';
 
-/** A dashboard number. Tapping it opens the matching filtered list. */
+const ICON_TINT = 0.13;
+const ICON_BOX = 40;
+
+/** A dashboard number with a colour-coded icon. Tapping it opens the matching filtered list. */
 export function KpiTile({
   label,
   value,
@@ -19,34 +23,41 @@ export function KpiTile({
   tone?: keyof ThemeColors;
   onPress?: () => void;
 }) {
-  const { colors } = useAppTheme();
+  const { colors, scheme } = useAppTheme();
+  const toneColor = colors[tone];
   return (
-    <Pressable
+    <PressableScale
       accessibilityRole={onPress ? 'button' : 'summary'}
       accessibilityLabel={`${label}: ${value}`}
       onPress={onPress}
       disabled={!onPress}
-      style={({ pressed }) => [
+      style={[
         styles.tile,
-        { backgroundColor: colors.surface, borderColor: colors.border, opacity: pressed ? 0.8 : 1 },
+        { backgroundColor: colors.surface },
+        scheme === 'dark' && { borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border },
+        shadow('medium', colors.shadow, scheme),
       ]}
     >
-      <View style={[styles.icon, { backgroundColor: colors.surfaceAlt }]}>
-        <Ionicons name={icon} size={20} color={colors[tone]} />
+      <View style={styles.top}>
+        <View style={[styles.icon, { backgroundColor: withAlpha(toneColor, ICON_TINT) }]}>
+          <Ionicons name={icon} size={20} color={toneColor} />
+        </View>
+        {onPress && <Ionicons name="arrow-forward" size={16} color={colors.textMuted} />}
       </View>
-      <AppText size="title" weight="bold" numberOfLines={1} adjustsFontSizeToFit>
+      <AppText size="heading" weight="bold" numberOfLines={1} adjustsFontSizeToFit>
         {value}
       </AppText>
-      <AppText size="small" color="textMuted" numberOfLines={2}>
+      <AppText size="small" weight="medium" color="textMuted" numberOfLines={2}>
         {label}
       </AppText>
-    </Pressable>
+      <View style={[styles.accent, { backgroundColor: toneColor }]} />
+    </PressableScale>
   );
 }
 
-const ICON_BOX = 36;
-
 const styles = StyleSheet.create({
-  tile: { flexGrow: 1, flexBasis: 150, gap: spacing.xs, padding: spacing.lg, borderWidth: 1, borderRadius: radius.lg },
+  tile: { flexGrow: 1, flexBasis: 150, gap: spacing.xs, padding: spacing.lg, borderRadius: radius.lg, overflow: 'hidden' },
+  top: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: spacing.xs },
   icon: { width: ICON_BOX, height: ICON_BOX, borderRadius: radius.md, alignItems: 'center', justifyContent: 'center' },
+  accent: { position: 'absolute', left: 0, top: spacing.lg, bottom: spacing.lg, width: 3, borderTopRightRadius: 3, borderBottomRightRadius: 3 },
 });

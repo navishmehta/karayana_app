@@ -1,0 +1,8 @@
+{
+  "name": "smart-kirana",
+  "private": true,
+  "description": "Smart Kirana — run `npm start` to test locally (backend + app). See README.md.",
+  "scripts": {
+    "start": "bash scripts/dev.sh"
+  }
+}

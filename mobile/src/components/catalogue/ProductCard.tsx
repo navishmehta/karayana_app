@@ -1,66 +1,85 @@
 import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import type { PublicProduct } from '@/api/types';
-import { AppText, Badge } from '@/components/ui';
+import { AppText, Gradient, PressableScale } from '@/components/ui';
 import { useAppTheme } from '@/theme/ThemeProvider';
-import { radius, spacing } from '@/theme/tokens';
+import { radius, shadow, spacing } from '@/theme/tokens';
+import { formatPercent } from '@/utils/format';
 
 import { AvailabilityBadge } from './AvailabilityBadge';
 import { PriceTag } from './PriceTag';
 import { ProductImage } from './ProductImage';
 
 export function ProductCard({ product, width }: { product: PublicProduct; width?: number }) {
-  const { colors } = useAppTheme();
+  const { colors, scheme } = useAppTheme();
   const { t } = useTranslation();
   const outOfStock = product.availability === 'out_of_stock';
 
   return (
-    <Pressable
+    <PressableScale
       accessibilityRole="button"
       accessibilityLabel={product.name}
       onPress={() => router.push({ pathname: '/product/[slug]', params: { slug: product.slug } })}
-      style={({ pressed }) => [
+      style={[
         styles.card,
-        { backgroundColor: colors.surface, borderColor: colors.border, opacity: pressed ? 0.85 : 1 },
+        { backgroundColor: colors.surface },
+        scheme === 'dark' && { borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border },
+        shadow('medium', colors.shadow, scheme),
         width ? { width } : styles.flex,
       ]}
     >
-      <View>
-        <ProductImage uri={product.images[0]?.thumb_url} style={outOfStock ? styles.dimmed : undefined} />
-        {product.on_offer && (
-          <View style={styles.ribbon}>
-            <Badge label={t('catalogue.offer')} tone="accent" />
-          </View>
+      <View style={[styles.imageBox, { backgroundColor: colors.surfaceAlt }]}>
+        <ProductImage uri={product.images[0]?.thumb_url} style={outOfStock ? styles.dimmed : styles.rounded} />
+        {(product.on_offer || product.discount_percent) && (
+          <Gradient name="accent" direction="horizontal" style={styles.ribbon}>
+            <AppText size="caption" weight="bold" style={styles.ribbonText}>
+              {product.discount_percent
+                ? t('catalogue.percentOff', { percent: formatPercent(product.discount_percent) })
+                : t('catalogue.offer')}
+            </AppText>
+          </Gradient>
         )}
       </View>
       <View style={styles.body}>
         {product.brand && (
-          <AppText size="caption" color="textMuted" numberOfLines={1}>
+          <AppText size="caption" weight="semibold" color="primary" numberOfLines={1} style={styles.brand}>
             {product.brand}
           </AppText>
         )}
-        <AppText weight="medium" numberOfLines={2} style={styles.name}>
+        <AppText weight="semibold" numberOfLines={2} style={styles.name}>
           {product.name}
         </AppText>
         <AppText size="caption" color="textMuted">
           {t('catalogue.perUnit', { unit: product.unit })}
         </AppText>
-        <PriceTag product={product} />
+        <PriceTag product={product} hideDiscount />
         {product.availability !== 'in_stock' && <AvailabilityBadge availability={product.availability} />}
       </View>
-    </Pressable>
+    </PressableScale>
   );
 }
 
 const NAME_MIN_LINES = 2;
+const WHITE = '#FFFFFF'; // ribbon text sits on the dark saffron gradient in both themes
 
 const styles = StyleSheet.create({
-  card: { borderWidth: 1, borderRadius: radius.lg, overflow: 'hidden' },
+  card: { borderRadius: radius.lg, padding: spacing.sm },
   flex: { flex: 1 },
-  body: { padding: spacing.md, gap: spacing.xs },
+  imageBox: { borderRadius: radius.md, overflow: 'hidden' },
+  rounded: { borderRadius: radius.md },
+  body: { paddingHorizontal: spacing.xs, paddingTop: spacing.sm, paddingBottom: spacing.xs, gap: spacing.xxs + 1 },
+  brand: { textTransform: 'uppercase', letterSpacing: 0.6 },
   name: { minHeight: NAME_MIN_LINES * 20 },
-  ribbon: { position: 'absolute', top: spacing.sm, left: spacing.sm },
-  dimmed: { opacity: 0.5 },
+  ribbon: {
+    position: 'absolute',
+    top: spacing.sm,
+    left: spacing.sm,
+    borderRadius: radius.pill,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xxs,
+  },
+  ribbonText: { color: WHITE },
+  dimmed: { opacity: 0.45, borderRadius: radius.md },
 });

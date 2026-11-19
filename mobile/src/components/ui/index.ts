@@ -14,3 +14,6 @@ export { ListRow } from './ListRow';
 export { PickerField, PickerSheet, type PickerItem } from './PickerSheet';
 export { SwitchRow } from './SwitchRow';
 export { toast, ToastHost } from './Toast';
+export { FadeIn } from './FadeIn';
+export { Gradient } from './Gradient';
+export { PressableScale } from './PressableScale';

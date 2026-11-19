@@ -32,7 +32,7 @@ export function ImageCarousel({ images }: { images: PublicImage[] }) {
       />
       <View style={styles.dots}>
         {images.map((img, i) => (
-          <View key={img.url} style={[styles.dot, { backgroundColor: i === index ? colors.primary : colors.border }]} />
+          <View key={img.url} style={[styles.dot, i === index ? [styles.dotActive, { backgroundColor: colors.primary }] : { backgroundColor: colors.border }]} />
         ))}
       </View>
     </View>
@@ -40,6 +40,8 @@ export function ImageCarousel({ images }: { images: PublicImage[] }) {
 }
 
 const styles = StyleSheet.create({
-  dots: { flexDirection: 'row', justifyContent: 'center', gap: spacing.xs, paddingVertical: spacing.sm },
+  // Sits over the bottom of the photo, above the product card that overlaps it.
+  dots: { position: 'absolute', left: 0, right: 0, bottom: spacing.xxl, flexDirection: 'row', justifyContent: 'center', gap: spacing.xs },
   dot: { width: DOT_SIZE, height: DOT_SIZE, borderRadius: radius.pill },
+  dotActive: { width: DOT_SIZE * 2.5 },
 });

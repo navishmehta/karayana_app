@@ -7,12 +7,13 @@ import { spacing } from '@/theme/tokens';
 import { formatMoney, formatPercent } from '@/utils/format';
 
 /** Customer price, MRP struck through when higher, and the discount. */
-export function PriceTag({ product, large }: { product: PublicProduct; large?: boolean }) {
+/** `hideDiscount`: the card shows the discount on its image ribbon instead. */
+export function PriceTag({ product, large, hideDiscount }: { product: PublicProduct; large?: boolean; hideDiscount?: boolean }) {
   const { t } = useTranslation();
   const showMrp = product.mrp !== null && Number(product.mrp) > Number(product.price);
   return (
     <View style={styles.row}>
-      <AppText size={large ? 'title' : 'body'} weight="bold" accessibilityLabel={t('catalogue.priceLabel', { price: formatMoney(product.price) })}>
+      <AppText size={large ? 'heading' : 'subtitle'} weight="bold" color="primary" accessibilityLabel={t('catalogue.priceLabel', { price: formatMoney(product.price) })}>
         {formatMoney(product.price)}
       </AppText>
       {showMrp && (
@@ -25,7 +26,7 @@ export function PriceTag({ product, large }: { product: PublicProduct; large?: b
           {formatMoney(product.mrp)}
         </AppText>
       )}
-      {product.discount_percent && (
+      {product.discount_percent && !hideDiscount && (
         <AppText size={large ? 'body' : 'small'} weight="semibold" color="success">
           {t('catalogue.percentOff', { percent: formatPercent(product.discount_percent) })}
         </AppText>

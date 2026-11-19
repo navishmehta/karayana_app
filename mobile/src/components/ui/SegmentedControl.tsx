@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { useAppTheme } from '@/theme/ThemeProvider';
-import { radius, spacing, TOUCH_TARGET } from '@/theme/tokens';
+import { radius, shadow, spacing, TOUCH_TARGET } from '@/theme/tokens';
 
 import { AppText } from './AppText';
 
@@ -21,7 +21,7 @@ export function SegmentedControl<T extends string>({
   onChange: (value: T) => void;
   accessibilityLabel: string;
 }) {
-  const { colors } = useAppTheme();
+  const { colors, scheme } = useAppTheme();
   return (
     <View
       accessibilityRole="radiogroup"
@@ -36,7 +36,7 @@ export function SegmentedControl<T extends string>({
             accessibilityRole="radio"
             accessibilityState={{ checked: selected }}
             onPress={() => onChange(option.value)}
-            style={[styles.segment, selected && { backgroundColor: colors.surface, borderColor: colors.primary }]}
+            style={[styles.segment, selected && [{ backgroundColor: colors.surface }, shadow('low', colors.shadow, scheme)]]}
           >
             <AppText weight={selected ? 'semibold' : 'regular'} color={selected ? 'primary' : 'textMuted'}>
               {option.label}
@@ -56,7 +56,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: radius.sm,
-    borderWidth: 1,
-    borderColor: 'transparent',
   },
 });

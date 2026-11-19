@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 import { useTypography } from '@/hooks/useTypography';
 import { useAppTheme } from '@/theme/ThemeProvider';
-import { radius, spacing, TOUCH_TARGET } from '@/theme/tokens';
+import { radius, shadow, spacing, TOUCH_TARGET } from '@/theme/tokens';
 
 import { AppText } from '@/components/ui';
 
@@ -16,15 +16,21 @@ interface SearchBarProps {
 }
 
 export function SearchBar({ value, onChangeText, onPress, autoFocus }: SearchBarProps) {
-  const { colors } = useAppTheme();
+  const { colors, scheme } = useAppTheme();
   const { t } = useTranslation();
   const typography = useTypography();
-  const box = [styles.box, { backgroundColor: colors.surface, borderColor: colors.border }];
+  const box = [
+    styles.box,
+    { backgroundColor: colors.surface, borderColor: colors.border },
+    shadow('medium', colors.shadow, scheme),
+  ];
 
   if (onPress) {
     return (
       <Pressable accessibilityRole="search" onPress={onPress} style={box}>
-        <Ionicons name="search" size={20} color={colors.textMuted} />
+        <View style={[styles.searchIcon, { backgroundColor: colors.primarySoft }]}>
+          <Ionicons name="search" size={18} color={colors.primary} />
+        </View>
         <AppText color="textMuted">{t('catalogue.searchPlaceholder')}</AppText>
       </Pressable>
     );
@@ -55,13 +61,14 @@ export function SearchBar({ value, onChangeText, onPress, autoFocus }: SearchBar
 
 const styles = StyleSheet.create({
   box: {
-    minHeight: TOUCH_TARGET,
+    minHeight: TOUCH_TARGET + 6,
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
     paddingHorizontal: spacing.md,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderRadius: radius.pill,
   },
+  searchIcon: { width: 34, height: 34, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
   input: { flex: 1, paddingVertical: spacing.sm },
 });

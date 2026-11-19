@@ -1,6 +1,6 @@
 import en from '@/i18n/locales/en.json';
 import pa from '@/i18n/locales/pa.json';
-import { colors, type ThemeColors } from '@/theme/tokens';
+import { colors, gradients, tints, type ThemeColors } from '@/theme/tokens';
 
 // --- WCAG contrast ------------------------------------------------------------------------------
 
@@ -30,6 +30,15 @@ describe.each(['light', 'dark'] as const)('%s theme meets WCAG AA', (scheme) => 
   });
   it('selected chips (primary on primarySoft) are readable', () => {
     expect(contrast(c.primary, c.primarySoft)).toBeGreaterThanOrEqual(AA_TEXT);
+  });
+  it('text is readable on every stop of every gradient', () => {
+    const g = gradients[scheme];
+    for (const stop of g.hero) expect(contrast(c.textOnHero, stop)).toBeGreaterThanOrEqual(AA_TEXT);
+    for (const stop of g.primary) expect(contrast(c.textOnPrimary, stop)).toBeGreaterThanOrEqual(AA_TEXT);
+    for (const stop of g.accent) expect(contrast('#FFFFFF', stop)).toBeGreaterThanOrEqual(AA_TEXT);
+  });
+  it('category tints keep their text readable', () => {
+    for (const tint of tints[scheme]) expect(contrast(tint.fg, tint.bg)).toBeGreaterThanOrEqual(AA_TEXT);
   });
 });
 

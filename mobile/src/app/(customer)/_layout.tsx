@@ -2,8 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
-import { useTypography } from '@/hooks/useTypography';
-import { useAppTheme } from '@/theme/ThemeProvider';
+import { TabIcon, tabHaptics, useTabBarOptions } from '@/components/ui/TabBar';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
@@ -16,18 +15,12 @@ const TABS: { name: string; titleKey: string; icon: IconName }[] = [
 
 export default function CustomerTabs() {
   const { t } = useTranslation();
-  const { colors } = useAppTheme();
-  const typography = useTypography();
+  const tabBarOptions = useTabBarOptions();
 
   return (
     <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.textMuted,
-        tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.border },
-        tabBarLabelStyle: typography('caption', 'medium'),
-      }}
+      screenOptions={tabBarOptions}
+      screenListeners={tabHaptics}
     >
       {TABS.map((tab) => (
         <Tabs.Screen
@@ -35,7 +28,7 @@ export default function CustomerTabs() {
           name={tab.name}
           options={{
             title: t(tab.titleKey),
-            tabBarIcon: ({ color, size }) => <Ionicons name={tab.icon} size={size} color={String(color)} />,
+            tabBarIcon: ({ color, focused }) => <TabIcon icon={tab.icon} focused={focused} color={String(color)} />,
           }}
         />
       ))}

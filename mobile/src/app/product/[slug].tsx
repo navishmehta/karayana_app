@@ -41,23 +41,31 @@ export default function ProductScreen() {
       <ScrollView contentContainerStyle={styles.scroll}>
         <ImageCarousel images={p.images} />
         <View style={styles.content}>
-          <View style={styles.badges}>
-            <AvailabilityBadge availability={p.availability} />
-            {p.on_offer && <Badge label={t('catalogue.offer')} tone="accent" />}
-          </View>
-          {p.brand && <AppText color="textMuted">{p.brand}</AppText>}
-          <AppText size="title" weight="bold">
-            {p.name}
-          </AppText>
-          <PriceTag product={p} large />
-          <AppText size="small" color="textMuted">
-            {t('catalogue.perUnit', { unit: p.unit })} · {t('catalogue.inclusiveOfTaxes')}
-          </AppText>
-          {p.on_offer && p.offer_ends_at && (
-            <AppText size="small" color="accent" weight="semibold">
-              {t('catalogue.offerEnds', { date: formatDate(p.offer_ends_at) })}
+          <Card elevation="high" style={styles.summary}>
+            <View style={styles.badges}>
+              <AvailabilityBadge availability={p.availability} />
+              {p.on_offer && <Badge label={t('catalogue.offer')} tone="accent" />}
+            </View>
+            <View style={styles.titleBlock}>
+              {p.brand && (
+                <AppText size="small" weight="semibold" color="primary" style={styles.brand}>
+                  {p.brand}
+                </AppText>
+              )}
+              <AppText size="title" weight="bold">
+                {p.name}
+              </AppText>
+            </View>
+            <PriceTag product={p} large />
+            <AppText size="small" color="textMuted">
+              {t('catalogue.perUnit', { unit: p.unit })} · {t('catalogue.inclusiveOfTaxes')}
             </AppText>
-          )}
+            {p.on_offer && p.offer_ends_at && (
+              <AppText size="small" color="accent" weight="semibold">
+                {t('catalogue.offerEnds', { date: formatDate(p.offer_ends_at) })}
+              </AppText>
+            )}
+          </Card>
 
           <Card>
             <DetailRow label={t('catalogue.category')} value={localizedName(p.category, i18n.language)} onPress={() => openCategory(p.category.slug)} />
@@ -76,8 +84,8 @@ export default function ProductScreen() {
           {phone && (
             <Button
               title={t('catalogue.askStore')}
-              variant="secondary"
-              icon={<Ionicons name="call-outline" size={18} color={colors.primary} />}
+              variant="primary"
+              icon={<Ionicons name="call" size={18} color={colors.textOnPrimary} />}
               onPress={() => void Linking.openURL(`tel:${phone}`)}
               fullWidth
             />
@@ -110,6 +118,9 @@ const styles = StyleSheet.create({
   scroll: { paddingBottom: spacing.xxxl },
   content: { width: '100%', maxWidth: MAX_WIDTH, alignSelf: 'center', padding: spacing.lg, gap: spacing.md },
   badges: { flexDirection: 'row', gap: spacing.sm },
+  summary: { marginTop: -spacing.xl, gap: spacing.sm },
+  titleBlock: { gap: spacing.xxs },
+  brand: { textTransform: 'uppercase', letterSpacing: 0.6 },
   detailRow: { flexDirection: 'row', justifyContent: 'space-between', gap: spacing.md },
   detailValue: { flexShrink: 1, textAlign: 'right' },
 });

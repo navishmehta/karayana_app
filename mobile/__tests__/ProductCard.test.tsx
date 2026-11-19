@@ -37,14 +37,13 @@ const renderCard = (p: PublicProduct) =>
 
 beforeAll(() => i18n.changeLanguage('en'));
 
-it('shows name, brand, price, struck MRP, discount and offer', async () => {
+it('shows name, brand, price, struck MRP and the discount ribbon', async () => {
   await renderCard(product());
   expect(screen.getByText('Amul Butter 500g')).toBeTruthy();
   expect(screen.getByText('Amul')).toBeTruthy();
   expect(screen.getByText('₹275.00')).toBeTruthy();
   expect(screen.getByText('₹290.00')).toBeTruthy();
-  expect(screen.getByText('5.2% off')).toBeTruthy();
-  expect(screen.getByText('Offer')).toBeTruthy();
+  expect(screen.getByText('5.2% off')).toBeTruthy(); // ribbon on the photo (shown once, not repeated under the price)
   expect(screen.queryByText('In stock')).toBeNull(); // only unusual availability is labelled on cards
 });
 
@@ -52,6 +51,11 @@ it('labels out-of-stock items and hides MRP when it equals the price', async () 
   await renderCard(product({ availability: 'out_of_stock', mrp: '275.00', discount_percent: null, on_offer: false }));
   expect(screen.getByText('Out of stock')).toBeTruthy();
   expect(screen.getAllByText('₹275.00')).toHaveLength(1);
+});
+
+it('shows an Offer ribbon when the offer has no percentage discount', async () => {
+  await renderCard(product({ discount_percent: null }));
+  expect(screen.getByText('Offer')).toBeTruthy();
 });
 
 it('opens the product page', async () => {

@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { CategoryTile } from '@/components/catalogue';
-import { AppText, EmptyState, ErrorState, LoadingView } from '@/components/ui';
+import { AppText, EmptyState, ErrorState, FadeIn, LoadingView } from '@/components/ui';
 import { useCategories } from '@/hooks/useCatalogue';
 import { useAppTheme } from '@/theme/ThemeProvider';
 import { spacing } from '@/theme/tokens';
@@ -31,7 +31,11 @@ export default function CategoriesScreen() {
           data={categories.data}
           keyExtractor={(c) => c.slug}
           numColumns={columns}
-          renderItem={({ item }) => <CategoryTile category={item} />}
+          renderItem={({ item, index }) => (
+            <FadeIn index={index} style={styles.cell}>
+              <CategoryTile category={item} index={index} />
+            </FadeIn>
+          )}
           columnWrapperStyle={styles.row}
           contentContainerStyle={styles.content}
           ListHeaderComponent={
@@ -52,4 +56,5 @@ const styles = StyleSheet.create({
   root: { flex: 1 },
   content: { flexGrow: 1, width: '100%', maxWidth: MAX_WIDTH, alignSelf: 'center', padding: spacing.lg, gap: spacing.md },
   row: { gap: spacing.md },
+  cell: { flex: 1 },
 });

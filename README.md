@@ -16,6 +16,17 @@ Kirana store management app with Admin, Seller and Customer panels.
 
 Every push to `main` runs the tests and builds the server images in GitHub Actions (`.github/workflows/ci.yml`).
 
+## Run everything locally (one command)
+
+```bash
+npm start        # from the project folder (or from mobile/)
+```
+
+Starts MySQL (if stopped), the backend and the app, set up for phones on the same Wi-Fi: scan the QR code with
+Expo Go, or open the printed website address. Backend output (including password-reset codes) goes to
+`backend/dev-server.log`. **Ctrl+C** stops everything. The script is `scripts/dev.sh`; first-time setup of each
+part is below.
+
 ## Backend – local setup
 
 Requirements: [uv](https://docs.astral.sh/uv/) (installs Python 3.12 itself) and MySQL 8.0.16+.
@@ -66,6 +77,6 @@ Requirements: Node.js 22.13+ and the backend running. Details in [`mobile/README
 cd mobile
 npm install
 cp .env.example .env   # EXPO_PUBLIC_API_URL
-npm start              # Expo Go on a phone, or press w for the web
+npm run start:app      # the app only (npm start also starts the backend)
 npm run check          # lint + typecheck + tests
 ```

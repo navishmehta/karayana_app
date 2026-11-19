@@ -5,11 +5,12 @@ import { useColorScheme } from 'react-native';
 import { STORAGE_KEYS, THEME_PREFERENCES, type ThemePreference } from '@/constants/app';
 import { preferences } from '@/lib/storage';
 
-import { type ColorScheme, colors, type ThemeColors } from './tokens';
+import { type ColorScheme, colors, gradients, type ThemeColors, type ThemeGradients } from './tokens';
 
 interface ThemeContextValue {
   scheme: ColorScheme;
   colors: ThemeColors;
+  gradients: ThemeGradients;
   preference: ThemePreference;
   setPreference: (preference: ThemePreference) => void;
 }
@@ -38,7 +39,7 @@ export function ThemeProvider({ children, initialPreference = 'system' }: PropsW
   const scheme: ColorScheme = preference === 'system' ? (system === 'dark' ? 'dark' : 'light') : preference;
 
   return (
-    <ThemeContext.Provider value={{ scheme, colors: colors[scheme], preference, setPreference }}>
+    <ThemeContext.Provider value={{ scheme, colors: colors[scheme], gradients: gradients[scheme], preference, setPreference }}>
       {children}
     </ThemeContext.Provider>
   );

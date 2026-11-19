@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import type { PublicProduct } from '@/api/types';
-import { EmptyState, ErrorState, LoadingView } from '@/components/ui';
+import { EmptyState, ErrorState, FadeIn, LoadingView } from '@/components/ui';
 import { useAppTheme } from '@/theme/ThemeProvider';
 import { spacing } from '@/theme/tokens';
 import { gridColumns } from '@/utils/catalogue';
@@ -16,6 +16,7 @@ import { errorMessage } from '@/utils/errors';
 import { ProductCard } from './ProductCard';
 
 const MAX_LIST_WIDTH = 1200;
+const ENTER_BATCH = 8; // newly loaded pages animate in from the first item again
 
 interface ProductGridProps {
   products: PublicProduct[];
@@ -52,7 +53,11 @@ export function ProductGrid(props: ProductGridProps) {
       data={props.isPending || props.isError ? [] : props.products}
       keyExtractor={(p) => p.slug}
       numColumns={columns}
-      renderItem={({ item }) => <ProductCard product={item} />}
+      renderItem={({ item, index }) => (
+        <FadeIn index={index % ENTER_BATCH} style={styles.cell}>
+          <ProductCard product={item} />
+        </FadeIn>
+      )}
       columnWrapperStyle={columns > 1 ? styles.row : undefined}
       contentContainerStyle={styles.content}
       ListHeaderComponent={props.header}
@@ -73,5 +78,6 @@ export function ProductGrid(props: ProductGridProps) {
 const styles = StyleSheet.create({
   content: { flexGrow: 1, width: '100%', maxWidth: MAX_LIST_WIDTH, alignSelf: 'center', padding: spacing.lg, gap: spacing.md },
   row: { gap: spacing.md },
+  cell: { flex: 1 },
   footer: { height: spacing.xxxl },
 });

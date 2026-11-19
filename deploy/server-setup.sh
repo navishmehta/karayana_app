@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-time setup of a fresh Ubuntu 24.04 server (run as root):  bash server-setup.sh
+# One-time setup of a fresh Ubuntu 24.04 server (as your normal user):  sudo bash server-setup.sh
 set -euo pipefail
 
 echo "==> Updating the system and enabling automatic security updates"
@@ -18,6 +18,9 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
   > /etc/apt/sources.list.d/docker.list
 apt-get update -y
 apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Let the user who ran "sudo" use docker without sudo (takes effect after logging in again)
+if [ -n "${SUDO_USER:-}" ] && [ "$SUDO_USER" != "root" ]; then usermod -aG docker "$SUDO_USER"; fi
 
 echo "==> Firewall: only SSH, HTTP and HTTPS"
 ufw allow OpenSSH
