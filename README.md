@@ -14,7 +14,8 @@ Kirana store management app with Admin, Seller and Customer panels.
 | [docs/TESTING.md](docs/TESTING.md) | Test status, how to run every check, security review, device checklist |
 | [docs/FUTURE.md](docs/FUTURE.md) | V2–V4 ideas (billing, purchases, customer orders, more shops) and where to start |
 
-Every push to `main` runs the tests and builds the server images in GitHub Actions (`.github/workflows/ci.yml`).
+Every push to `main` runs the tests in GitHub Actions (`.github/workflows/ci.yml`) and, when they pass, goes live
+automatically at **https://kirana.thecodemate.com** (see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md#live-server-kiranathecodematecom-hostinger-vps)).
 
 ## Run everything locally (one command)
 

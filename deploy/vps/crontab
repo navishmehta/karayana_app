@@ -1,0 +1,15 @@
+# Smart Kirana scheduled jobs on the Hostinger VPS. Installed for the kirana user:
+#   sudo -u kirana crontab /var/www/kirana/app/deploy/vps/crontab
+# Server clock is UTC; the jobs themselves work in India time (IST = UTC+5:30).
+SHELL=/bin/bash
+D=/var/www/kirana/app/deploy/vps
+LOG=/var/www/kirana/logs/cron.log
+
+# Every 15 minutes: daily expiry summary (sent once, at the time set in Store settings)
+*/15 * * * * $D/run.sh python -m app.cli send-expiry-alerts >> $LOG 2>&1
+
+# 00:05 IST (18:35 UTC): batches that expired at midnight stop counting as sellable
+35 18 * * * $D/run.sh python -m app.cli refresh-stock >> $LOG 2>&1
+
+# 02:30 IST (21:00 UTC): database backup (photos on Sundays); keep the log short
+0 21 * * * $D/backup.sh daily >> $LOG 2>&1; tail -n 2000 $LOG > $LOG.tmp && mv $LOG.tmp $LOG

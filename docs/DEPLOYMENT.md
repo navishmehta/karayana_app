@@ -2,6 +2,38 @@
 
 How to put the website and API on a server, build the phone apps, and keep everything running.
 
+## Live server: kirana.thecodemate.com (Hostinger VPS)
+
+The live shop runs on a **shared** Hostinger VPS next to other sites, so it uses the server's existing nginx and
+MySQL instead of the Docker setup below. Files: [`deploy/vps/`](../deploy/vps/).
+
+**To update the live site: push to `main`.** GitHub Actions runs every test, builds the website, and — only if all
+of it passes — deploys: database backup → new packages → migrations → API restart → health check → website switch.
+If the API does not come back healthy, the old website stays up and the run turns red with the server log.
+Follow it under the repository's **Actions** tab (job "Deploy to kirana.thecodemate.com").
+
+| What | Where on the server |
+|---|---|
+| Code (a git checkout of `main`) | `/var/www/kirana/app` |
+| Settings and secrets | `/etc/kirana/env` (root only — edit there, then `systemctl restart kirana-backend`) |
+| API service | `kirana-backend` (uvicorn on `127.0.0.1:8030`) — logs: `journalctl -u kirana-backend -f` |
+| Website builds / photos | `/var/www/kirana/web/current` (last 5 kept in `web/releases`) / `/var/www/kirana/media` |
+| Backups (30 days) | `/var/www/kirana/backups` — daily 02:30 IST and before every deploy |
+| Scheduled jobs | `sudo -u kirana crontab -l` (from `deploy/vps/crontab`), log in `/var/www/kirana/logs/cron.log` |
+| nginx site | `/etc/nginx/sites-available/kirana.thecodemate.com` (HTTPS by certbot) |
+
+- **Deploy by hand** (e.g. if GitHub is down), as root on the server:
+  `sudo -iu kirana bash -c 'cd app && git pull --ff-only && deploy/vps/deploy.sh'` (API only; the website
+  build comes from GitHub Actions).
+- **Undo a bad release:** `git revert` the commit and push — it deploys like any other change.
+  Database: `gunzip -c /var/www/kirana/backups/db_pre-deploy_<time>.sql.gz | mysql kirana` (as root).
+- **Deploy key:** the repository secret `VPS_DEPLOY_KEY` can only run `/usr/local/bin/kirana-deploy`, which
+  accepts nothing but a commit that is already on `main`. It has no shell and no root access.
+- **First-time setup** of a new server: `deploy/vps/setup.sh` (adds only Kirana's own user, folders, database,
+  service and nginx site).
+
+---
+
 ```
 Phone apps ─┐
 Website ────┼── https://shop.example.com ── Caddy (HTTPS, website files, /media)

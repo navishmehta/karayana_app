@@ -7,7 +7,8 @@ on:
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # Pull requests: a newer push cancels the old run. main: never cancel, so a deploy is never cut off halfway.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   backend:
@@ -66,3 +67,44 @@ jobs:
       - run: docker build -f deploy/web.Dockerfile --build-arg EXPO_PUBLIC_API_URL=https://example.invalid -t smart-kirana-web .
       - name: API image imports cleanly
         run: docker run --rm --entrypoint python -e JWT_SECRET=ci-only-secret-ci-only-secret-0000 smart-kirana-api -c "import app.main; print('imports ok')"
+
+  # Every push to main that passes all checks above goes live on the Hostinger VPS (deploy/vps/).
+  # Needs the repository secret VPS_DEPLOY_KEY (an SSH key that can only run the deploy command).
+  deploy:
+    name: Deploy to kirana.thecodemate.com
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [backend, app, images]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - run: npm ci
+      - name: Build the website for production
+        run: npx expo export --platform web --output-dir dist-web
+        env:
+          EXPO_PUBLIC_API_URL: https://kirana.thecodemate.com
+      - name: Deploy (API + website)
+        env:
+          VPS_DEPLOY_KEY: ${{ secrets.VPS_DEPLOY_KEY }}
+        run: |
+          if [ -z "$VPS_DEPLOY_KEY" ]; then
+            echo "::warning::Secret VPS_DEPLOY_KEY is not set — skipping deploy."
+            exit 0
+          fi
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$VPS_DEPLOY_KEY" > ~/.ssh/deploy_key && chmod 600 ~/.ssh/deploy_key
+          echo "kirana.thecodemate.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILhvTKX+Xv18CtAsmxFAuSFrnoG59RktNxrRtLXQWu/J" > ~/.ssh/known_hosts
+          tar -czf - -C dist-web . | ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes kirana@kirana.thecodemate.com "deploy $GITHUB_SHA"
+          echo "==> Checking the live site"
+          curl -sf https://kirana.thecodemate.com/api/v1/health
+          curl -sf -o /dev/null https://kirana.thecodemate.com/

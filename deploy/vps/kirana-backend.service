@@ -1,0 +1,23 @@
+# Smart Kirana API on the Hostinger VPS. Installed as /etc/systemd/system/kirana-backend.service.
+# Settings (secrets) live in /etc/kirana/env, never in git.
+[Unit]
+Description=Smart Kirana FastAPI backend (kirana.thecodemate.com)
+After=network.target mysql.service
+
+[Service]
+User=kirana
+Group=kirana
+WorkingDirectory=/var/www/kirana/app/backend
+EnvironmentFile=/etc/kirana/env
+# One worker: the login rate limiter is in-process. Real client IPs come from nginx's X-Forwarded-For.
+ExecStart=/var/www/kirana/app/backend/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8030 --workers 1 --proxy-headers --forwarded-allow-ips=127.0.0.1
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/www/kirana/media
+
+[Install]
+WantedBy=multi-user.target
